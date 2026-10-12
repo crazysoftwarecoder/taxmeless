@@ -21,7 +21,7 @@ const rule = (over: Partial<Rule>): Rule => ({
 const file = (egress: Rule[], over: Partial<TaxFile> = {}): TaxFile => ({
   country: 'au', currency: 'AUD', tax_year: '2026-27', jurisdiction_note: 'test', meta,
   resident_profile: { other_income_options: [0, 0, 0], meta },
-  income_tax: flat(0.4), levies: [],
+  income_tax: flat(0.4), levies: [], property_leverage: { interest_deductible: true, rental_loss: [{ treatment: 'offset_other_income' }], plain_english: 'test leverage policy text', meta },
   assets: { equities: { ingress: [], growth: [], egress }, property: { ingress: [], growth: [], egress: [] } },
   ...over,
 });

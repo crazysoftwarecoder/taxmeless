@@ -19,7 +19,7 @@ function ctx(over: Partial<RuleContext> = {}): RuleContext {
     stage: 'growth',
     year: 1,
     holdingYears: 1,
-    bases: { principal: 1_000_000, value: 1_000_000, land_value: 600_000, income: 20_000, gain: 500_000 },
+    bases: { principal: 1_000_000, value: 1_000_000, net_value: 1_000_000, land_value: 600_000, income: 20_000, gain: 500_000, loan: 0 },
     otherIncome: 120_000,
     incomeTax: sched,
     frankedFractionDefault: 0.7,
@@ -73,7 +73,7 @@ describe('applyRule', () => {
     expect(none.amount).toBe(0);
   });
   it('fixed amount applies even with zero base', () => {
-    const ev = applyRule(rule({ kind: { type: 'fixed', amount: 3000 }, base: 'gain' }), ctx({ bases: { principal: 0, value: 0, land_value: 0, income: 0, gain: 0 } }))!;
+    const ev = applyRule(rule({ kind: { type: 'fixed', amount: 3000 }, base: 'gain' }), ctx({ bases: { principal: 0, value: 0, net_value: 0, land_value: 0, income: 0, gain: 0, loan: 0 } }))!;
     expect(ev.amount).toBe(3000);
     expect(ev.rate).toBeUndefined();
   });
@@ -104,7 +104,7 @@ describe('applyRule', () => {
     const hi = applyRule(r, ctx({ otherIncome: 300_000 }))!;
     expect(hi.amount).toBeCloseTo(28571.4286 * 0.45 - 8571.4286, 2);
     // at 0% marginal the credit is refunded (negative amount)
-    const lo = applyRule(r, ctx({ otherIncome: 0, bases: { principal: 0, value: 0, land_value: 0, income: 10_000, gain: 0 } }))!;
+    const lo = applyRule(r, ctx({ otherIncome: 0, bases: { principal: 0, value: 0, net_value: 0, land_value: 0, income: 10_000, gain: 0, loan: 0 } }))!;
     expect(lo.amount).toBeLessThan(0);
   });
   it('taxable_fraction scales the base', () => {

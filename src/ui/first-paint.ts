@@ -16,7 +16,7 @@ export function firstPaintInputs(state: AppState): Parameters<typeof compareAll>
     horizonYears: state.horizon,
     principalUsd: state.principal,
     equities: { growth: state.eqGrowth / 100, yield: state.eqYield / 100 },
-    property: { growth: state.prGrowth / 100, yield: state.prYield / 100, costRate: state.prCost / 100 },
+    property: { growth: state.prGrowth / 100, yield: state.prYield / 100, costRate: state.prCost / 100, lvr: state.lvr / 100, interestRate: state.rate / 100 },
     otherIncomeBand: state.income,
     startDate: new Date().toISOString().slice(0, 10),
     inflation: state.infl / 100,

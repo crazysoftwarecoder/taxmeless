@@ -10,7 +10,11 @@
     "note": "Budget 2026 (Finance Act 2026) left the slabs, cess and rebate unchanged for FY 2026-27, so the FY 2025-26 figures remain current. Surcharge (10% to 25% of tax when total income exceeds INR 50 lakh) is not modelled because the engine cannot compute tax-on-tax; it would matter only for the high income band. The section 87A rebate (zero tax up to INR 12 lakh total income) is not modelled."
   },
   "resident_profile": {
-    "other_income_options": [600000, 1500000, 4000000],
+    "other_income_options": [
+      600000,
+      1500000,
+      4000000
+    ],
     "meta": {
       "source": "https://www.mospi.gov.in/",
       "source_title": "MoSPI Periodic Labour Force Survey 2023-24 — urban regular salaried earnings ≈ INR 24,000 per month; bands chosen for an urban professional able to invest USD 1m",
@@ -20,13 +24,41 @@
   },
   "income_tax": {
     "brackets": [
-      { "from": 0, "to": 400000, "rate": 0 },
-      { "from": 400000, "to": 800000, "rate": 0.052 },
-      { "from": 800000, "to": 1200000, "rate": 0.104 },
-      { "from": 1200000, "to": 1600000, "rate": 0.156 },
-      { "from": 1600000, "to": 2000000, "rate": 0.208 },
-      { "from": 2000000, "to": 2400000, "rate": 0.26 },
-      { "from": 2400000, "to": null, "rate": 0.312 }
+      {
+        "from": 0,
+        "to": 400000,
+        "rate": 0
+      },
+      {
+        "from": 400000,
+        "to": 800000,
+        "rate": 0.052
+      },
+      {
+        "from": 800000,
+        "to": 1200000,
+        "rate": 0.104
+      },
+      {
+        "from": 1200000,
+        "to": 1600000,
+        "rate": 0.156
+      },
+      {
+        "from": 1600000,
+        "to": 2000000,
+        "rate": 0.208
+      },
+      {
+        "from": 2000000,
+        "to": 2400000,
+        "rate": 0.26
+      },
+      {
+        "from": 2400000,
+        "to": null,
+        "rate": 0.312
+      }
     ],
     "meta": {
       "source": "https://www.indiabudget.gov.in/budget2025-26/doc/memo.pdf",
@@ -45,7 +77,10 @@
           "stage": "ingress",
           "category": "cost",
           "base": "principal",
-          "kind": { "type": "flat", "rate": 0.0005 },
+          "kind": {
+            "type": "flat",
+            "rate": 0.0005
+          },
           "plain_english": "Buying units of an equity index fund or ETF on an Indian exchange attracts no securities transaction tax (STT applies on purchase only to individual shares). Discount brokers charge little or nothing for delivery trades, so we assume 0.05% for brokerage, exchange and GST charges combined.",
           "meta": {
             "source": "https://nsearchives.nseindia.com/content/circulars/FATAX73524.pdf",
@@ -62,7 +97,13 @@
           "stage": "growth",
           "category": "tax",
           "base": "income",
-          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true
+          },
           "plain_english": "Since 2020 dividends are taxed in the investor's hands: they are added to your other income and taxed at your slab rate plus the 4% cess. There is no dividend allowance and no credit for tax the company paid.",
           "meta": {
             "source": "https://www.indiabudget.gov.in/budget2025-26/doc/memo.pdf",
@@ -79,7 +120,10 @@
           "stage": "egress",
           "category": "tax",
           "base": "value",
-          "kind": { "type": "flat", "rate": 0.00001 },
+          "kind": {
+            "type": "flat",
+            "rate": 1e-05
+          },
           "plain_english": "Selling units of an equity-oriented fund attracts securities transaction tax of 0.001% of the sale value, collected by the exchange or fund house. Paying STT is also what qualifies the gain for the concessional long-term rate.",
           "meta": {
             "source": "https://nsearchives.nseindia.com/content/circulars/FATAX73524.pdf",
@@ -94,8 +138,14 @@
           "stage": "egress",
           "category": "tax",
           "base": "gain",
-          "kind": { "type": "flat_above_allowance", "rate": 0.13, "allowance": 125000 },
-          "modifiers": { "min_holding_years": 1 },
+          "kind": {
+            "type": "flat_above_allowance",
+            "rate": 0.13,
+            "allowance": 125000
+          },
+          "modifiers": {
+            "min_holding_years": 1
+          },
           "plain_english": "Gains on equity funds held for more than 12 months are long-term and taxed at a flat 12.5% (13% with the 4% cess) on the part of the gain above INR 1.25 lakh in the year of sale. Gains on units held 12 months or less would instead be taxed at 20%.",
           "meta": {
             "source": "https://www.indiabudget.gov.in/budget2024-25/doc/memo.pdf",
@@ -114,7 +164,10 @@
           "stage": "ingress",
           "category": "tax",
           "base": "principal",
-          "kind": { "type": "flat", "rate": 0.06 },
+          "kind": {
+            "type": "flat",
+            "rate": 0.06
+          },
           "plain_english": "Buying residential property in Mumbai costs 5% stamp duty under the Maharashtra Stamp Act plus a 1% metro cess, so 6% of the higher of the price and the government's ready-reckoner value, paid up front at registration. Women buyers get a 1-point concession on the duty.",
           "meta": {
             "source": "https://igrmaharashtra.gov.in/",
@@ -129,7 +182,10 @@
           "stage": "ingress",
           "category": "cost",
           "base": "principal",
-          "kind": { "type": "fixed", "amount": 30000 },
+          "kind": {
+            "type": "fixed",
+            "amount": 30000
+          },
           "plain_english": "The sale deed must be registered with the sub-registrar. Maharashtra charges 1% of the value, capped at INR 30,000, which any property worth more than INR 30 lakh hits. Legal fees are extra and ignored.",
           "meta": {
             "source": "https://igrmaharashtra.gov.in/",
@@ -146,8 +202,16 @@
           "stage": "growth",
           "category": "tax",
           "base": "income",
-          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
-          "modifiers": { "taxable_fraction": 0.9333 },
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true
+          },
+          "modifiers": {
+            "taxable_fraction": 0.9333
+          },
           "plain_english": "Rent is taxed as income from house property: you deduct a flat 30% of the rent (after municipal taxes) for repairs and maintenance regardless of actual costs, and the rest is added to your income and taxed at your slab rate plus cess. Actual repair bills are not deductible on top of that.",
           "meta": {
             "source": "https://www.indiabudget.gov.in/budget2025-26/doc/memo.pdf",
@@ -162,7 +226,10 @@
           "stage": "growth",
           "category": "tax",
           "base": "value",
-          "kind": { "type": "flat", "rate": 0.003 },
+          "kind": {
+            "type": "flat",
+            "rate": 0.003
+          },
           "plain_english": "The Brihanmumbai Municipal Corporation levies an annual property tax as a percentage of the property's capital value, which is derived from the government ready-reckoner rate rather than the market price. The combined general, water and sewerage components come to roughly 0.6% of capital value, which is about 0.3% of market value.",
           "meta": {
             "source": "https://ptaxportal.mcgm.gov.in/",
@@ -179,8 +246,13 @@
           "stage": "egress",
           "category": "tax",
           "base": "gain",
-          "kind": { "type": "flat", "rate": 0.13 },
-          "modifiers": { "min_holding_years": 2 },
+          "kind": {
+            "type": "flat",
+            "rate": 0.13
+          },
+          "modifiers": {
+            "min_holding_years": 2
+          },
           "plain_english": "Property held for more than 24 months is a long-term asset and the gain is taxed at a flat 12.5% (13% with cess) without inflation indexation, under the rules that took effect on 23 July 2024. Stamp duty and registration costs form part of the cost base.",
           "meta": {
             "source": "https://www.indiabudget.gov.in/budget2024-25/doc/memo.pdf",
@@ -195,7 +267,10 @@
           "stage": "egress",
           "category": "cost",
           "base": "value",
-          "kind": { "type": "flat", "rate": 0.02 },
+          "kind": {
+            "type": "flat",
+            "rate": 0.02
+          },
           "plain_english": "Real-estate brokers in Mumbai typically charge the seller around 2% of the sale price (plus GST). It is a cost rather than a tax but still reduces what you walk away with.",
           "meta": {
             "source": "https://maharera.maharashtra.gov.in/",
@@ -205,6 +280,21 @@
           }
         }
       ]
+    }
+  },
+  "property_leverage": {
+    "interest_deductible": true,
+    "rental_loss": [
+      {
+        "treatment": "carry_forward"
+      }
+    ],
+    "plain_english": "For a let-out property, home-loan interest is deductible against rent. Under the new tax regime a loss from house property cannot be set off against salary; it is carried forward against future house-property income only.",
+    "meta": {
+      "source": "https://www.incometaxindia.gov.in/w/set-off-and-carry-forward-of-losses",
+      "source_title": "Income Tax Department — Set off and carry forward of losses",
+      "last_verified": "2026-10-12",
+      "note": "Secondary sources disagree on carry-forward under section 115BAC; carry-forward against house-property income (8 years) assumed. Interest is deducted after the 30% standard deduction is approximated by taxable_fraction."
     }
   }
 }

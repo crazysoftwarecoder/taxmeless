@@ -30,7 +30,10 @@ You never edit src/ui/**.
    fixed, plus modifiers; category tax | cost). Dated law changes use effective_from / effective_until,
    accrual_from / accrual_until (split a gain at a date), cost_base_indexation, minimum_rate, and the
    file-level income_tax_changes for legislated future brackets. Always check the latest national budget
-   and enacted legislation, not just the revenue authority's rate table (it can lag). If a rule cannot be expressed, extend the schema, update ALL
+   and enacted legislation, not just the revenue authority's rate table (it can lag).
+   Each file also has `property_leverage`: whether mortgage interest is deductible (or a UK-style
+   finance-cost credit), and how rental losses are treated over time (offset_other_income |
+   carry_forward | carry_forward_incl_gains | lapse). Wealth taxes that allow debt deduction use base net_value. If a rule cannot be expressed, extend the schema, update ALL
    country files and scripts/validate.ts in the same change, and file a bd task for ux-engineer if Ledger or
    TaxEvent shapes change.
 5. Every rule needs: id, label, stage, category, base, kind, plain_english (2–3 sentences a non-expert

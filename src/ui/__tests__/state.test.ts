@@ -16,6 +16,12 @@ describe('url state codec', () => {
     expect(d.asset).toBe('both');
     expect(d.eqGrowth).toBe(DEFAULT_STATE.eqGrowth);
   });
+  it('round-trips leverage', () => {
+    const q = encodeState({ ...DEFAULT_STATE, lvr: 60, rate: 5.5 });
+    expect(q).toBe('?lv=60&mr=5.5');
+    expect(decodeState(q).lvr).toBe(60);
+    expect(decodeState('?lv=150').lvr).toBe(0);
+  });
   it('caps the number of countries', () => {
     const d = decodeState('?c=au,us,uk,ca,nz,sg,ae,de,ch,in');
     expect(d.countries).toHaveLength(8);

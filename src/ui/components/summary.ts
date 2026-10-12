@@ -15,10 +15,11 @@ export function renderSummary(
   for (const asset of assets) {
     const rows = ledgers.filter((l) => l.asset === asset).sort((a, b) => b.finalNetUsd - a.finalNetUsd);
     host.append(h('table', { class: 'summary' },
-      h('caption', null, `${ASSET_LABEL[asset]} · ${usdCompact(state.principal)} after ${state.horizon} years${state.real ? " · in today's dollars" : ''}`),
+      h('caption', null, `${ASSET_LABEL[asset]} · ${usdCompact(state.principal)} after ${state.horizon} years${asset === 'property' && state.lvr > 0 ? ` · ${state.lvr}% LVR at ${state.rate}%` : ''}${state.real ? " · in today's dollars" : ''}`),
       h('thead', null, h('tr', null,
         h('th', null, 'Country'), h('th', { class: 'num' }, 'Net value'), h('th', { class: 'num' }, 'Total tax'),
         h('th', { class: 'num' }, 'Tax / gain'), h('th', { class: 'num' }, 'Ingress'), h('th', { class: 'num' }, 'Growth'), h('th', { class: 'num' }, 'Egress'),
+        ...(asset === 'property' && state.lvr > 0 ? [h('th', { class: 'num' }, 'Price'), h('th', { class: 'num' }, 'Loan')] : []),
       )),
       h('tbody', null, ...rows.map((l) => h('tr', { tabindex: 0, role: 'button', 'aria-label': `Show taxes for ${names[l.country]} ${asset}`,
         onclick: () => onRow(l.country, asset),
@@ -31,6 +32,7 @@ export function renderSummary(
         h('td', { class: 'num' }, usdCompact(l.totalsUsd.taxes.ingress)),
         h('td', { class: 'num' }, usdCompact(l.totalsUsd.taxes.growth)),
         h('td', { class: 'num' }, usdCompact(l.totalsUsd.taxes.egress)),
+        ...(asset === 'property' && state.lvr > 0 ? [h('td', { class: 'num' }, usdCompact(l.purchasePriceUsd)), h('td', { class: 'num' }, usdCompact(l.loanUsd))] : []),
       ))),
     ));
   }

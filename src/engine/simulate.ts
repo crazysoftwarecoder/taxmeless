@@ -25,6 +25,8 @@ function zeroStages(): StageTotals {
   return { ingress: 0, growth: 0, egress: 0 };
 }
 
+interface PathResult { years: PathYear[]; price: number; loan: number }
+
 interface PathYear {
   opening: number;
   income: number;
@@ -54,9 +56,21 @@ export function simulate(inputs: SimInputs, tax: TaxFile, asset: Asset, assumpti
     [...tax.assets[asset][stage], ...tax.levies.filter((l) => l.stage === stage)]
       .filter((r) => taxesOn || r.category === 'cost');
 
-  const runPath = (taxesOn: boolean): PathYear[] => {
+  // Leverage (property only): interest-only loan at a fixed rate.
+  const lvr = asset === 'property' ? Math.min(0.9, Math.max(0, inputs.property.lvr ?? 0)) : 0;
+  const rate = inputs.property.interestRate ?? 0.06;
+  const policy = tax.property_leverage;
+  const lossTreatment = (iso: string) => {
+    let t = policy.rental_loss[0]!.treatment;
+    for (const e of [...policy.rental_loss].sort((x, y) => (x.effective_from ?? '').localeCompare(y.effective_from ?? ''))) {
+      if (!e.effective_from || iso >= e.effective_from) t = e.treatment;
+    }
+    return t;
+  };
+
+  const runPath = (taxesOn: boolean): PathResult => {
     const years: PathYear[] = [];
-    // Per-year history (pre-egress) used to split gains by accrual date.
+    // Per-year asset history (pre-egress) used to split gains by accrual date.
     const V: number[] = [];
     const CB: number[] = [];
     const reinv: number[] = [];
@@ -85,10 +99,13 @@ export function simulate(inputs: SimInputs, tax: TaxFile, asset: Asset, assumpti
       return { gain, indexation };
     };
 
-    const apply = (stage: Stage, year: number, holdingYears: number, bases: Record<Base, number>): TaxEvent[] => {
+    const apply = (
+      stage: Stage, year: number, holdingYears: number, bases: Record<Base, number>,
+      extra: Pick<RuleContext, 'allowNegativeIncome' | 'gainLossPool'> = {},
+    ): TaxEvent[] => {
       const eventDate = addYears(start, year);
       const base: RuleContext = {
-        stage, year, holdingYears, bases, otherIncome, eventDate, gainWindow,
+        stage, year, holdingYears, bases, otherIncome, eventDate, gainWindow, ...extra,
         incomeTax: scheduleOn(tax, eventDate),
         frankedFractionDefault: assumptions.equities.franked_fraction,
         fx,
@@ -106,37 +123,112 @@ export function simulate(inputs: SimInputs, tax: TaxFile, asset: Asset, assumpti
       return out;
     };
     const sum = (evs: TaxEvent[]) => evs.reduce((a, e) => a + e.amount, 0);
+    const policyEvent = (
+      year: number, stage: Stage, category: 'tax' | 'cost', label: string, base: number, baseKind: Base,
+      amount: number, explanation: string, taxable = base,
+    ): TaxEvent => ({
+      ruleId: `leverage_${label.toLowerCase().replace(/[^a-z0-9]+/g, '_')}`, label, stage, category, year, baseKind, base, taxable,
+      rate: base > 0 && amount ? amount / base : undefined, amount, amountUsd: amount / fx, explanation, meta: policy.meta,
+    });
+    const bases = (price: number, value: number, loan: number, income: number, gain: number): Record<Base, number> => ({
+      principal: price, value, net_value: value - loan, land_value: value * landFraction, income, gain, loan,
+    });
 
-    // Year 0: deploy the principal.
-    const ingress = apply('ingress', 0, 0, { principal, value: principal, land_value: principal * landFraction, income: 0, gain: 0 });
-    let value = principal - sum(ingress);
-    let costBase = principal; // outlay incl. entry costs forms the cost base
+    // Year 0: solve the purchase price so that deposit + entry costs = cash invested.
+    const ingressAt = (price: number) => apply('ingress', 0, 0, bases(price, price, price * lvr, 0, 0));
+    let price = principal;
+    if (lvr > 0 || ingressAt(principal).length) {
+      let lo = 0;
+      let hi = principal / (1 - lvr);
+      for (let i = 0; i < 60; i++) {
+        const mid = (lo + hi) / 2;
+        if (mid * (1 - lvr) + sum(ingressAt(mid)) > principal) hi = mid; else lo = mid;
+      }
+      price = lo;
+    }
+    const loan = price * lvr;
+    const ingress = ingressAt(price);
+    let value = price;
+    let costBase = price + sum(ingress);
+    let cash = principal - (price - loan) - sum(ingress); // ~0 after solving
+    let lossPool = 0; // quarantined rental losses
+    let financePool = 0; // unrelieved finance costs (credit regimes)
     V.push(value); CB.push(costBase); reinv.push(0);
-    years.push({ opening: principal, income: 0, growth: 0, closing: value, events: ingress });
+    years.push({ opening: principal, income: 0, growth: 0, closing: value - loan + cash, events: ingress });
 
     for (let y = 1; y <= H; y++) {
+      const eventDate = addYears(start, y);
       const opening = value;
       const grossIncome = opening * params.yield;
       const netIncome = grossIncome * (1 - params.costRate);
+      const interest = loan * rate;
       const growthAmt = opening * params.growth;
-      const events = apply('growth', y, y, { principal, value: opening, land_value: opening * landFraction, income: netIncome, gain: 0 });
-      const reinvested = netIncome - sum(events);
-      value = opening + growthAmt + reinvested;
-      costBase += reinvested;
+      const pre: TaxEvent[] = [];
+      let incomeBase = netIncome;
+      let allowNegativeIncome = false;
+      if (asset === 'property') {
+        if (interest > 0) pre.push(policyEvent(y, 'growth', 'cost', 'Mortgage interest', loan, 'loan', interest,
+          `Interest-only loan at ${(rate * 100).toFixed(2)}% on ${(lvr * 100).toFixed(0)}% of the purchase price. ${policy.plain_english}`));
+        if (taxesOn) {
+          let profit = policy.interest_deductible ? netIncome - interest : netIncome;
+          const treatment = lossTreatment(eventDate);
+          if (profit > 0 && lossPool > 0 && treatment !== 'offset_other_income') {
+            const use = Math.min(lossPool, profit);
+            profit -= use;
+            lossPool -= use;
+            pre.push(policyEvent(y, 'growth', 'tax', 'Carried-forward rental loss used', use, 'income', 0,
+              'Rental losses carried forward from earlier years reduce this year\'s taxable rent.'));
+          }
+          if (profit < 0) {
+            if (treatment === 'offset_other_income') allowNegativeIncome = true;
+            else {
+              if (treatment !== 'lapse') lossPool += -profit;
+              pre.push(policyEvent(y, 'growth', 'tax', treatment === 'lapse' ? 'Rental loss (cannot be used)' : 'Rental loss carried forward', -profit, 'income', 0,
+                treatment === 'lapse'
+                  ? 'The rental loss cannot reduce tax on other income here and is not carried forward.'
+                  : 'The rental loss cannot reduce tax on your salary. It is carried forward to offset future rental profits' + (treatment === 'carry_forward_incl_gains' ? ' and the capital gain when you sell.' : '.')));
+              profit = 0;
+            }
+          }
+          incomeBase = profit;
+          if (policy.finance_cost_credit_rate && !policy.interest_deductible && interest > 0) {
+            financePool += interest;
+            const relieved = Math.min(financePool, Math.max(0, profit));
+            financePool -= relieved;
+            if (relieved > 0) pre.push(policyEvent(y, 'growth', 'tax', 'Finance cost tax credit', relieved, 'loan',
+              -relieved * policy.finance_cost_credit_rate,
+              `Mortgage interest is not deducted from rent. Instead you get a ${(policy.finance_cost_credit_rate * 100).toFixed(0)}% tax credit on it, limited to your rental profit; unrelieved interest carries forward.`));
+          }
+        }
+      }
+      const events = [...pre, ...apply('growth', y, y, bases(price, opening, loan, incomeBase, 0), { allowNegativeIncome })];
+      const taxesPaid = events.filter((e) => e.category === 'tax').reduce((a, e) => a + e.amount, 0);
+      const costsPaid = events.filter((e) => e.category === 'cost').reduce((a, e) => a + e.amount, 0);
+      const flow = netIncome - costsPaid - taxesPaid;
+      value = opening + growthAmt;
+      let reinvested = 0;
+      if (flow >= 0) { value += flow; costBase += flow; reinvested = flow; } else cash += flow;
       V.push(value); CB.push(costBase); reinv.push(reinvested);
       if (y === H) {
         const gain = Math.max(0, value - costBase);
-        const egress = apply('egress', y, y, { principal, value, land_value: value * landFraction, income: 0, gain });
+        const usesGains = taxesOn && lossTreatment(eventDate) === 'carry_forward_incl_gains' && lossPool > 0;
+        const pool = usesGains ? { remaining: lossPool, used: new Map<string, number>() } : undefined;
+        const egress = apply('egress', y, y, bases(price, value, loan, 0, gain), { gainLossPool: pool });
+        if (pool && pool.remaining < lossPool) {
+          egress.push(policyEvent(y, 'egress', 'tax', 'Carried-forward rental losses used against the gain', lossPool - pool.remaining, 'gain', 0,
+            'Rental losses that could not offset your salary are deducted from the taxable capital gain on sale.'));
+        }
         value -= sum(egress);
         events.push(...egress);
       }
-      years.push({ opening, income: netIncome, growth: growthAmt, closing: value, events });
+      years.push({ opening: opening - loan + cash, income: netIncome - (asset === 'property' ? interest : 0), growth: growthAmt, closing: value - loan + cash, events });
     }
-    return years;
+    return { years, price, loan };
   };
 
-  const net = runPath(true);
-  const gross = runPath(false);
+  const netRun = runPath(true);
+  const net = netRun.years;
+  const gross = runPath(false).years;
 
   const rows: YearRow[] = net.map((n, i) => {
     const taxes = zeroStages();
@@ -176,6 +268,8 @@ export function simulate(inputs: SimInputs, tax: TaxFile, asset: Asset, assumpti
     fx,
     principalUsd: inputs.principalUsd,
     horizonYears: H,
+    purchasePriceUsd: netRun.price / fx,
+    loanUsd: netRun.loan / fx,
     rows,
     totalsUsd: totals,
     finalGrossUsd: last.grossValueUsd,

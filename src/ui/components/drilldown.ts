@@ -63,7 +63,7 @@ export function renderDrilldown(root: HTMLElement, ledger: Ledger, target: Drill
       h('div', { class: 'kpi' }, h('span', null, 'Net value'), h('strong', null, usd(yearRow.netValueUsd))),
       h('div', { class: 'kpi' }, h('span', null, 'Untaxed'), h('strong', null, usd(yearRow.grossValueUsd))),
       h('div', { class: 'kpi' }, h('span', null, 'Tax this year'), h('strong', null, usd(yearRow.taxesUsd.ingress + yearRow.taxesUsd.growth + yearRow.taxesUsd.egress))),
-      h('div', { class: 'kpi' }, h('span', null, 'Income'), h('strong', null, usd(yearRow.incomeUsd))),
+      h('div', { class: 'kpi' }, h('span', null, ledger.loanUsd > 0 ? 'Net rent after interest' : 'Income'), h('strong', null, usd(yearRow.incomeUsd))),
     ) : h('div', { class: 'kpis' },
       h('div', { class: 'kpi' }, h('span', null, 'Total at this stage'), h('strong', null, usd(events.filter((e) => e.category === 'tax').reduce((a, e) => a + e.amountUsd, 0)))),
       h('div', { class: 'kpi' }, h('span', null, 'Costs at this stage'), h('strong', null, usd(events.filter((e) => e.category === 'cost').reduce((a, e) => a + e.amountUsd, 0)))),

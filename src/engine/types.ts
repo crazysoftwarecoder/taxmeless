@@ -7,7 +7,7 @@ export interface SimInputs {
   horizonYears: number;
   principalUsd: number;
   equities: { growth: number; yield: number };
-  property: { growth: number; yield: number; costRate: number };
+  property: { growth: number; yield: number; costRate: number; lvr?: number; interestRate?: number };
   otherIncomeBand: IncomeBand;
   /** Purchase date (YYYY-MM-DD). Dated rules and bracket changes are resolved against it. Defaults to DEFAULT_START_DATE. */
   startDate?: string;
@@ -61,6 +61,9 @@ export interface Ledger {
   fx: number;
   principalUsd: number;
   horizonYears: number;
+  /** Purchase price and interest-only loan (USD); equal to the deployed cash and 0 without leverage. */
+  purchasePriceUsd: number;
+  loanUsd: number;
   rows: YearRow[];
   totalsUsd: { taxes: StageTotals & { all: number }; costs: StageTotals & { all: number } };
   finalGrossUsd: number;

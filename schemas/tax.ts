@@ -34,8 +34,10 @@ export const ScheduleRefSchema = z.union([ScheduleSchema, z.object({ $ref: z.lit
  * - land_value: value × assumptions.property.land_fraction (land tax)
  * - income: the year's taxable investment income (dividends / net rent)
  * - gain: value − cost base at exit
+ * - net_value: value − loan (wealth taxes that allow debt deduction)
+ * - loan: outstanding loan principal
  */
-export const BaseSchema = z.enum(['principal', 'value', 'land_value', 'income', 'gain']);
+export const BaseSchema = z.enum(['principal', 'value', 'net_value', 'land_value', 'income', 'gain', 'loan']);
 export type Base = z.infer<typeof BaseSchema>;
 
 export const RuleKindSchema = z.discriminatedUnion('type', [
@@ -109,6 +111,24 @@ export const AssetRulesSchema = z.object({
 });
 export type AssetRules = z.infer<typeof AssetRulesSchema>;
 
+/** How a leveraged rental property is treated: interest deductibility and what happens to rental losses. */
+export const RentalLossTreatmentSchema = z.enum([
+  'offset_other_income',      // loss reduces tax on salary (negative gearing)
+  'carry_forward',            // quarantined; offsets future rental profits only
+  'carry_forward_incl_gains', // quarantined; offsets future rental profits and the capital gain on sale
+  'lapse',                    // loss cannot be used
+]);
+export const PropertyLeverageSchema = z.object({
+  interest_deductible: z.boolean(),
+  /** UK-style relief: a tax credit at this rate on finance costs instead of a deduction (unused costs carry forward). */
+  finance_cost_credit_rate: z.number().min(0).max(1).optional(),
+  /** Loss treatment by date; the latest entry whose effective_from is on/before the event date applies. */
+  rental_loss: z.array(z.object({ effective_from: IsoDate.optional(), treatment: RentalLossTreatmentSchema })).min(1),
+  plain_english: z.string().min(20),
+  meta: MetaSchema,
+});
+export type PropertyLeverage = z.infer<typeof PropertyLeverageSchema>;
+
 export const TaxFileSchema = z.object({
   country: CountryCodeSchema,
   currency: z.string().length(3),
@@ -126,5 +146,6 @@ export const TaxFileSchema = z.object({
   /** Rules that apply to both assets at the stage they declare (Medicare levy, NIIT, surcharge/cess). */
   levies: z.array(RuleSchema),
   assets: z.object({ equities: AssetRulesSchema, property: AssetRulesSchema }),
+  property_leverage: PropertyLeverageSchema,
 });
 export type TaxFile = z.infer<typeof TaxFileSchema>;

@@ -10,7 +10,11 @@
     "note": "Income bands are treated as taxable income, i.e. after the USD 16,100 standard deduction for 2026."
   },
   "resident_profile": {
-    "other_income_options": [60000, 150000, 700000],
+    "other_income_options": [
+      60000,
+      150000,
+      700000
+    ],
     "meta": {
       "source": "https://www.bls.gov/news.release/wkyeng.nr0.htm",
       "source_title": "BLS — Usual weekly earnings of wage and salary workers (median full-time ≈ USD 62k/yr)",
@@ -20,13 +24,41 @@
   },
   "income_tax": {
     "brackets": [
-      { "from": 0, "to": 12400, "rate": 0.10 },
-      { "from": 12400, "to": 50400, "rate": 0.12 },
-      { "from": 50400, "to": 105700, "rate": 0.22 },
-      { "from": 105700, "to": 201775, "rate": 0.24 },
-      { "from": 201775, "to": 256225, "rate": 0.32 },
-      { "from": 256225, "to": 640600, "rate": 0.35 },
-      { "from": 640600, "to": null, "rate": 0.37 }
+      {
+        "from": 0,
+        "to": 12400,
+        "rate": 0.1
+      },
+      {
+        "from": 12400,
+        "to": 50400,
+        "rate": 0.12
+      },
+      {
+        "from": 50400,
+        "to": 105700,
+        "rate": 0.22
+      },
+      {
+        "from": 105700,
+        "to": 201775,
+        "rate": 0.24
+      },
+      {
+        "from": 201775,
+        "to": 256225,
+        "rate": 0.32
+      },
+      {
+        "from": 256225,
+        "to": 640600,
+        "rate": 0.35
+      },
+      {
+        "from": 640600,
+        "to": null,
+        "rate": 0.37
+      }
     ],
     "meta": {
       "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
@@ -42,8 +74,13 @@
       "stage": "growth",
       "category": "tax",
       "base": "income",
-      "kind": { "type": "flat", "rate": 0.038 },
-      "modifiers": { "applies_if_other_income_above": 200000 },
+      "kind": {
+        "type": "flat",
+        "rate": 0.038
+      },
+      "modifiers": {
+        "applies_if_other_income_above": 200000
+      },
       "plain_english": "If your income is above USD 200,000 (single), an extra 3.8% Medicare-style tax applies to investment income such as dividends and rental profit. It sits on top of the normal income or dividend tax. It does not apply at all if you are under the threshold.",
       "meta": {
         "source": "https://www.irs.gov/individuals/net-investment-income-tax",
@@ -58,8 +95,13 @@
       "stage": "egress",
       "category": "tax",
       "base": "gain",
-      "kind": { "type": "flat", "rate": 0.038 },
-      "modifiers": { "applies_if_other_income_above": 200000 },
+      "kind": {
+        "type": "flat",
+        "rate": 0.038
+      },
+      "modifiers": {
+        "applies_if_other_income_above": 200000
+      },
       "plain_english": "Capital gains count as net investment income, so the same 3.8% surtax applies to the gain when you sell if your income is above USD 200,000. It is charged in addition to the long-term capital gains rate.",
       "meta": {
         "source": "https://www.irs.gov/individuals/net-investment-income-tax",
@@ -83,9 +125,21 @@
             "type": "schedule",
             "schedule": {
               "brackets": [
-                { "from": 0, "to": 49450, "rate": 0 },
-                { "from": 49450, "to": 545500, "rate": 0.15 },
-                { "from": 545500, "to": null, "rate": 0.20 }
+                {
+                  "from": 0,
+                  "to": 49450,
+                  "rate": 0
+                },
+                {
+                  "from": 49450,
+                  "to": 545500,
+                  "rate": 0.15
+                },
+                {
+                  "from": 545500,
+                  "to": null,
+                  "rate": 0.2
+                }
               ],
               "meta": {
                 "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
@@ -115,9 +169,21 @@
             "type": "schedule",
             "schedule": {
               "brackets": [
-                { "from": 0, "to": 49450, "rate": 0 },
-                { "from": 49450, "to": 545500, "rate": 0.15 },
-                { "from": 545500, "to": null, "rate": 0.20 }
+                {
+                  "from": 0,
+                  "to": 49450,
+                  "rate": 0
+                },
+                {
+                  "from": 49450,
+                  "to": 545500,
+                  "rate": 0.15
+                },
+                {
+                  "from": 545500,
+                  "to": null,
+                  "rate": 0.2
+                }
               ],
               "meta": {
                 "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
@@ -145,7 +211,10 @@
           "stage": "ingress",
           "category": "cost",
           "base": "principal",
-          "kind": { "type": "flat", "rate": 0.0075 },
+          "kind": {
+            "type": "flat",
+            "rate": 0.0075
+          },
           "plain_english": "Texas has no real-estate transfer tax or stamp duty. Buyers do pay a state-regulated title insurance premium (about USD 5,200 on a USD 1m purchase) plus escrow, recording and survey fees, which together we approximate at 0.75% of the price. These are costs, not taxes.",
           "meta": {
             "source": "https://www.tdi.texas.gov/title/titlerates2026.html",
@@ -162,7 +231,13 @@
           "stage": "growth",
           "category": "tax",
           "base": "income",
-          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true
+          },
           "plain_english": "Rental profit (rent minus running costs) is ordinary income. It is added to your salary and taxed at your federal marginal rate each year. Texas has no state income tax, so nothing is added at state level.",
           "meta": {
             "source": "https://www.irs.gov/taxtopics/tc414",
@@ -177,7 +252,10 @@
           "stage": "growth",
           "category": "tax",
           "base": "value",
-          "kind": { "type": "flat", "rate": 0.018 },
+          "kind": {
+            "type": "flat",
+            "rate": 0.018
+          },
           "plain_english": "Texas has no income tax but high local property taxes levied by the school district, county, city and special districts. Statewide, 2025 levies came to about 1.86% of taxable value, so we charge 1.8% of the property's market value every year. Investment property gets no homestead exemption or appraisal cap.",
           "meta": {
             "source": "https://comptroller.texas.gov/taxes/property-tax/rates/index.php",
@@ -198,9 +276,21 @@
             "type": "schedule",
             "schedule": {
               "brackets": [
-                { "from": 0, "to": 49450, "rate": 0 },
-                { "from": 49450, "to": 545500, "rate": 0.15 },
-                { "from": 545500, "to": null, "rate": 0.20 }
+                {
+                  "from": 0,
+                  "to": 49450,
+                  "rate": 0
+                },
+                {
+                  "from": 49450,
+                  "to": 545500,
+                  "rate": 0.15
+                },
+                {
+                  "from": 545500,
+                  "to": null,
+                  "rate": 0.2
+                }
               ],
               "meta": {
                 "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
@@ -224,7 +314,10 @@
           "stage": "egress",
           "category": "cost",
           "base": "value",
-          "kind": { "type": "flat", "rate": 0.055 },
+          "kind": {
+            "type": "flat",
+            "rate": 0.055
+          },
           "plain_english": "US sellers have traditionally paid both agents' commissions, typically 5–6% of the sale price in Texas. Commissions are negotiable and have been drifting down since the 2024 NAR settlement, but 5.5% is still a realistic total.",
           "meta": {
             "source": "https://www.trec.texas.gov/",
@@ -234,6 +327,21 @@
           }
         }
       ]
+    }
+  },
+  "property_leverage": {
+    "interest_deductible": true,
+    "rental_loss": [
+      {
+        "treatment": "carry_forward_incl_gains"
+      }
+    ],
+    "plain_english": "Mortgage interest is deductible against rent on Schedule E. Rental losses are passive: they cannot offset salary and are suspended, then released in full when you sell the property.",
+    "meta": {
+      "source": "https://www.irs.gov/publications/p925",
+      "source_title": "IRS Publication 925 — Passive Activity and At-Risk Rules",
+      "last_verified": "2026-10-12",
+      "note": "The $25,000 active-participation allowance (phased out between $100k and $150k MAGI) is ignored; it would only help the low income band. Released losses are applied against the gain."
     }
   }
 }

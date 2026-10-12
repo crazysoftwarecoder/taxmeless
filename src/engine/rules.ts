@@ -15,8 +15,8 @@ export function taxOnSchedule(schedule: Schedule, amount: number): number {
 
 /** Tax attributable to `extra` when stacked on top of `otherIncome`. */
 export function marginalTax(schedule: Schedule, otherIncome: number, extra: number): number {
-  if (extra <= 0) return 0;
-  return taxOnSchedule(schedule, otherIncome + extra) - taxOnSchedule(schedule, otherIncome);
+  if (extra === 0) return 0;
+  return taxOnSchedule(schedule, Math.max(0, otherIncome + extra)) - taxOnSchedule(schedule, otherIncome);
 }
 
 /** Unrealised gain that accrued between two dates (local currency) and the CPI indexation allowance for it. */
@@ -38,6 +38,10 @@ export interface RuleContext {
   eventDate?: string;
   /** Lets gain rules restrict themselves to an accrual window and apply indexation. */
   gainWindow?: GainWindow;
+  /** A negative 'income' base (rental loss) may reduce tax on other income. */
+  allowNegativeIncome?: boolean;
+  /** Carried-forward losses that may reduce taxable gains; each accrual window consumes once and levies reuse it. */
+  gainLossPool?: { remaining: number; used: Map<string, number> };
 }
 
 function resolveSchedule(rule: Extract<Rule['kind'], { type: 'schedule' }>, ctx: RuleContext): Schedule {
@@ -69,12 +73,24 @@ export function applyRule(rule: Rule, ctx: RuleContext): TaxEvent | null {
     base = w.gain;
     indexation = w.indexation;
   }
-  if (rule.kind.type !== 'fixed' && base <= 0) return null;
+  const negativeOk = rule.base === 'income' && !!ctx.allowNegativeIncome;
+  if (rule.kind.type !== 'fixed' && (base === 0 || (base < 0 && !negativeOk))) return null;
 
   let inclusion = m.inclusion ?? 1;
   if (!heldLongEnough) inclusion = 1;
-  let taxable = Math.max(0, base - indexation) * inclusion * (m.taxable_fraction ?? 1);
-  if (rule.kind.type !== 'fixed' && taxable <= 0) return null;
+  let taxable = (base < 0 ? base : Math.max(0, base - indexation)) * inclusion * (m.taxable_fraction ?? 1);
+  if (rule.base === 'gain' && ctx.gainLossPool && taxable > 0) {
+    const key = `${m.accrual_from ?? ''}|${m.accrual_until ?? ''}`;
+    const pool = ctx.gainLossPool;
+    let reduction = pool.used.get(key);
+    if (reduction === undefined) {
+      reduction = Math.min(pool.remaining, taxable);
+      pool.remaining -= reduction;
+      pool.used.set(key, reduction);
+    }
+    taxable = Math.max(0, taxable - reduction);
+  }
+  if (rule.kind.type !== 'fixed' && (taxable === 0 || (taxable < 0 && !negativeOk))) return null;
 
   let credit = 0;
   if (m.imputation_credit_rate !== undefined && m.imputation_credit_rate > 0 && m.imputation_credit_rate < 1) {
@@ -114,7 +130,7 @@ export function applyRule(rule: Rule, ctx: RuleContext): TaxEvent | null {
     baseKind: rule.base,
     base,
     taxable,
-    rate: base > 0 ? amount / base : undefined,
+    rate: base !== 0 ? amount / base : undefined,
     amount,
     amountUsd: amount / ctx.fx,
     explanation: rule.plain_english,

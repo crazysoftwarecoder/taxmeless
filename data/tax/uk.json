@@ -10,7 +10,11 @@
     "note": "Income bands are gross salary; the personal allowance is built into the income_tax schedule as a 0% band."
   },
   "resident_profile": {
-    "other_income_options": [35000, 80000, 200000],
+    "other_income_options": [
+      35000,
+      80000,
+      200000
+    ],
     "meta": {
       "source": "https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/bulletins/annualsurveyofhoursandearnings/2025",
       "source_title": "ONS — Annual Survey of Hours and Earnings 2025 (median full-time gross pay ≈ GBP 39k)",
@@ -20,11 +24,31 @@
   },
   "income_tax": {
     "brackets": [
-      { "from": 0, "to": 12570, "rate": 0 },
-      { "from": 12570, "to": 50270, "rate": 0.20 },
-      { "from": 50270, "to": 100000, "rate": 0.40 },
-      { "from": 100000, "to": 125140, "rate": 0.60 },
-      { "from": 125140, "to": null, "rate": 0.45 }
+      {
+        "from": 0,
+        "to": 12570,
+        "rate": 0
+      },
+      {
+        "from": 12570,
+        "to": 50270,
+        "rate": 0.2
+      },
+      {
+        "from": 50270,
+        "to": 100000,
+        "rate": 0.4
+      },
+      {
+        "from": 100000,
+        "to": 125140,
+        "rate": 0.6
+      },
+      {
+        "from": 125140,
+        "to": null,
+        "rate": 0.45
+      }
     ],
     "meta": {
       "source": "https://www.gov.uk/income-tax-rates",
@@ -43,7 +67,10 @@
           "stage": "ingress",
           "category": "tax",
           "base": "principal",
-          "kind": { "type": "flat", "rate": 0 },
+          "kind": {
+            "type": "flat",
+            "rate": 0
+          },
           "plain_english": "Buying shares in a UK company electronically costs 0.5% Stamp Duty Reserve Tax. An index fund bought as an OEIC or unit trust from the manager, or as an ETF domiciled outside the UK (most are Irish), is outside the charge, so we show it at 0%. If you instead bought UK-listed shares or investment trusts directly you would pay 0.5% up front.",
           "meta": {
             "source": "https://www.gov.uk/tax-buy-shares",
@@ -64,10 +91,26 @@
             "type": "schedule",
             "schedule": {
               "brackets": [
-                { "from": 0, "to": 12570, "rate": 0 },
-                { "from": 12570, "to": 50270, "rate": 0.1075 },
-                { "from": 50270, "to": 125140, "rate": 0.3575 },
-                { "from": 125140, "to": null, "rate": 0.3935 }
+                {
+                  "from": 0,
+                  "to": 12570,
+                  "rate": 0
+                },
+                {
+                  "from": 12570,
+                  "to": 50270,
+                  "rate": 0.1075
+                },
+                {
+                  "from": 50270,
+                  "to": 125140,
+                  "rate": 0.3575
+                },
+                {
+                  "from": 125140,
+                  "to": null,
+                  "rate": 0.3935
+                }
               ],
               "meta": {
                 "source": "https://www.gov.uk/tax-on-dividends",
@@ -98,8 +141,16 @@
             "type": "schedule",
             "schedule": {
               "brackets": [
-                { "from": 0, "to": 50270, "rate": 0.18 },
-                { "from": 50270, "to": null, "rate": 0.24 }
+                {
+                  "from": 0,
+                  "to": 50270,
+                  "rate": 0.18
+                },
+                {
+                  "from": 50270,
+                  "to": null,
+                  "rate": 0.24
+                }
               ],
               "meta": {
                 "source": "https://www.gov.uk/capital-gains-tax/rates",
@@ -132,11 +183,31 @@
             "type": "schedule",
             "schedule": {
               "brackets": [
-                { "from": 0, "to": 125000, "rate": 0.05 },
-                { "from": 125000, "to": 250000, "rate": 0.07 },
-                { "from": 250000, "to": 925000, "rate": 0.10 },
-                { "from": 925000, "to": 1500000, "rate": 0.15 },
-                { "from": 1500000, "to": null, "rate": 0.17 }
+                {
+                  "from": 0,
+                  "to": 125000,
+                  "rate": 0.05
+                },
+                {
+                  "from": 125000,
+                  "to": 250000,
+                  "rate": 0.07
+                },
+                {
+                  "from": 250000,
+                  "to": 925000,
+                  "rate": 0.1
+                },
+                {
+                  "from": 925000,
+                  "to": 1500000,
+                  "rate": 0.15
+                },
+                {
+                  "from": 1500000,
+                  "to": null,
+                  "rate": 0.17
+                }
               ],
               "meta": {
                 "source": "https://www.gov.uk/guidance/stamp-duty-land-tax-buying-an-additional-residential-property",
@@ -160,7 +231,10 @@
           "stage": "ingress",
           "category": "cost",
           "base": "principal",
-          "kind": { "type": "fixed", "amount": 2500 },
+          "kind": {
+            "type": "fixed",
+            "amount": 2500
+          },
           "plain_english": "Solicitor's conveyancing fees, local searches and the Land Registry registration fee on purchase, treated as a flat cost rather than a tax.",
           "meta": {
             "source": "https://www.gov.uk/buy-sell-your-home",
@@ -177,7 +251,13 @@
           "stage": "growth",
           "category": "tax",
           "base": "income",
-          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true
+          },
           "plain_english": "Rental profit after allowable expenses (agent fees, insurance, repairs) is added to your other income and taxed at your marginal rate each year. Council tax is normally paid by the tenant, so it is left out.",
           "meta": {
             "source": "https://www.gov.uk/renting-out-a-property/paying-tax",
@@ -198,8 +278,16 @@
             "type": "schedule",
             "schedule": {
               "brackets": [
-                { "from": 0, "to": 50270, "rate": 0.18 },
-                { "from": 50270, "to": null, "rate": 0.24 }
+                {
+                  "from": 0,
+                  "to": 50270,
+                  "rate": 0.18
+                },
+                {
+                  "from": 50270,
+                  "to": null,
+                  "rate": 0.24
+                }
               ],
               "meta": {
                 "source": "https://www.gov.uk/tax-sell-property",
@@ -224,7 +312,10 @@
           "stage": "egress",
           "category": "cost",
           "base": "value",
-          "kind": { "type": "flat", "rate": 0.015 },
+          "kind": {
+            "type": "flat",
+            "rate": 0.015
+          },
           "plain_english": "Estate agents in England typically charge around 1–1.5% of the sale price plus VAT. We assume 1.5% all-in. It is a cost, not a tax, but it still reduces what you walk away with.",
           "meta": {
             "source": "https://www.gov.uk/buy-sell-your-home",
@@ -234,6 +325,22 @@
           }
         }
       ]
+    }
+  },
+  "property_leverage": {
+    "interest_deductible": false,
+    "finance_cost_credit_rate": 0.2,
+    "rental_loss": [
+      {
+        "treatment": "carry_forward"
+      }
+    ],
+    "plain_english": "Mortgage interest on a residential let is not deductible. Instead you get a 20% basic-rate tax credit on it, limited to your rental profit, with unrelieved interest carried forward. Other rental losses carry forward against future property profits only.",
+    "meta": {
+      "source": "https://www.gov.uk/guidance/changes-to-tax-relief-for-residential-landlords-how-its-worked-out-including-case-studies",
+      "source_title": "GOV.UK — Tax relief for residential landlords: how it's worked out",
+      "last_verified": "2026-10-12",
+      "note": "The adjusted-total-income limit on the credit is ignored."
     }
   }
 }

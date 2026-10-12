@@ -10,7 +10,11 @@
     "note": "Income bands are gross salary; basic personal amounts are built into the combined schedule as 0% / reduced bands."
   },
   "resident_profile": {
-    "other_income_options": [60000, 120000, 300000],
+    "other_income_options": [
+      60000,
+      120000,
+      300000
+    ],
     "meta": {
       "source": "https://www.statcan.gc.ca/en/subjects-start/income_pensions_spending_and_wealth/income",
       "source_title": "Statistics Canada — Income statistics (median employment income of full-time workers ≈ CAD 60k)",
@@ -20,19 +24,71 @@
   },
   "income_tax": {
     "brackets": [
-      { "from": 0, "to": 12989, "rate": 0 },
-      { "from": 12989, "to": 16452, "rate": 0.0505 },
-      { "from": 16452, "to": 53891, "rate": 0.1905 },
-      { "from": 53891, "to": 58523, "rate": 0.2315 },
-      { "from": 58523, "to": 94901, "rate": 0.2965 },
-      { "from": 94901, "to": 107785, "rate": 0.3148 },
-      { "from": 107785, "to": 111810, "rate": 0.3389 },
-      { "from": 111810, "to": 117045, "rate": 0.3791 },
-      { "from": 117045, "to": 150000, "rate": 0.4341 },
-      { "from": 150000, "to": 181440, "rate": 0.4497 },
-      { "from": 181440, "to": 220000, "rate": 0.4797 },
-      { "from": 220000, "to": 258482, "rate": 0.4953 },
-      { "from": 258482, "to": null, "rate": 0.5353 }
+      {
+        "from": 0,
+        "to": 12989,
+        "rate": 0
+      },
+      {
+        "from": 12989,
+        "to": 16452,
+        "rate": 0.0505
+      },
+      {
+        "from": 16452,
+        "to": 53891,
+        "rate": 0.1905
+      },
+      {
+        "from": 53891,
+        "to": 58523,
+        "rate": 0.2315
+      },
+      {
+        "from": 58523,
+        "to": 94901,
+        "rate": 0.2965
+      },
+      {
+        "from": 94901,
+        "to": 107785,
+        "rate": 0.3148
+      },
+      {
+        "from": 107785,
+        "to": 111810,
+        "rate": 0.3389
+      },
+      {
+        "from": 111810,
+        "to": 117045,
+        "rate": 0.3791
+      },
+      {
+        "from": 117045,
+        "to": 150000,
+        "rate": 0.4341
+      },
+      {
+        "from": 150000,
+        "to": 181440,
+        "rate": 0.4497
+      },
+      {
+        "from": 181440,
+        "to": 220000,
+        "rate": 0.4797
+      },
+      {
+        "from": 220000,
+        "to": 258482,
+        "rate": 0.4953
+      },
+      {
+        "from": 258482,
+        "to": null,
+        "rate": 0.5353
+      }
     ],
     "meta": {
       "source": "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html",
@@ -56,16 +112,56 @@
             "type": "schedule",
             "schedule": {
               "brackets": [
-                { "from": 0, "to": 58523, "rate": 0 },
-                { "from": 58523, "to": 94901, "rate": 0.0639 },
-                { "from": 94901, "to": 107785, "rate": 0.0892 },
-                { "from": 107785, "to": 111810, "rate": 0.1224 },
-                { "from": 111810, "to": 117045, "rate": 0.1779 },
-                { "from": 117045, "to": 150000, "rate": 0.2538 },
-                { "from": 150000, "to": 181440, "rate": 0.2753 },
-                { "from": 181440, "to": 220000, "rate": 0.3167 },
-                { "from": 220000, "to": 258482, "rate": 0.3382 },
-                { "from": 258482, "to": null, "rate": 0.3934 }
+                {
+                  "from": 0,
+                  "to": 58523,
+                  "rate": 0
+                },
+                {
+                  "from": 58523,
+                  "to": 94901,
+                  "rate": 0.0639
+                },
+                {
+                  "from": 94901,
+                  "to": 107785,
+                  "rate": 0.0892
+                },
+                {
+                  "from": 107785,
+                  "to": 111810,
+                  "rate": 0.1224
+                },
+                {
+                  "from": 111810,
+                  "to": 117045,
+                  "rate": 0.1779
+                },
+                {
+                  "from": 117045,
+                  "to": 150000,
+                  "rate": 0.2538
+                },
+                {
+                  "from": 150000,
+                  "to": 181440,
+                  "rate": 0.2753
+                },
+                {
+                  "from": 181440,
+                  "to": 220000,
+                  "rate": 0.3167
+                },
+                {
+                  "from": 220000,
+                  "to": 258482,
+                  "rate": 0.3382
+                },
+                {
+                  "from": 258482,
+                  "to": null,
+                  "rate": 0.3934
+                }
               ],
               "meta": {
                 "source": "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.pdf",
@@ -92,8 +188,16 @@
           "stage": "egress",
           "category": "tax",
           "base": "gain",
-          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
-          "modifiers": { "inclusion": 0.5 },
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true
+          },
+          "modifiers": {
+            "inclusion": 0.5
+          },
           "plain_english": "Canada has no separate capital gains rate. Half of the gain is added to your income in the year of sale and taxed at your combined federal and Ontario marginal rate, so the most you pay is 26.76% of the gain. There is no minimum holding period.",
           "meta": {
             "source": "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4037/capital-gains.html",
@@ -116,11 +220,31 @@
             "type": "schedule",
             "schedule": {
               "brackets": [
-                { "from": 0, "to": 55000, "rate": 0.005 },
-                { "from": 55000, "to": 250000, "rate": 0.01 },
-                { "from": 250000, "to": 400000, "rate": 0.015 },
-                { "from": 400000, "to": 2000000, "rate": 0.02 },
-                { "from": 2000000, "to": null, "rate": 0.025 }
+                {
+                  "from": 0,
+                  "to": 55000,
+                  "rate": 0.005
+                },
+                {
+                  "from": 55000,
+                  "to": 250000,
+                  "rate": 0.01
+                },
+                {
+                  "from": 250000,
+                  "to": 400000,
+                  "rate": 0.015
+                },
+                {
+                  "from": 400000,
+                  "to": 2000000,
+                  "rate": 0.02
+                },
+                {
+                  "from": 2000000,
+                  "to": null,
+                  "rate": 0.025
+                }
               ],
               "meta": {
                 "source": "https://www.ontario.ca/document/land-transfer-tax/calculating-land-transfer-tax",
@@ -148,16 +272,56 @@
             "type": "schedule",
             "schedule": {
               "brackets": [
-                { "from": 0, "to": 55000, "rate": 0.005 },
-                { "from": 55000, "to": 250000, "rate": 0.01 },
-                { "from": 250000, "to": 400000, "rate": 0.015 },
-                { "from": 400000, "to": 2000000, "rate": 0.02 },
-                { "from": 2000000, "to": 3000000, "rate": 0.025 },
-                { "from": 3000000, "to": 4000000, "rate": 0.044 },
-                { "from": 4000000, "to": 5000000, "rate": 0.0545 },
-                { "from": 5000000, "to": 10000000, "rate": 0.065 },
-                { "from": 10000000, "to": 20000000, "rate": 0.0755 },
-                { "from": 20000000, "to": null, "rate": 0.086 }
+                {
+                  "from": 0,
+                  "to": 55000,
+                  "rate": 0.005
+                },
+                {
+                  "from": 55000,
+                  "to": 250000,
+                  "rate": 0.01
+                },
+                {
+                  "from": 250000,
+                  "to": 400000,
+                  "rate": 0.015
+                },
+                {
+                  "from": 400000,
+                  "to": 2000000,
+                  "rate": 0.02
+                },
+                {
+                  "from": 2000000,
+                  "to": 3000000,
+                  "rate": 0.025
+                },
+                {
+                  "from": 3000000,
+                  "to": 4000000,
+                  "rate": 0.044
+                },
+                {
+                  "from": 4000000,
+                  "to": 5000000,
+                  "rate": 0.0545
+                },
+                {
+                  "from": 5000000,
+                  "to": 10000000,
+                  "rate": 0.065
+                },
+                {
+                  "from": 10000000,
+                  "to": 20000000,
+                  "rate": 0.0755
+                },
+                {
+                  "from": 20000000,
+                  "to": null,
+                  "rate": 0.086
+                }
               ],
               "meta": {
                 "source": "https://www.toronto.ca/services-payments/property-taxes-utilities/municipal-land-transfer-tax-mltt/municipal-land-transfer-tax-mltt-rates-and-fees/",
@@ -181,7 +345,10 @@
           "stage": "ingress",
           "category": "cost",
           "base": "principal",
-          "kind": { "type": "fixed", "amount": 2500 },
+          "kind": {
+            "type": "fixed",
+            "amount": 2500
+          },
           "plain_english": "Real-estate lawyer fees, disbursements and title insurance on purchase, treated as a flat cost rather than a tax.",
           "meta": {
             "source": "https://www.ontario.ca/page/buying-home",
@@ -198,7 +365,13 @@
           "stage": "growth",
           "category": "tax",
           "base": "income",
-          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true
+          },
           "plain_english": "Net rental income (rent minus expenses such as property tax, insurance, management and repairs) is added to your other income and taxed at your combined federal and Ontario marginal rate every year.",
           "meta": {
             "source": "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4036.html",
@@ -213,7 +386,10 @@
           "stage": "growth",
           "category": "tax",
           "base": "value",
-          "kind": { "type": "flat", "rate": 0.00767 },
+          "kind": {
+            "type": "flat",
+            "rate": 0.00767
+          },
           "plain_english": "Toronto's 2026 residential property tax is 0.767% of assessed value a year (0.605% city, 0.153% provincial education, 0.009% city building fund). Toronto has one of the lowest rates in Ontario because home values are high.",
           "meta": {
             "source": "https://www.toronto.ca/services-payments/property-taxes-utilities/property-tax/property-tax-rates-and-fees/",
@@ -230,8 +406,16 @@
           "stage": "egress",
           "category": "tax",
           "base": "gain",
-          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
-          "modifiers": { "inclusion": 0.5 },
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true
+          },
+          "modifiers": {
+            "inclusion": 0.5
+          },
           "plain_english": "When you sell an investment property, half of the gain is added to your income in that year and taxed at your combined marginal rate (at most 26.76% of the gain). Land transfer taxes and legal fees form part of the cost base. The principal residence exemption does not apply to a rental.",
           "meta": {
             "source": "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4037/capital-gains.html",
@@ -246,7 +430,10 @@
           "stage": "egress",
           "category": "cost",
           "base": "value",
-          "kind": { "type": "flat", "rate": 0.045 },
+          "kind": {
+            "type": "flat",
+            "rate": 0.045
+          },
           "plain_english": "Toronto sellers typically pay a total commission of around 4–5% of the sale price, split between the listing and buyer's agents, plus HST on the commission. We assume 4.5% all-in. It is a cost, not a tax.",
           "meta": {
             "source": "https://www.reco.on.ca/",
@@ -256,6 +443,20 @@
           }
         }
       ]
+    }
+  },
+  "property_leverage": {
+    "interest_deductible": true,
+    "rental_loss": [
+      {
+        "treatment": "offset_other_income"
+      }
+    ],
+    "plain_english": "Interest on money borrowed to earn rental income is deductible, and a net rental loss can be deducted from your other income such as salary.",
+    "meta": {
+      "source": "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4036/rental-income.html",
+      "source_title": "CRA Guide T4036 — Rental Income",
+      "last_verified": "2026-10-12"
     }
   }
 }

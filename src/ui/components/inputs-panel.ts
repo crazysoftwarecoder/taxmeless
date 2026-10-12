@@ -88,6 +88,13 @@ export function inputsPanel(
         numField('Gross rental yield', 'prYield', { min: 0, max: 20, step: 0.25, suffix: '%' }),
         numField('Running costs (of rent)', 'prCost', { min: 0, max: 90, step: 5, suffix: '%' }),
       ) : null,
+      state.asset !== 'equities' ? h('div', { class: 'row' },
+        numField('Loan-to-value (LVR)', 'lvr', { min: 0, max: 90, step: 5, suffix: '%' }),
+        numField('Mortgage rate', 'rate', { min: 0, max: 25, step: 0.25, suffix: '%' }),
+      ) : null,
+      state.asset !== 'equities' ? h('p', { class: 'hint' }, state.lvr > 0
+        ? `Interest-only loan. Your cash pays the ${100 - state.lvr}% deposit plus purchase costs, so you buy a property worth about ${(100 / (100 - state.lvr)).toFixed(1)}× your cash.`
+        : 'Set an LVR to buy with a mortgage; each country taxes the interest and any rental loss differently.') : null,
     ),
     h('section', { class: 'group' },
       h('h2', null, 'Inflation & values'),

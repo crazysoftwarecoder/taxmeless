@@ -24,6 +24,7 @@ function taxFile(over: Partial<TaxFile> = {}): TaxFile {
     resident_profile: { other_income_options: [50_000, 100_000, 300_000], meta },
     income_tax: { brackets: [{ from: 0, to: null, rate: 0 }], meta },
     levies: [],
+    property_leverage: { interest_deductible: true, rental_loss: [{ treatment: 'offset_other_income' }], plain_english: 'test leverage policy text', meta },
     assets: {
       equities: { ingress: [], growth: [], egress: [] },
       property: { ingress: [], growth: [], egress: [] },
@@ -54,7 +55,8 @@ describe('simulate', () => {
     });
     const l = simulate(inputs, t, 'equities', assumptions, 1);
     expect(l.finalNetUsd).toBeCloseTo(l.finalGrossUsd, 6);
-    expect(l.totalsUsd.costs.ingress).toBeCloseTo(1000, 6);
+    // brokerage is charged on the purchase price, solved so price + brokerage = cash
+    expect(l.totalsUsd.costs.ingress).toBeCloseTo(1_000_000 * 0.001 / 1.001, 6);
     expect(l.totalsUsd.taxes.all).toBe(0);
     expect(l.rows[0]!.events[0]!.category).toBe('cost');
   });

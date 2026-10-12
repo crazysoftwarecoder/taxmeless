@@ -7,7 +7,7 @@ const row = (year: number, net: number, tax = 0) => ({
   year, openingValueUsd: net, incomeUsd: 0, growthUsd: 0, taxesUsd: { ...z, growth: tax }, costsUsd: z, events: [], grossValueUsd: net + tax, netValueUsd: net,
 });
 const ledger: Ledger = {
-  country: 'au', asset: 'equities', currency: 'AUD', fx: 1, principalUsd: 100, horizonYears: 2,
+  country: 'au', asset: 'equities', currency: 'AUD', fx: 1, principalUsd: 100, horizonYears: 2, purchasePriceUsd: 100, loanUsd: 0,
   rows: [row(0, 100), row(1, 110, 10), row(2, 121, 10)],
   totalsUsd: { taxes: { ...z, growth: 20, all: 20 }, costs: { ...z, all: 0 } },
   finalGrossUsd: 131, finalNetUsd: 121, effectiveTaxRate: 20 / 31, dragPct: 0,

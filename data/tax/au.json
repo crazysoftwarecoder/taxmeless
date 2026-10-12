@@ -487,5 +487,24 @@
         }
       }
     }
-  ]
+  ],
+  "property_leverage": {
+    "interest_deductible": true,
+    "rental_loss": [
+      {
+        "treatment": "offset_other_income"
+      },
+      {
+        "effective_from": "2027-07-01",
+        "treatment": "carry_forward_incl_gains"
+      }
+    ],
+    "plain_english": "Interest is deductible against rent. Because this is an established dwelling bought after 7:30pm AEST on 12 May 2026, rental losses can reduce tax on your salary only until 30 June 2027; from 1 July 2027 they are quarantined and carried forward against residential rental income and capital gains (new builds keep full negative gearing).",
+    "meta": {
+      "source": "https://budget.gov.au/content/factsheets/download/tax-explainers-negative-gearing-capital-gains-tax.pdf",
+      "source_title": "Budget 2026–27 Tax Explainer — negative gearing reform (Treasury Laws Amendment (Tax Reform No. 1) Act 2026)",
+      "last_verified": "2026-10-12",
+      "note": "Established dwelling assumed (not a new build)."
+    }
+  }
 }
