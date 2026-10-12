@@ -27,7 +27,10 @@ You never edit src/ui/**.
    - egress: CGT (discounts, inclusion rates, annual exempt amounts, holding-period exemptions, bright-line
      rules, LTCG rates), exit costs (agent fees ~2% property)
 4. Express each rule ONLY with the Rule schema in schemas/tax.ts (flat | schedule | flat_above_allowance |
-   fixed, plus modifiers; category tax | cost). If a rule cannot be expressed, extend the schema, update ALL
+   fixed, plus modifiers; category tax | cost). Dated law changes use effective_from / effective_until,
+   accrual_from / accrual_until (split a gain at a date), cost_base_indexation, minimum_rate, and the
+   file-level income_tax_changes for legislated future brackets. Always check the latest national budget
+   and enacted legislation, not just the revenue authority's rate table (it can lag). If a rule cannot be expressed, extend the schema, update ALL
    country files and scripts/validate.ts in the same change, and file a bd task for ux-engineer if Ledger or
    TaxEvent shapes change.
 5. Every rule needs: id, label, stage, category, base, kind, plain_english (2–3 sentences a non-expert

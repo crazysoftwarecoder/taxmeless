@@ -80,6 +80,14 @@ a { color: var(--accent); }
 }
 .card h2 { font-size: 17px; margin-bottom: 4px; }
 .lede { color: var(--ink-2); font-size: 13px; margin-bottom: 12px; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
+.card-head h2 { margin-bottom: 0; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn[aria-pressed="true"] { background: var(--plane); border-color: var(--axis); }
+.tables { display: grid; gap: 16px; }
+.data-table tbody th { text-align: left; font-weight: 500; padding: 8px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+.data-table tbody tr { cursor: default; }
+[hidden] { display: none !important; }
 
 /* Inputs */
 .inputs { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: grid; gap: 18px; box-shadow: var(--shadow); }
@@ -178,3 +186,6 @@ body.sheet-open .backdrop { opacity: 1; pointer-events: auto; }
   .row { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* Chart tooltips never sit above the drill-down sheet. */
+body.sheet-open .content .chart > div:not(:first-child) { visibility: hidden !important; }

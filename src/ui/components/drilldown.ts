@@ -9,6 +9,7 @@ export interface DrilldownCtx {
   names: Record<CountryCode, string>;
   jurisdictionNote: (c: CountryCode) => string | undefined;
   taxYear: (c: CountryCode) => string | undefined;
+  realNote?: string;
 }
 
 function eventCard(e: TaxEvent, currency: string): HTMLElement {
@@ -56,6 +57,7 @@ export function renderDrilldown(root: HTMLElement, ledger: Ledger, target: Drill
     h('header', { class: 'sheet-head' },
       h('h3', null, title),
       h('p', { class: 'muted' }, ctx.jurisdictionNote(target.country) ?? '', ctx.taxYear(target.country) ? ` Tax year ${ctx.taxYear(target.country)}.` : ''),
+      ctx.realNote ? h('p', { class: 'muted' }, ctx.realNote) : null,
     ),
     yearRow ? h('div', { class: 'kpis' },
       h('div', { class: 'kpi' }, h('span', null, 'Net value'), h('strong', null, usd(yearRow.netValueUsd))),

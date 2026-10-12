@@ -2,10 +2,10 @@ import * as echarts from 'echarts/core';
 import { BarChart, LineChart, ScatterChart } from 'echarts/charts';
 import { GridComponent, LegendComponent, MarkLineComponent, TooltipComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
-import { LegacyGridContainLabel } from 'echarts/features';
+import { LabelLayout, LegacyGridContainLabel } from 'echarts/features';
 import type { CountryCode } from '../../../schemas';
 
-echarts.use([BarChart, LineChart, ScatterChart, GridComponent, LegendComponent, MarkLineComponent, TooltipComponent, CanvasRenderer, LegacyGridContainLabel]);
+echarts.use([BarChart, LineChart, ScatterChart, GridComponent, LegendComponent, MarkLineComponent, TooltipComponent, CanvasRenderer, LegacyGridContainLabel, LabelLayout]);
 export { echarts };
 
 /** Validated categorical palette (fixed order, light / dark steps). See CLAUDE.md → dataviz. */
@@ -28,8 +28,24 @@ export const chrome = () => (isDark()
   ? { surface: '#1a1a19', ink: '#f0efec', ink2: '#c3c2b7', muted: '#898781', grid: '#2c2c2a', axis: '#383835', series: SERIES_DARK }
   : { surface: '#fcfcfb', ink: '#0b0b0b', ink2: '#52514e', muted: '#898781', grid: '#e1e0d9', axis: '#c3c2b7', series: SERIES_LIGHT });
 
+/**
+ * Stable colour slots for the current selection: a country keeps its slot while selected, prefers its home slot,
+ * and otherwise takes the lowest free slot. Up to 8 countries are selectable, so colours never repeat on screen.
+ */
+const slotOf = new Map<CountryCode, number>();
+export function assignCountrySlots(codes: CountryCode[]): void {
+  for (const k of [...slotOf.keys()]) if (!codes.includes(k)) slotOf.delete(k);
+  for (const c of codes) {
+    if (slotOf.has(c)) continue;
+    const used = new Set(slotOf.values());
+    let slot = used.has(COUNTRY_SLOT[c]) ? 0 : COUNTRY_SLOT[c];
+    while (used.has(slot) && slot < 8) slot++;
+    slotOf.set(c, slot % 8);
+  }
+}
+
 export function countryColor(code: CountryCode): string {
-  return chrome().series[COUNTRY_SLOT[code]]!;
+  return chrome().series[slotOf.get(code) ?? COUNTRY_SLOT[code]]!;
 }
 
 export const baseOption = () => {
@@ -41,12 +57,13 @@ export const baseOption = () => {
     grid: { left: 8, right: 16, top: 36, bottom: 8, containLabel: true },
     tooltip: {
       trigger: 'axis' as const,
+      triggerOn: 'mousemove' as const,
       backgroundColor: c.surface,
       borderColor: c.grid,
       textStyle: { color: c.ink, fontSize: 12 },
       extraCssText: 'box-shadow: 0 4px 16px rgba(0,0,0,.12); border-radius: 8px;',
     },
-    legend: { top: 0, left: 0, icon: 'roundRect', itemWidth: 12, itemHeight: 12, textStyle: { color: c.ink2 } },
+    legend: { type: 'scroll' as const, top: 0, left: 0, right: 0, icon: 'roundRect', pageIconColor: c.ink2, pageIconInactiveColor: c.axis, pageTextStyle: { color: c.muted }, itemWidth: 12, itemHeight: 12, textStyle: { color: c.ink2 } },
     axisStyle: {
       axisLine: { lineStyle: { color: c.axis } },
       axisTick: { show: false },
@@ -59,6 +76,7 @@ export const baseOption = () => {
 /** Attach a ResizeObserver so the chart tracks its container. */
 export function mountChart(el: HTMLElement): echarts.ECharts {
   const chart = echarts.init(el, undefined, { renderer: 'canvas' });
-  new ResizeObserver(() => chart.resize()).observe(el);
+  const ro = new ResizeObserver(() => { if (chart.isDisposed()) ro.disconnect(); else chart.resize(); });
+  ro.observe(el);
   return chart;
 }

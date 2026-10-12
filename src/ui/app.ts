@@ -1,12 +1,15 @@
 import type { Asset, CountryCode } from '../../schemas';
 import { compareAll, fxFor } from '../engine/compare';
+import { deflateLedger } from '../engine/deflate';
+import { COL_CATEGORY_KEYS } from '../../schemas';
+import { dataTable } from './components/data-table';
 import type { Ledger } from '../engine/types';
 import { availableCountries, dataset } from '../data/loader';
-import { colBars, colOption } from './charts/col';
-import { gdpBars, gdpHistoryOption, gdpOption } from './charts/gdp';
+import { COL_LABEL, colBars, colOption, type ColBar } from './charts/col';
+import { gdpBars, gdpHistoryOption, gdpOption, type GdpBar } from './charts/gdp';
 import { networthOption, type NetworthSeriesMeta } from './charts/networth';
 import { taxStackOption, type TaxStackMeta } from './charts/taxstack';
-import { echarts, mountChart } from './charts/theme';
+import { assignCountrySlots, countryColor, echarts, isDark, mountChart } from './charts/theme';
 import { renderDrilldown, type DrillTarget } from './components/drilldown';
 import { freshnessFooter } from './components/freshness';
 import { inputsPanel } from './components/inputs-panel';
@@ -47,9 +50,18 @@ export function startApp(): void {
     equities: { growth: state.eqGrowth / 100, yield: state.eqYield / 100 },
     property: { growth: state.prGrowth / 100, yield: state.prYield / 100, costRate: state.prCost / 100 },
     otherIncomeBand: state.income,
+    startDate: new Date().toISOString().slice(0, 10),
+    inflation: state.infl / 100,
   });
 
+  function hideTooltips(): void {
+    const hide = () => { for (const c of [taxChart, gdpChart, colChart, ...nwCharts.values()]) if (!c.isDisposed()) c.dispatchAction({ type: 'hideTip' }); };
+    hide();
+    requestAnimationFrame(hide);
+  }
+
   function openSheet(target: DrillTarget): void {
+    hideTooltips();
     const ledger = ledgers.find((l) => l.country === target.country && l.asset === target.asset);
     if (!ledger) return;
     const t = dataset.tax[target.country];
@@ -57,6 +69,7 @@ export function startApp(): void {
       names,
       jurisdictionNote: (c) => dataset.tax[c]?.jurisdiction_note,
       taxYear: (c) => dataset.tax[c]?.tax_year,
+      realNote: state.real ? `USD amounts are in today's dollars (${state.infl}% inflation removed); local-currency amounts are as charged in that year.` : undefined,
     });
     sheetChart.hidden = true;
     sheet.hidden = false;
@@ -68,6 +81,7 @@ export function startApp(): void {
 
   let sheetChartInstance: echarts.ECharts | undefined;
   function openGdpSheet(country: CountryCode): void {
+    hideTooltips();
     const g = dataset.gdp[country];
     if (!g) return;
     clear(sheetBody);
@@ -78,6 +92,7 @@ export function startApp(): void {
         h('p', { class: 'muted' }, `${g.indicator}. Projection: ${g.projection.method === 'manual' ? `manual CAGR ${pct(rate ?? 0)}` : 'compound growth of the last 10 years'}.`),
       ),
     );
+    sheetBody.querySelector('.sheet-head')!.after(sheetChart);
     sheetChart.hidden = false;
     sheetChartInstance ??= mountChart(sheetChart);
     sheetChartInstance.setOption(gdpHistoryOption(g, state.horizon), { notMerge: true });
@@ -109,7 +124,7 @@ export function startApp(): void {
     for (const asset of assets) {
       const rows = ledgers.filter((l) => l.asset === asset).sort((a, b) => b.finalNetUsd - a.finalNetUsd);
       const table = h('table', { class: 'summary' },
-        h('caption', null, `${ASSET_LABEL[asset]} · ${usdCompact(state.principal)} after ${state.horizon} years`),
+        h('caption', null, `${ASSET_LABEL[asset]} · ${usdCompact(state.principal)} after ${state.horizon} years${state.real ? " · in today's dollars" : ''}`),
         h('thead', null, h('tr', null,
           h('th', null, 'Country'), h('th', { class: 'num' }, 'Net value'), h('th', { class: 'num' }, 'Total tax'),
           h('th', { class: 'num' }, 'Tax / gain'), h('th', { class: 'num' }, 'Ingress'), h('th', { class: 'num' }, 'Growth'), h('th', { class: 'num' }, 'Egress'),
@@ -118,7 +133,7 @@ export function startApp(): void {
           onclick: () => openSheet({ country: l.country, asset, stage: 'egress' }),
           onkeydown: (e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSheet({ country: l.country, asset, stage: 'egress' }); } },
         },
-          h('td', null, h('span', { class: 'swatch', dataset: { country: l.country } }), names[l.country]),
+          h('td', null, h('span', { class: 'swatch', style: `background:${countryColor(l.country)}` }), names[l.country]),
           h('td', { class: 'num' }, usd(l.finalNetUsd)),
           h('td', { class: 'num' }, usd(l.totalsUsd.taxes.all)),
           h('td', { class: 'num' }, pct(l.effectiveTaxRate)),
@@ -162,30 +177,103 @@ export function startApp(): void {
       }
       nwCharts.get(asset)!.setOption(networthOption(ledgers, asset, names, window.innerWidth < 720), { notMerge: true });
     }
+    for (const asset of assets) {
+      const t = nwHost.querySelector(`[data-asset="${asset}"] h3`);
+      if (t) t.textContent = `${ASSET_LABEL[asset]} · net worth after tax${state.real ? " (today's dollars)" : ''}`;
+    }
     nwHost.classList.toggle('two-up', assets.length === 2);
   }
 
   function render(): void {
     history.replaceState(null, '', `${location.pathname}${encodeState(state)}`);
+    assignCountrySlots(state.countries);
     clear(inputsHost);
     inputsHost.append(inputsPanel(state, availableCountries, (patch) => { state = { ...state, ...patch }; render(); }));
 
     ledgers = compareAll(inputs(), dataset);
+    if (state.real) ledgers = ledgers.map((l) => deflateLedger(l, state.infl / 100));
     renderSummary();
     renderNetworth();
     taxChart.setOption(taxStackOption(ledgers, names), { notMerge: true });
 
-    const gb = gdpBars(dataset.gdp, state.countries, state.horizon);
+    const deflator = state.real ? Math.pow(1 + state.infl / 100, state.horizon) : 1;
+    const gb = lastGdp = gdpBars(dataset.gdp, state.countries, state.horizon).map((g) => ({ ...g, projected: g.projected / deflator }));
     gdpChart.setOption(gdpOption(gb, names, state.horizon), { notMerge: true });
     $('#gdp-note').textContent = gb.length
-      ? `Trend CAGR: ${gb.map((x) => `${names[x.country]} ${pct(x.cagr)}`).join(' · ')}. Click a bar for the full history.`
+      ? `Trend CAGR: ${gb.map((x) => `${names[x.country]} ${pct(x.cagr)}`).join(' · ')}.${state.real ? " Projections shown in today's dollars." : ''} Click a bar for the full history.`
       : 'GDP data not yet available for the selected countries.';
 
-    const cb = colBars(dataset.col, (c) => fxFor(dataset, c), state.countries, state.horizon);
+    const cb = lastCol = colBars(dataset.col, (c) => fxFor(dataset, c), state.countries, state.horizon).map((c) => ({
+      ...c,
+      categoriesUsd: Object.fromEntries(Object.entries(c.categoriesUsd).map(([k, v]) => [k, v / deflator])),
+      totalUsd: c.totalUsd / deflator,
+      incomeUsd: c.incomeUsd === undefined ? undefined : c.incomeUsd / deflator,
+    }));
     colChart.setOption(colOption(cb, names), { notMerge: true });
     $('#col-note').textContent = cb.length
-      ? `Annual spend for two adults and two children in ${cb[0]!.year}, inflated at each country's CPI from the base year, converted at today's exchange rates.`
+      ? `Annual spend for two adults and two children in ${cb[0]!.year}, inflated at each country's CPI from the base year, converted at today's exchange rates${state.real ? `, then shown in today's dollars (${state.infl}% removed)` : ''}.`
       : 'Cost-of-living data not yet available for the selected countries.';
+    refreshTables();
+  }
+
+  // ---- Table views (accessibility): each chart card can flip to a plain data table.
+  let lastGdp: GdpBar[] = [];
+  let lastCol: ColBar[] = [];
+  const tableBuilders: Record<string, () => HTMLElement> = {
+    networth: () => {
+      const assets: Asset[] = state.asset === 'both' ? ['equities', 'property'] : [state.asset];
+      const wrap = h('div', { class: 'tables' });
+      for (const asset of assets) {
+        const ls = ledgers.filter((l) => l.asset === asset);
+        if (!ls.length) continue;
+        wrap.append(dataTable(
+          `${ASSET_LABEL[asset]} · net worth after tax by year${state.real ? " (today's dollars)" : ''}`,
+          ['Year', ...ls.map((l) => names[l.country]), 'No-tax benchmark'],
+          ls[0]!.rows.map((r, i) => [`Year ${r.year}`, ...ls.map((l) => usd(l.rows[i]!.netValueUsd)), usd(r.grossValueUsd)]),
+        ));
+      }
+      return wrap;
+    },
+    tax: () => dataTable(
+      `Total tax by stage over ${state.horizon} years${state.real ? " (today's dollars)" : ''}`,
+      ['Country', 'Asset', 'Ingress', 'Growth', 'Egress', 'Total tax', 'Costs'],
+      ledgers.map((l) => [names[l.country], ASSET_LABEL[l.asset], usd(l.totalsUsd.taxes.ingress), usd(l.totalsUsd.taxes.growth), usd(l.totalsUsd.taxes.egress), usd(l.totalsUsd.taxes.all), usd(l.totalsUsd.costs.all)]),
+    ),
+    gdp: () => dataTable(
+      'GDP per capita (current USD)',
+      ['Country', 'Latest', 'Year', `Projected in ${state.horizon} yrs`, 'Trend growth'],
+      lastGdp.map((g) => [names[g.country], usd(g.now), g.nowYear, usd(g.projected), pct(g.cagr)]),
+    ),
+    col: () => dataTable(
+      `Annual spend, family of four, ${lastCol[0]?.year ?? ''} (USD)`,
+      ['Country', 'City', ...COL_CATEGORY_KEYS.map((k) => COL_LABEL[k]), 'Total', 'Median income'],
+      lastCol.map((c) => [names[c.country], c.city, ...COL_CATEGORY_KEYS.map((k) => usd(c.categoriesUsd[k] ?? 0)), usd(c.totalUsd), c.incomeUsd === undefined ? '—' : usd(c.incomeUsd)]),
+    ),
+  };
+  const tableOpen = new Set<string>();
+  function refreshTables(): void {
+    for (const key of Object.keys(tableBuilders)) {
+      const host = document.querySelector<HTMLElement>(`[data-table-host="${key}"]`);
+      const view = document.querySelector<HTMLElement>(`[data-chart-view="${key}"]`);
+      const btn = document.querySelector<HTMLButtonElement>(`[data-table-toggle="${key}"]`);
+      if (!host || !view || !btn) continue;
+      const open = tableOpen.has(key);
+      host.hidden = !open;
+      view.hidden = open;
+      btn.textContent = open ? 'Chart' : 'Table';
+      btn.setAttribute('aria-pressed', String(open));
+      clear(host);
+      if (open) host.append(tableBuilders[key]!());
+    }
+    if (!tableOpen.size) requestAnimationFrame(() => { for (const c of [taxChart, gdpChart, colChart, ...nwCharts.values()]) if (!c.isDisposed()) c.resize(); });
+  }
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('[data-table-toggle]')) {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.tableToggle!;
+      if (tableOpen.has(key)) tableOpen.delete(key); else tableOpen.add(key);
+      refreshTables();
+      if (!tableOpen.has(key)) requestAnimationFrame(() => { for (const c of [taxChart, gdpChart, colChart, ...nwCharts.values()]) if (!c.isDisposed()) c.resize(); });
+    });
   }
 
   taxChart.on('click', (p) => {
@@ -197,22 +285,23 @@ export function startApp(): void {
     if (meta) openGdpSheet(meta.country);
   });
 
+  let copyTimer: number | undefined;
   $('#copy-link').addEventListener('click', async () => {
     const btn = $('#copy-link');
+    window.clearTimeout(copyTimer);
     try {
       await navigator.clipboard.writeText(location.href);
       btn.textContent = 'Link copied';
     } catch {
       btn.textContent = location.href;
     }
-    setTimeout(() => { btn.textContent = 'Copy link'; }, 1800);
+    copyTimer = window.setTimeout(() => { btn.textContent = 'Copy link'; }, 1800);
   });
 
   const themeBtn = $('#theme-toggle');
   themeBtn.addEventListener('click', () => {
-    const cur = document.documentElement.dataset.theme;
-    const next = cur === 'dark' ? 'light' : cur === 'light' ? '' : (matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark');
-    if (next) document.documentElement.dataset.theme = next; else delete document.documentElement.dataset.theme;
+    const next = isDark() ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
     try { localStorage.setItem('theme', next); } catch { /* ignore */ }
     for (const c of nwCharts.values()) c.dispose();
     nwCharts.clear();

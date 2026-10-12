@@ -4,6 +4,8 @@ import { MetaSchema } from './meta';
 export const CountryCodeSchema = z.enum(['au', 'us', 'uk', 'ca', 'nz', 'sg', 'ae', 'de', 'ch', 'in']);
 export type CountryCode = z.infer<typeof CountryCodeSchema>;
 
+const IsoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'date must be YYYY-MM-DD');
+
 export const StageSchema = z.enum(['ingress', 'growth', 'egress']);
 export type Stage = z.infer<typeof StageSchema>;
 
@@ -70,6 +72,18 @@ export const ModifiersSchema = z.object({
   applies_if_other_income_above: z.number().min(0).optional(),
   /** Fraction of the base that is taxable after an allowance of this fraction (e.g. partial exemptions). */
   taxable_fraction: z.number().min(0).max(1).optional(),
+  /** The rule only applies to events dated on/after this date (YYYY-MM-DD). */
+  effective_from: IsoDate.optional(),
+  /** The rule only applies to events dated before this date (YYYY-MM-DD). */
+  effective_until: IsoDate.optional(),
+  /** base 'gain' only: tax only the part of the gain that accrued on/after this date (value at that date becomes the cost base). */
+  accrual_from: IsoDate.optional(),
+  /** base 'gain' only: tax only the part of the gain that accrued before this date. */
+  accrual_until: IsoDate.optional(),
+  /** base 'gain' only: index the cost base by CPI (SimInputs.inflation) before computing the taxable gain. Requires min_holding_years to be met if set. */
+  cost_base_indexation: z.boolean().optional(),
+  /** Floor on the tax as a share of the taxable amount (e.g. AU 30% minimum tax on capital gains). */
+  minimum_rate: z.number().min(0).max(1).optional(),
 });
 export type Modifiers = z.infer<typeof ModifiersSchema>;
 
@@ -107,6 +121,8 @@ export const TaxFileSchema = z.object({
     meta: MetaSchema,
   }),
   income_tax: ScheduleSchema,
+  /** Legislated future bracket changes; the latest entry whose effective_from is on/before an event's date replaces income_tax. */
+  income_tax_changes: z.array(z.object({ effective_from: IsoDate, schedule: ScheduleSchema })).optional(),
   /** Rules that apply to both assets at the stage they declare (Medicare levy, NIIT, surcharge/cess). */
   levies: z.array(RuleSchema),
   assets: z.object({ equities: AssetRulesSchema, property: AssetRulesSchema }),

@@ -16,6 +16,8 @@ export interface AppState {
   prYield: number;
   prCost: number;
   income: IncomeBand;
+  real: boolean;
+  infl: number; // percent
 }
 
 export const DEFAULT_STATE: AppState = {
@@ -29,6 +31,8 @@ export const DEFAULT_STATE: AppState = {
   prYield: 3.5,
   prCost: 25,
   income: 'mid',
+  real: false,
+  infl: 2.5,
 };
 
 const num = (min: number, max: number, d: number) => z.coerce.number().min(min).max(max).catch(d);
@@ -44,6 +48,8 @@ const StateSchema = z.object({
   py: num(0, 20, DEFAULT_STATE.prYield),
   pc: num(0, 90, DEFAULT_STATE.prCost),
   inc: z.enum(['low', 'mid', 'high']).catch(DEFAULT_STATE.income),
+  rt: z.enum(['0', '1']).catch('0'),
+  inf: num(0, 20, DEFAULT_STATE.infl),
 });
 
 export function decodeState(search: string): AppState {
@@ -57,6 +63,8 @@ export function decodeState(search: string): AppState {
     asset: s.a,
     eqGrowth: s.eg, eqYield: s.ey, prGrowth: s.pg, prYield: s.py, prCost: s.pc,
     income: s.inc,
+    real: s.rt === '1',
+    infl: s.inf,
   };
 }
 
@@ -73,6 +81,8 @@ export function encodeState(s: AppState): string {
   put('py', s.prYield, DEFAULT_STATE.prYield);
   put('pc', s.prCost, DEFAULT_STATE.prCost);
   put('inc', s.income, DEFAULT_STATE.income);
+  put('rt', s.real ? 1 : 0, 0);
+  put('inf', s.infl, DEFAULT_STATE.infl);
   const str = q.toString();
   return str ? `?${str}` : '';
 }

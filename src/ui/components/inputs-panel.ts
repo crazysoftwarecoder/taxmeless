@@ -1,6 +1,7 @@
 import type { CountryCode } from '../../../schemas';
 import { h } from '../dom';
 import { MAX_COUNTRIES, type AppState } from '../state';
+import { countryColor } from '../charts/theme';
 
 interface CountryOpt { code: CountryCode; name: string }
 
@@ -59,7 +60,7 @@ export function inputsPanel(
             onChange({ countries: countries.map((x) => x.code).filter((x) => next.includes(x)) });
           },
         }),
-        h('span', { class: 'swatch', dataset: { country: c.code } }),
+        h('span', { class: 'swatch', style: checked ? `background:${countryColor(c.code)}` : 'background:transparent;box-shadow:inset 0 0 0 1.5px var(--axis)' }),
         h('span', null, c.name),
       );
     }),
@@ -87,6 +88,17 @@ export function inputsPanel(
         numField('Gross rental yield', 'prYield', { min: 0, max: 20, step: 0.25, suffix: '%' }),
         numField('Running costs (of rent)', 'prCost', { min: 0, max: 90, step: 5, suffix: '%' }),
       ) : null,
+    ),
+    h('section', { class: 'group' },
+      h('h2', null, 'Inflation & values'),
+      h('div', { class: 'segmented', role: 'radiogroup', 'aria-label': 'Value basis' },
+        ...[{ v: false, l: 'Future dollars' }, { v: true, l: "Today's dollars" }].map((o) => h('button', {
+          type: 'button', role: 'radio', 'aria-checked': state.real === o.v, class: `seg${state.real === o.v ? ' is-active' : ''}`,
+          onclick: () => onChange({ real: o.v }),
+        }, o.l)),
+      ),
+      numField('Inflation (CPI)', 'infl', { min: 0, max: 20, step: 0.25, suffix: '%' }),
+      h('p', { class: 'hint' }, "Used for today's dollars and for inflation-indexed capital gains (Australia from July 2027)."),
     ),
     h('section', { class: 'group' },
       h('h2', null, 'Your other income'),

@@ -1,15 +1,20 @@
 {
   "country": "au",
   "currency": "AUD",
-  "tax_year": "2025-26",
+  "tax_year": "2026-27",
   "jurisdiction_note": "Australian resident individual; property rules use New South Wales (transfer duty, land tax).",
   "meta": {
-    "source": "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents",
-    "source_title": "ATO — Tax rates for Australian residents",
-    "last_verified": "2026-10-12"
+    "source": "https://www.ato.gov.au/about-ato/new-legislation/in-detail/individuals/tax-reform-boosting-home-ownership-reforming-negative-gearing-and-capital-gains-tax",
+    "source_title": "ATO — Tax reform: negative gearing and CGT (2026–27 Budget, now law)",
+    "last_verified": "2026-10-12",
+    "note": "Includes the 12 May 2026 Budget reforms (Treasury Laws Amendment (Tax Reform No. 1) Act 2026) and the legislated 15% / 14% bracket cuts."
   },
   "resident_profile": {
-    "other_income_options": [60000, 120000, 250000],
+    "other_income_options": [
+      60000,
+      120000,
+      250000
+    ],
     "meta": {
       "source": "https://www.abs.gov.au/statistics/labour/earnings-and-working-conditions/employee-earnings/latest-release",
       "source_title": "ABS Employee earnings — bands chosen around the median full-time wage",
@@ -19,16 +24,37 @@
   },
   "income_tax": {
     "brackets": [
-      { "from": 0, "to": 18200, "rate": 0 },
-      { "from": 18200, "to": 45000, "rate": 0.16 },
-      { "from": 45000, "to": 135000, "rate": 0.30 },
-      { "from": 135000, "to": 190000, "rate": 0.37 },
-      { "from": 190000, "to": null, "rate": 0.45 }
+      {
+        "from": 0,
+        "to": 18200,
+        "rate": 0
+      },
+      {
+        "from": 18200,
+        "to": 45000,
+        "rate": 0.15
+      },
+      {
+        "from": 45000,
+        "to": 135000,
+        "rate": 0.3
+      },
+      {
+        "from": 135000,
+        "to": 190000,
+        "rate": 0.37
+      },
+      {
+        "from": 190000,
+        "to": null,
+        "rate": 0.45
+      }
     ],
     "meta": {
-      "source": "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents",
-      "source_title": "ATO — Resident tax rates 2024-25 and 2025-26",
-      "last_verified": "2026-10-12"
+      "source": "https://www.ato.gov.au/about-ato/new-legislation/in-detail/individuals/personal-income-tax-new-tax-cuts-for-every-australian-taxpayer",
+      "source_title": "ATO — New tax cuts for every Australian taxpayer (16% → 15% from 1 July 2026, now law)",
+      "last_verified": "2026-10-12",
+      "note": "2026–27 resident rates. The ATO's resident rate table still showed 16c when checked; the legislated cut to 15% is applied."
     }
   },
   "levies": [
@@ -38,7 +64,10 @@
       "stage": "growth",
       "category": "tax",
       "base": "income",
-      "kind": { "type": "flat", "rate": 0.02 },
+      "kind": {
+        "type": "flat",
+        "rate": 0.02
+      },
       "plain_english": "Australia adds a 2% Medicare levy on top of income tax. It applies to your dividends and net rent each year, just like salary.",
       "meta": {
         "source": "https://www.ato.gov.au/individuals-and-families/medicare-and-private-health-insurance/medicare-levy",
@@ -49,17 +78,47 @@
     },
     {
       "id": "medicare_levy_gain",
-      "label": "Medicare levy on the taxable capital gain",
+      "label": "Medicare levy on the pre-July-2027 capital gain",
       "stage": "egress",
       "category": "tax",
       "base": "gain",
-      "kind": { "type": "flat", "rate": 0.02 },
-      "modifiers": { "inclusion": 0.5, "min_holding_years": 1 },
-      "plain_english": "The discounted capital gain is part of your taxable income in the year you sell, so the 2% Medicare levy applies to it as well.",
+      "kind": {
+        "type": "flat",
+        "rate": 0.02
+      },
+      "modifiers": {
+        "inclusion": 0.5,
+        "min_holding_years": 1,
+        "accrual_until": "2027-07-01"
+      },
+      "plain_english": "The discounted capital gain is part of your taxable income in the year you sell, so the 2% Medicare levy applies to it. For the part of the gain made before 1 July 2027, half the gain is taxable.",
       "meta": {
         "source": "https://www.ato.gov.au/individuals-and-families/medicare-and-private-health-insurance/medicare-levy",
         "source_title": "ATO — Medicare levy",
         "last_verified": "2026-10-12"
+      }
+    },
+    {
+      "id": "medicare_levy_gain_indexed",
+      "label": "Medicare levy on the post-July-2027 capital gain",
+      "stage": "egress",
+      "category": "tax",
+      "base": "gain",
+      "kind": {
+        "type": "flat",
+        "rate": 0.02
+      },
+      "modifiers": {
+        "min_holding_years": 1,
+        "accrual_from": "2027-07-01",
+        "cost_base_indexation": true
+      },
+      "plain_english": "For the part of the gain made after 1 July 2027 the whole inflation-adjusted (real) gain is taxable income, so the 2% Medicare levy applies to all of it. The 30% minimum tax does not include the Medicare levy.",
+      "meta": {
+        "source": "https://budget.gov.au/content/factsheets/download/tax-explainers-negative-gearing-capital-gains-tax.pdf",
+        "source_title": "Budget 2026–27 Tax Explainer — Negative gearing and CGT reform",
+        "last_verified": "2026-10-12",
+        "note": "Gain is split at 1 July 2027 using the simulated value on that date (the ATO allows a valuation or an apportionment formula). Indexation uses the CPI input. Selling costs are not deducted from the gain. Recipients of income support are exempt from the minimum tax (not modelled)."
       }
     }
   ],
@@ -72,7 +131,10 @@
           "stage": "ingress",
           "category": "cost",
           "base": "principal",
-          "kind": { "type": "flat", "rate": 0.001 },
+          "kind": {
+            "type": "flat",
+            "rate": 0.001
+          },
           "plain_english": "There is no stamp duty on ASX-listed shares or ETFs. A typical online broker charges about 0.1% to buy, which we treat as a cost rather than a tax.",
           "meta": {
             "source": "https://www.asx.com.au/investors/investment-tools-and-resources/fees-and-charges",
@@ -89,8 +151,16 @@
           "stage": "growth",
           "category": "tax",
           "base": "income",
-          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
-          "modifiers": { "imputation_credit_rate": 0.30 },
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true
+          },
+          "modifiers": {
+            "imputation_credit_rate": 0.3
+          },
           "plain_english": "Dividends are added to your other income and taxed at your marginal rate. Franked dividends come with a credit for the 30% company tax already paid, which is subtracted from your bill (and refunded if it exceeds it). Roughly 70% of ASX dividends are franked.",
           "meta": {
             "source": "https://www.ato.gov.au/individuals-and-families/investments-and-assets/investing-in-shares/dividends-and-franking-credits",
@@ -103,18 +173,55 @@
       "egress": [
         {
           "id": "cgt_discount",
-          "label": "Capital gains tax (50% discount after 12 months)",
+          "label": "Capital gains tax on the pre-July-2027 gain (50% discount)",
           "stage": "egress",
           "category": "tax",
           "base": "gain",
-          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
-          "modifiers": { "inclusion": 0.5, "min_holding_years": 1 },
-          "plain_english": "Australia has no separate capital gains tax rate. When you sell, half of the gain (after holding for at least 12 months) is added to your income for that year and taxed at your marginal rate.",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true
+          },
+          "modifiers": {
+            "inclusion": 0.5,
+            "min_holding_years": 1,
+            "accrual_until": "2027-07-01"
+          },
+          "plain_english": "The part of your gain that built up before 1 July 2027 keeps the old rules: half of it is added to your income in the year you sell your shares or ETF units and taxed at your marginal rate. Index-fund units are CGT assets of the individual, so the reform applies when you sell them.",
           "meta": {
-            "source": "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax/cgt-discount",
-            "source_title": "ATO — CGT discount",
+            "source": "https://www.ato.gov.au/about-ato/new-legislation/in-detail/individuals/tax-reform-boosting-home-ownership-reforming-negative-gearing-and-capital-gains-tax",
+            "source_title": "ATO — CGT reform: 50% discount retained for gains accrued before 1 July 2027",
             "last_verified": "2026-10-12",
-            "note": "Whole gain assumed realised in one year; no staging of the sale."
+            "note": "The gain up to 1 July 2027 is measured from the simulated value on that date."
+          }
+        },
+        {
+          "id": "cgt_indexed_minimum_tax",
+          "label": "Capital gains tax on the post-July-2027 gain (indexed, 30% minimum)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true
+          },
+          "modifiers": {
+            "min_holding_years": 1,
+            "accrual_from": "2027-07-01",
+            "cost_base_indexation": true,
+            "minimum_rate": 0.3
+          },
+          "plain_english": "From 1 July 2027 the 50% discount is replaced. The value on 1 July 2027 becomes your cost base, it is increased by inflation (CPI), and the whole remaining real gain is added to your income. If that works out below 30%, a minimum tax tops it up to 30% of the real gain. This was legislated after the 12 May 2026 Budget.",
+          "meta": {
+            "source": "https://budget.gov.au/content/factsheets/download/tax-explainers-negative-gearing-capital-gains-tax.pdf",
+            "source_title": "Budget 2026–27 Tax Explainer — cost base indexation and 30% minimum tax",
+            "last_verified": "2026-10-12",
+            "note": "Gain is split at 1 July 2027 using the simulated value on that date (the ATO allows a valuation or an apportionment formula). Indexation uses the CPI input. Selling costs are not deducted from the gain. Recipients of income support are exempt from the minimum tax (not modelled)."
           }
         }
       ]
@@ -131,13 +238,41 @@
             "type": "schedule",
             "schedule": {
               "brackets": [
-                { "from": 0, "to": 17000, "rate": 0.0125 },
-                { "from": 17000, "to": 36000, "rate": 0.015 },
-                { "from": 36000, "to": 97000, "rate": 0.0175 },
-                { "from": 97000, "to": 364000, "rate": 0.035 },
-                { "from": 364000, "to": 1212000, "rate": 0.045 },
-                { "from": 1212000, "to": 3636000, "rate": 0.055 },
-                { "from": 3636000, "to": null, "rate": 0.07 }
+                {
+                  "from": 0,
+                  "to": 17000,
+                  "rate": 0.0125
+                },
+                {
+                  "from": 17000,
+                  "to": 36000,
+                  "rate": 0.015
+                },
+                {
+                  "from": 36000,
+                  "to": 97000,
+                  "rate": 0.0175
+                },
+                {
+                  "from": 97000,
+                  "to": 364000,
+                  "rate": 0.035
+                },
+                {
+                  "from": 364000,
+                  "to": 1212000,
+                  "rate": 0.045
+                },
+                {
+                  "from": 1212000,
+                  "to": 3636000,
+                  "rate": 0.055
+                },
+                {
+                  "from": 3636000,
+                  "to": null,
+                  "rate": 0.07
+                }
               ],
               "meta": {
                 "source": "https://www.revenue.nsw.gov.au/taxes-duties-levies-royalties/transfer-duty",
@@ -161,7 +296,10 @@
           "stage": "ingress",
           "category": "cost",
           "base": "principal",
-          "kind": { "type": "fixed", "amount": 3000 },
+          "kind": {
+            "type": "fixed",
+            "amount": 3000
+          },
           "plain_english": "Legal conveyancing and title registration fees on purchase, treated as a flat cost rather than a tax.",
           "meta": {
             "source": "https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/buying-property",
@@ -178,13 +316,19 @@
           "stage": "growth",
           "category": "tax",
           "base": "income",
-          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
-          "plain_english": "Rent, after deducting running costs such as management fees, insurance and repairs, is added to your other income and taxed at your marginal rate every year.",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true
+          },
+          "plain_english": "Rent, after deducting running costs such as management fees, insurance and repairs, is added to your other income and taxed at your marginal rate every year. Because this is an established property bought after 12 May 2026, from 1 July 2027 any rental loss could only offset residential property income, not your salary; this scenario has no loan, so it makes no loss.",
           "meta": {
             "source": "https://www.ato.gov.au/individuals-and-families/investments-and-assets/residential-rental-properties",
             "source_title": "ATO — Residential rental properties",
             "last_verified": "2026-10-12",
-            "note": "Depreciation and negative gearing not modelled; costs fixed at assumptions.property.cost_rate of gross rent."
+            "note": "Depreciation not modelled; costs fixed at assumptions.property.cost_rate of gross rent. Negative gearing restriction (2026–27 Budget) noted but has no effect without leverage."
           }
         },
         {
@@ -197,9 +341,21 @@
             "type": "schedule",
             "schedule": {
               "brackets": [
-                { "from": 0, "to": 1075000, "rate": 0 },
-                { "from": 1075000, "to": 6571000, "rate": 0.016 },
-                { "from": 6571000, "to": null, "rate": 0.02 }
+                {
+                  "from": 0,
+                  "to": 1075000,
+                  "rate": 0
+                },
+                {
+                  "from": 1075000,
+                  "to": 6571000,
+                  "rate": 0.016
+                },
+                {
+                  "from": 6571000,
+                  "to": null,
+                  "rate": 0.02
+                }
               ],
               "meta": {
                 "source": "https://www.revenue.nsw.gov.au/taxes-duties-levies-royalties/land-tax",
@@ -221,17 +377,55 @@
       "egress": [
         {
           "id": "cgt_discount",
-          "label": "Capital gains tax (50% discount after 12 months)",
+          "label": "Capital gains tax on the pre-July-2027 gain (50% discount)",
           "stage": "egress",
           "category": "tax",
           "base": "gain",
-          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
-          "modifiers": { "inclusion": 0.5, "min_holding_years": 1 },
-          "plain_english": "When you sell an investment property held for more than 12 months, half of the gain is added to your income in the year of sale and taxed at your marginal rate. Stamp duty and purchase costs form part of the cost base.",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true
+          },
+          "modifiers": {
+            "inclusion": 0.5,
+            "min_holding_years": 1,
+            "accrual_until": "2027-07-01"
+          },
+          "plain_english": "The part of your gain that built up before 1 July 2027 keeps the old rules: half of it is added to your income in the year you sell the property and taxed at your marginal rate. Stamp duty and purchase costs form part of the cost base.",
           "meta": {
-            "source": "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax/cgt-discount",
-            "source_title": "ATO — CGT discount",
-            "last_verified": "2026-10-12"
+            "source": "https://www.ato.gov.au/about-ato/new-legislation/in-detail/individuals/tax-reform-boosting-home-ownership-reforming-negative-gearing-and-capital-gains-tax",
+            "source_title": "ATO — CGT reform: 50% discount retained for gains accrued before 1 July 2027",
+            "last_verified": "2026-10-12",
+            "note": "The gain up to 1 July 2027 is measured from the simulated value on that date."
+          }
+        },
+        {
+          "id": "cgt_indexed_minimum_tax",
+          "label": "Capital gains tax on the post-July-2027 gain (indexed, 30% minimum)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true
+          },
+          "modifiers": {
+            "min_holding_years": 1,
+            "accrual_from": "2027-07-01",
+            "cost_base_indexation": true,
+            "minimum_rate": 0.3
+          },
+          "plain_english": "From 1 July 2027 the 50% discount is replaced. The value on 1 July 2027 becomes your cost base, it is increased by inflation (CPI), and the whole remaining real gain is added to your income. If that works out below 30%, a minimum tax tops it up to 30% of the real gain. This was legislated after the 12 May 2026 Budget.",
+          "meta": {
+            "source": "https://budget.gov.au/content/factsheets/download/tax-explainers-negative-gearing-capital-gains-tax.pdf",
+            "source_title": "Budget 2026–27 Tax Explainer — cost base indexation and 30% minimum tax",
+            "last_verified": "2026-10-12",
+            "note": "Gain is split at 1 July 2027 using the simulated value on that date (the ATO allows a valuation or an apportionment formula). Indexation uses the CPI input. Selling costs are not deducted from the gain. Recipients of income support are exempt from the minimum tax (not modelled)."
           }
         },
         {
@@ -240,7 +434,10 @@
           "stage": "egress",
           "category": "cost",
           "base": "value",
-          "kind": { "type": "flat", "rate": 0.02 },
+          "kind": {
+            "type": "flat",
+            "rate": 0.02
+          },
           "plain_english": "Real-estate agents in Sydney typically charge around 2% of the sale price. It is a cost, not a tax, but it still reduces what you walk away with.",
           "meta": {
             "source": "https://www.fairtrading.nsw.gov.au/housing-and-property/buying-and-selling-property/selling-a-property/selling-your-property",
@@ -251,5 +448,44 @@
         }
       ]
     }
-  }
+  },
+  "income_tax_changes": [
+    {
+      "effective_from": "2027-07-01",
+      "schedule": {
+        "brackets": [
+          {
+            "from": 0,
+            "to": 18200,
+            "rate": 0
+          },
+          {
+            "from": 18200,
+            "to": 45000,
+            "rate": 0.14
+          },
+          {
+            "from": 45000,
+            "to": 135000,
+            "rate": 0.3
+          },
+          {
+            "from": 135000,
+            "to": 190000,
+            "rate": 0.37
+          },
+          {
+            "from": 190000,
+            "to": null,
+            "rate": 0.45
+          }
+        ],
+        "meta": {
+          "source": "https://www.ato.gov.au/about-ato/new-legislation/in-detail/individuals/personal-income-tax-new-tax-cuts-for-every-australian-taxpayer",
+          "source_title": "ATO — 15% rate falls to 14% from 1 July 2027 (now law)",
+          "last_verified": "2026-10-12"
+        }
+      }
+    }
+  ]
 }

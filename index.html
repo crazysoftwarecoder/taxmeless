@@ -33,27 +33,31 @@
         </section>
 
         <section class="card" aria-labelledby="h-networth">
-          <h2 id="h-networth">Net worth over time</h2>
+          <div class="card-head"><h2 id="h-networth">Net worth over time</h2><button type="button" class="btn btn-sm" data-table-toggle="networth" aria-pressed="false">Table</button></div>
           <p class="lede">Solid lines are after tax; the dashed grey line is the same money with no taxes at all. Click any point to see what was charged that year.</p>
-          <div id="networth-charts" class="networth"></div>
+          <div id="networth-charts" class="networth" data-chart-view="networth"></div>
+          <div data-table-host="networth" hidden></div>
         </section>
 
         <section class="card" aria-labelledby="h-tax">
-          <h2 id="h-tax">Total tax by stage</h2>
+          <div class="card-head"><h2 id="h-tax">Total tax by stage</h2><button type="button" class="btn btn-sm" data-table-toggle="tax" aria-pressed="false">Table</button></div>
           <p class="lede">Ingress is paid when you buy, growth every year you hold, egress when you sell. Click a segment to see the rules behind it.</p>
-          <div id="tax-chart" class="chart chart-tall" role="img" aria-label="Total tax by stage per country"></div>
+          <div data-chart-view="tax"><div id="tax-chart" class="chart chart-tall" role="img" aria-label="Total tax by stage per country"></div></div>
+          <div data-table-host="tax" hidden></div>
         </section>
 
         <section class="card" aria-labelledby="h-gdp">
-          <h2 id="h-gdp">How incomes rise: GDP per capita</h2>
+          <div class="card-head"><h2 id="h-gdp">How incomes rise: GDP per capita</h2><button type="button" class="btn btn-sm" data-table-toggle="gdp" aria-pressed="false">Table</button></div>
           <p class="lede" id="gdp-note"></p>
-          <div id="gdp-chart" class="chart" role="img" aria-label="GDP per capita now and projected"></div>
+          <div data-chart-view="gdp"><div id="gdp-chart" class="chart" role="img" aria-label="GDP per capita now and projected"></div></div>
+          <div data-table-host="gdp" hidden></div>
         </section>
 
         <section class="card" aria-labelledby="h-col">
-          <h2 id="h-col">What a family of four spends</h2>
+          <div class="card-head"><h2 id="h-col">What a family of four spends</h2><button type="button" class="btn btn-sm" data-table-toggle="col" aria-pressed="false">Table</button></div>
           <p class="lede" id="col-note"></p>
-          <div id="col-chart" class="chart chart-tall" role="img" aria-label="Annual cost of living for a family of four by country"></div>
+          <div data-chart-view="col"><div id="col-chart" class="chart chart-tall" role="img" aria-label="Annual cost of living for a family of four by country"></div></div>
+          <div data-table-host="col" hidden></div>
         </section>
 
         <div id="footer"></div>

@@ -9,6 +9,10 @@ export interface SimInputs {
   equities: { growth: number; yield: number };
   property: { growth: number; yield: number; costRate: number };
   otherIncomeBand: IncomeBand;
+  /** Purchase date (YYYY-MM-DD). Dated rules and bracket changes are resolved against it. Defaults to DEFAULT_START_DATE. */
+  startDate?: string;
+  /** Annual CPI used for cost-base indexation. Defaults to 0.025. */
+  inflation?: number;
 }
 
 /** One application of one rule in one year. Amounts: `amount` local currency, `amountUsd` converted. */

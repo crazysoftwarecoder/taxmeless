@@ -19,6 +19,9 @@ export function marginalTax(schedule: Schedule, otherIncome: number, extra: numb
   return taxOnSchedule(schedule, otherIncome + extra) - taxOnSchedule(schedule, otherIncome);
 }
 
+/** Unrealised gain that accrued between two dates (local currency) and the CPI indexation allowance for it. */
+export type GainWindow = (from: string | undefined, until: string | undefined, index: boolean) => { gain: number; indexation: number };
+
 export interface RuleContext {
   stage: Stage;
   year: number;
@@ -31,6 +34,10 @@ export interface RuleContext {
   frankedFractionDefault: number;
   /** Local currency units per USD. */
   fx: number;
+  /** Date of the event (YYYY-MM-DD). */
+  eventDate?: string;
+  /** Lets gain rules restrict themselves to an accrual window and apply indexation. */
+  gainWindow?: GainWindow;
 }
 
 function resolveSchedule(rule: Extract<Rule['kind'], { type: 'schedule' }>, ctx: RuleContext): Schedule {
@@ -49,12 +56,25 @@ export function applyRule(rule: Rule, ctx: RuleContext): TaxEvent | null {
   if (m.exempt_after_years !== undefined && ctx.holdingYears >= m.exempt_after_years) return null;
   if (m.applies_until_years !== undefined && ctx.holdingYears >= m.applies_until_years) return null;
 
-  const base = ctx.bases[rule.base];
+  if (ctx.eventDate) {
+    if (m.effective_from !== undefined && ctx.eventDate < m.effective_from) return null;
+    if (m.effective_until !== undefined && ctx.eventDate >= m.effective_until) return null;
+  }
+
+  const heldLongEnough = m.min_holding_years === undefined || ctx.holdingYears >= m.min_holding_years;
+  let base = ctx.bases[rule.base];
+  let indexation = 0;
+  if (rule.base === 'gain' && ctx.gainWindow && (m.accrual_from || m.accrual_until || m.cost_base_indexation)) {
+    const w = ctx.gainWindow(m.accrual_from, m.accrual_until, !!m.cost_base_indexation && heldLongEnough);
+    base = w.gain;
+    indexation = w.indexation;
+  }
   if (rule.kind.type !== 'fixed' && base <= 0) return null;
 
   let inclusion = m.inclusion ?? 1;
-  if (m.min_holding_years !== undefined && ctx.holdingYears < m.min_holding_years) inclusion = 1;
-  let taxable = base * inclusion * (m.taxable_fraction ?? 1);
+  if (!heldLongEnough) inclusion = 1;
+  let taxable = Math.max(0, base - indexation) * inclusion * (m.taxable_fraction ?? 1);
+  if (rule.kind.type !== 'fixed' && taxable <= 0) return null;
 
   let credit = 0;
   if (m.imputation_credit_rate !== undefined && m.imputation_credit_rate > 0 && m.imputation_credit_rate < 1) {
@@ -83,6 +103,7 @@ export function applyRule(rule: Rule, ctx: RuleContext): TaxEvent | null {
       break;
   }
   amount -= credit;
+  if (m.minimum_rate !== undefined && heldLongEnough) amount = Math.max(amount, taxable * m.minimum_rate);
 
   return {
     ruleId: rule.id,

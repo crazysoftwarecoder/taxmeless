@@ -155,6 +155,8 @@ if (countriesRes.success && assumptionsRes.success) {
               equities: { growth: a.equities.growth, yield: a.equities.yield },
               property: { growth: a.property.growth, yield: a.property.yield, costRate: a.property.cost_rate },
               otherIncomeBand: band,
+              startDate: today,
+              inflation: 0.025,
             },
             t, asset, a, c.fx_to_usd.value,
           );

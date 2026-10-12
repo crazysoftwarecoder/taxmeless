@@ -23,7 +23,8 @@ export function networthOption(ledgers: Ledger[], asset: Asset, names: Record<Co
     lineStyle: { width: 2 },
     itemStyle: { color: countryColor(l.country) },
     emphasis: { focus: 'series', lineStyle: { width: 3 } },
-    endLabel: labels ? { show: true, formatter: (p: { seriesName: string; value: number }) => `${p.seriesName} ${usdCompact(p.value)}`, color: c.ink2, fontSize: 11 } : undefined,
+    labelLayout: { moveOverlap: 'shiftY' },
+    endLabel: labels ? { show: true, formatter: (p: { seriesName: string; value: number }) => `${p.seriesName} ${usdCompact(p.value)}`, color: c.ink2, fontSize: 11, width: 170, overflow: 'truncate' } : undefined,
   }));
   const bench = rows[0];
   if (bench) {
@@ -46,7 +47,7 @@ export function networthOption(ledgers: Ledger[], asset: Asset, names: Record<Co
       axisPointer: { type: 'cross', label: { backgroundColor: c.ink2 } },
       valueFormatter: (v: number) => usdCompact(v),
     },
-    grid: { ...b.grid, right: labels ? 110 : 16 },
+    grid: { ...b.grid, right: labels ? 178 : 16 },
     xAxis: { type: 'category', data: years.map((y) => `Y${y}`), boundaryGap: false, ...b.axisStyle, splitLine: { show: false } },
     yAxis: { type: 'value', ...b.axisStyle, axisLine: { show: false }, axisLabel: { ...b.axisStyle.axisLabel, formatter: (v: number) => usdCompact(v) } },
     series,
