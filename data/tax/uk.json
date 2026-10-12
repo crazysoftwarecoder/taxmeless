@@ -1,0 +1,239 @@
+{
+  "country": "uk",
+  "currency": "GBP",
+  "tax_year": "2026-27",
+  "jurisdiction_note": "UK resident individual living in England (rest-of-UK rates, not Scottish); property rules use Stamp Duty Land Tax for England and Northern Ireland.",
+  "meta": {
+    "source": "https://www.gov.uk/income-tax-rates",
+    "source_title": "GOV.UK — Income Tax rates and Personal Allowances 2026 to 2027",
+    "last_verified": "2026-10-12",
+    "note": "Income bands are gross salary; the personal allowance is built into the income_tax schedule as a 0% band."
+  },
+  "resident_profile": {
+    "other_income_options": [35000, 80000, 200000],
+    "meta": {
+      "source": "https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/bulletins/annualsurveyofhoursandearnings/2025",
+      "source_title": "ONS — Annual Survey of Hours and Earnings 2025 (median full-time gross pay ≈ GBP 39k)",
+      "last_verified": "2026-10-12",
+      "note": "low ≈ median full-time earner (basic rate), mid ≈ higher-rate taxpayer, high ≈ additional-rate taxpayer with no personal allowance."
+    }
+  },
+  "income_tax": {
+    "brackets": [
+      { "from": 0, "to": 12570, "rate": 0 },
+      { "from": 12570, "to": 50270, "rate": 0.20 },
+      { "from": 50270, "to": 100000, "rate": 0.40 },
+      { "from": 100000, "to": 125140, "rate": 0.60 },
+      { "from": 125140, "to": null, "rate": 0.45 }
+    ],
+    "meta": {
+      "source": "https://www.gov.uk/income-tax-rates",
+      "source_title": "GOV.UK — Income Tax rates 2026 to 2027: personal allowance GBP 12,570, basic 20% to GBP 50,270, higher 40% to GBP 125,140, additional 45%",
+      "last_verified": "2026-10-12",
+      "note": "The 60% band between GBP 100,000 and GBP 125,140 models the personal-allowance taper (GBP 1 of allowance lost per GBP 2 of income). Thresholds are frozen until April 2031."
+    }
+  },
+  "levies": [],
+  "assets": {
+    "equities": {
+      "ingress": [
+        {
+          "id": "sdrt",
+          "label": "Stamp Duty Reserve Tax on purchase (exempt for index funds)",
+          "stage": "ingress",
+          "category": "tax",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0 },
+          "plain_english": "Buying shares in a UK company electronically costs 0.5% Stamp Duty Reserve Tax. An index fund bought as an OEIC or unit trust from the manager, or as an ETF domiciled outside the UK (most are Irish), is outside the charge, so we show it at 0%. If you instead bought UK-listed shares or investment trusts directly you would pay 0.5% up front.",
+          "meta": {
+            "source": "https://www.gov.uk/tax-buy-shares",
+            "source_title": "GOV.UK — Tax when you buy shares (0.5% SDRT; OEIC/unit trust purchases from the manager exempt; non-UK companies outside the charge per STSM031090)",
+            "last_verified": "2026-10-12",
+            "note": "Choice: index fund treated as SDRT-exempt. Set rate to 0.005 to model direct UK share purchases. Platform dealing fees ignored."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "dividend_tax",
+          "label": "Dividend tax (10.75% / 35.75% / 39.35%)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 12570, "rate": 0 },
+                { "from": 12570, "to": 50270, "rate": 0.1075 },
+                { "from": 50270, "to": 125140, "rate": 0.3575 },
+                { "from": 125140, "to": null, "rate": 0.3935 }
+              ],
+              "meta": {
+                "source": "https://www.gov.uk/tax-on-dividends",
+                "source_title": "GOV.UK — Tax on dividends 2026 to 2027: basic 10.75%, higher 35.75%, additional 39.35%; dividend allowance GBP 500",
+                "last_verified": "2026-10-12",
+                "note": "Basic and higher dividend rates rose 2 points from 6 April 2026 (Autumn Budget 2025)."
+              }
+            },
+            "stack_on_other_income": true
+          },
+          "plain_english": "Dividends are taxed at their own rates, which depend on which income tax band they fall into once stacked on top of your salary: 10.75% in the basic band, 35.75% in the higher band and 39.35% above GBP 125,140. The first GBP 500 of dividends each year is tax-free.",
+          "meta": {
+            "source": "https://www.gov.uk/tax-on-dividends",
+            "source_title": "GOV.UK — Tax on dividends",
+            "last_verified": "2026-10-12",
+            "note": "The GBP 500 dividend allowance is ignored (worth at most ~GBP 200 a year on this scale). Unused personal allowance can shelter dividends: modelled via the 0% band. The personal-allowance taper on dividend income between GBP 100k and 125k is ignored."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "cgt_shares",
+          "label": "Capital gains tax on shares (18% / 24%)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 50270, "rate": 0.18 },
+                { "from": 50270, "to": null, "rate": 0.24 }
+              ],
+              "meta": {
+                "source": "https://www.gov.uk/capital-gains-tax/rates",
+                "source_title": "GOV.UK — Capital Gains Tax rates 2026 to 2027: 18% within the basic rate band, 24% above (rates set at Autumn Budget 2024)",
+                "last_verified": "2026-10-12",
+                "note": "Bracket boundary = personal allowance + basic rate band (GBP 12,570 + 37,700), because other income is expressed gross."
+              }
+            },
+            "stack_on_other_income": true
+          },
+          "plain_english": "When you sell fund units, the gain is stacked on top of your income for the year. Any part that fits inside the basic rate band is taxed at 18%; the rest at 24%. The first GBP 3,000 of gains each year is exempt. No indexation or holding-period discount applies.",
+          "meta": {
+            "source": "https://www.gov.uk/capital-gains-tax/allowances",
+            "source_title": "GOV.UK — Capital Gains Tax allowances (annual exempt amount GBP 3,000)",
+            "last_verified": "2026-10-12",
+            "note": "The GBP 3,000 annual exempt amount is ignored (worth at most GBP 720). ISA and pension wrappers not modelled. Whole gain realised in one year."
+          }
+        }
+      ]
+    },
+    "property": {
+      "ingress": [
+        {
+          "id": "sdlt_additional_property",
+          "label": "Stamp Duty Land Tax (additional-property rates)",
+          "stage": "ingress",
+          "category": "tax",
+          "base": "principal",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 125000, "rate": 0.05 },
+                { "from": 125000, "to": 250000, "rate": 0.07 },
+                { "from": 250000, "to": 925000, "rate": 0.10 },
+                { "from": 925000, "to": 1500000, "rate": 0.15 },
+                { "from": 1500000, "to": null, "rate": 0.17 }
+              ],
+              "meta": {
+                "source": "https://www.gov.uk/guidance/stamp-duty-land-tax-buying-an-additional-residential-property",
+                "source_title": "GOV.UK — SDLT higher rates for additional residential property from 1 April 2025 (standard bands plus 5-point surcharge)",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": false
+          },
+          "plain_english": "Buying a property that is not your only home triggers SDLT at the standard residential bands plus a 5-point surcharge (raised from 3 points in October 2024). On a GBP 760,000 purchase that is about GBP 66,000, or roughly 8.7%, paid up front before the property earns anything.",
+          "meta": {
+            "source": "https://www.gov.uk/guidance/stamp-duty-land-tax-buying-an-additional-residential-property",
+            "source_title": "GOV.UK — Stamp Duty Land Tax: buying an additional residential property",
+            "last_verified": "2026-10-12",
+            "note": "Non-UK-resident 2% surcharge not modelled (resident taxpayer). Scotland (LBTT) and Wales (LTT) differ."
+          }
+        },
+        {
+          "id": "conveyancing",
+          "label": "Conveyancing, searches and Land Registry fees",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "fixed", "amount": 2500 },
+          "plain_english": "Solicitor's conveyancing fees, local searches and the Land Registry registration fee on purchase, treated as a flat cost rather than a tax.",
+          "meta": {
+            "source": "https://www.gov.uk/buy-sell-your-home",
+            "source_title": "GOV.UK — Buying or selling your home (fees vary; GBP 2,500 assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "rental_income_tax",
+          "label": "Income tax on net rent",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "plain_english": "Rental profit after allowable expenses (agent fees, insurance, repairs) is added to your other income and taxed at your marginal rate each year. Council tax is normally paid by the tenant, so it is left out.",
+          "meta": {
+            "source": "https://www.gov.uk/renting-out-a-property/paying-tax",
+            "source_title": "GOV.UK — Renting out your property: paying tax",
+            "last_verified": "2026-10-12",
+            "note": "From 6 April 2027 property income moves to separate rates of 22% / 42% / 47% (Autumn Budget 2025 policy paper: https://www.gov.uk/government/publications/income-tax-changes-to-tax-rates-for-property-savings-and-dividend-income); not yet applied as the file models 2026-27. Mortgage interest, the GBP 1,000 property allowance and council tax are ignored. Costs fixed at assumptions.property.cost_rate of gross rent."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "cgt_residential",
+          "label": "Capital gains tax on residential property (18% / 24%)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 50270, "rate": 0.18 },
+                { "from": 50270, "to": null, "rate": 0.24 }
+              ],
+              "meta": {
+                "source": "https://www.gov.uk/tax-sell-property",
+                "source_title": "GOV.UK — Tax when you sell property: 18% within the basic rate band, 24% above, for residential property",
+                "last_verified": "2026-10-12",
+                "note": "Bracket boundary = personal allowance + basic rate band (GBP 50,270 gross)."
+              }
+            },
+            "stack_on_other_income": true
+          },
+          "plain_english": "Selling a property that is not your main home is a chargeable gain. Stacked on your income, the part within the basic rate band is taxed at 18% and the rest at 24%; the tax must be reported and paid within 60 days of completion. SDLT and purchase costs form part of the cost base.",
+          "meta": {
+            "source": "https://www.gov.uk/tax-sell-property",
+            "source_title": "GOV.UK — Tax when you sell property",
+            "last_verified": "2026-10-12",
+            "note": "GBP 3,000 annual exempt amount ignored. Private residence relief does not apply to an investment property. Whole gain realised in one year."
+          }
+        },
+        {
+          "id": "agent_fee",
+          "label": "Estate agent fee on sale",
+          "stage": "egress",
+          "category": "cost",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.015 },
+          "plain_english": "Estate agents in England typically charge around 1–1.5% of the sale price plus VAT. We assume 1.5% all-in. It is a cost, not a tax, but it still reduces what you walk away with.",
+          "meta": {
+            "source": "https://www.gov.uk/buy-sell-your-home",
+            "source_title": "GOV.UK — Buying or selling your home (fees are negotiable; 1.5% incl. VAT assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption; solicitor's fee on sale ignored."
+          }
+        }
+      ]
+    }
+  }
+}

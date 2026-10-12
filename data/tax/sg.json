@@ -1,0 +1,231 @@
+{
+  "country": "sg",
+  "currency": "SGD",
+  "tax_year": "YA2026",
+  "jurisdiction_note": "Singapore tax resident individual who is a Singapore Citizen buying their FIRST residential property (so Additional Buyer's Stamp Duty is 0%; a second property would attract 20%). Singapore has no capital gains tax and dividends from Singapore companies are tax-exempt under the one-tier system, so equities face no tax at all, only broker and exchange fees.",
+  "meta": {
+    "source": "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/individual-income-tax-rates",
+    "source_title": "IRAS — Individual income tax rates (residents)",
+    "last_verified": "2026-10-12"
+  },
+  "resident_profile": {
+    "other_income_options": [48000, 96000, 240000],
+    "meta": {
+      "source": "https://stats.mom.gov.sg/Pages/income-summary-table.aspx",
+      "source_title": "Ministry of Manpower — Income summary table (2025 median gross monthly income of full-time employed residents SGD 5,775 incl. employer CPF, ≈ SGD 5,000 excluding)",
+      "last_verified": "2026-10-12",
+      "note": "low ≈ below-median full-timer, mid ≈ above-median professional, high ≈ senior professional in the 19.5% bracket. Bands are chargeable income after reliefs."
+    }
+  },
+  "income_tax": {
+    "brackets": [
+      { "from": 0, "to": 20000, "rate": 0 },
+      { "from": 20000, "to": 30000, "rate": 0.02 },
+      { "from": 30000, "to": 40000, "rate": 0.035 },
+      { "from": 40000, "to": 80000, "rate": 0.07 },
+      { "from": 80000, "to": 120000, "rate": 0.115 },
+      { "from": 120000, "to": 160000, "rate": 0.15 },
+      { "from": 160000, "to": 200000, "rate": 0.18 },
+      { "from": 200000, "to": 240000, "rate": 0.19 },
+      { "from": 240000, "to": 280000, "rate": 0.195 },
+      { "from": 280000, "to": 320000, "rate": 0.20 },
+      { "from": 320000, "to": 500000, "rate": 0.22 },
+      { "from": 500000, "to": 1000000, "rate": 0.23 },
+      { "from": 1000000, "to": null, "rate": 0.24 }
+    ],
+    "meta": {
+      "source": "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/individual-income-tax-rates",
+      "source_title": "IRAS — Resident tax rates from YA 2024 onwards",
+      "last_verified": "2026-10-12",
+      "note": "Personal reliefs and one-off income tax rebates ignored."
+    }
+  },
+  "levies": [],
+  "assets": {
+    "equities": {
+      "ingress": [
+        {
+          "id": "brokerage",
+          "label": "Brokerage on purchase",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0.001 },
+          "plain_english": "Singapore has no stamp duty on buying listed shares or ETFs electronically. A typical online broker charges around 0.1% to buy, which we treat as a cost rather than a tax.",
+          "meta": {
+            "source": "https://www.sgx.com/securities/retail-investors",
+            "source_title": "SGX — Retail investors (brokerage is set by the broker; 0.1% assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption, consistent with the other countries. 9% GST on brokerage ignored."
+          }
+        },
+        {
+          "id": "sgx_clearing_and_trading_fee",
+          "label": "SGX clearing and trading fees",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0.0004 },
+          "plain_english": "On top of brokerage, every SGX trade carries a 0.0325% clearing fee and a 0.0075% trading access fee charged by the exchange, together 0.04% of the amount invested. These are exchange fees, not taxes.",
+          "meta": {
+            "source": "https://links.sgx.com/1.0.0/corporate-announcements/R8Z4VSSB8K55UHYI/290820_20140207_SGX_to_effect_revised_securities_mkt_fee_structure_1June.pdf",
+            "source_title": "SGX — Revised securities market fee structure (clearing fee 0.0325% of contract value, uncapped, from 1 June 2014)",
+            "last_verified": "2026-10-12",
+            "note": "0.0075% trading access fee corroborated by DBS and OCBC published fee schedules (2025). GST on fees ignored."
+          }
+        }
+      ],
+      "growth": [],
+      "egress": []
+    },
+    "property": {
+      "ingress": [
+        {
+          "id": "buyers_stamp_duty",
+          "label": "Buyer's Stamp Duty (BSD)",
+          "stage": "ingress",
+          "category": "tax",
+          "base": "principal",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 180000, "rate": 0.01 },
+                { "from": 180000, "to": 360000, "rate": 0.02 },
+                { "from": 360000, "to": 1000000, "rate": 0.03 },
+                { "from": 1000000, "to": 1500000, "rate": 0.04 },
+                { "from": 1500000, "to": 3000000, "rate": 0.05 },
+                { "from": 3000000, "to": null, "rate": 0.06 }
+              ],
+              "meta": {
+                "source": "https://www.iras.gov.sg/taxes/stamp-duty/for-property/buying-or-acquiring-property/buyer's-stamp-duty-(bsd)",
+                "source_title": "IRAS — BSD rates for residential property on or after 15 Feb 2023",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": false
+          },
+          "plain_english": "Buying any property in Singapore triggers Buyer's Stamp Duty, a one-off tax on a sliding scale of the price: 1% on the first SGD 180k rising to 6% above SGD 3m. On a SGD 1.3m home it comes to about SGD 36,600, roughly 2.8%.",
+          "meta": {
+            "source": "https://www.iras.gov.sg/taxes/stamp-duty/for-property/buying-or-acquiring-property/buyer's-stamp-duty-(bsd)",
+            "source_title": "IRAS — Buyer's Stamp Duty",
+            "last_verified": "2026-10-12",
+            "note": "Charged on the higher of price or market value; assumed equal."
+          }
+        },
+        {
+          "id": "additional_buyers_stamp_duty",
+          "label": "Additional Buyer's Stamp Duty (ABSD) — citizen, first property",
+          "stage": "ingress",
+          "category": "tax",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0 },
+          "plain_english": "Singapore adds an extra stamp duty on top of BSD depending on who is buying. A Singapore Citizen buying their first residential property pays 0%, which is what we model. The same citizen buying a second home would pay 20%, and a foreigner 60%.",
+          "meta": {
+            "source": "https://www.iras.gov.sg/taxes/stamp-duty/for-property/buying-or-acquiring-property/additional-buyer's-stamp-duty-(absd)",
+            "source_title": "IRAS — ABSD rates from 27 April 2023 (SC first property: not applicable; SC second: 20%; SPR first: 5%; foreigner: 60%)",
+            "last_verified": "2026-10-12",
+            "note": "Modelled at 0% as the investor's first residential property. Shown so the 20%/60% cliff is visible in the drill-down."
+          }
+        },
+        {
+          "id": "conveyancing",
+          "label": "Conveyancing and title registration",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "fixed", "amount": 3000 },
+          "plain_english": "Legal fees for the conveyancing lawyer plus the Singapore Land Authority registration fee for the transfer, treated as a flat cost rather than a tax.",
+          "meta": {
+            "source": "https://www.sla.gov.sg/regulatory/property-ownership/fees-for-property-registration-services/",
+            "source_title": "SLA — Fees for property registration services (transfer registration SGD 68.30; lawyer's fees vary, SGD 3,000 all-in assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "rental_income_tax",
+          "label": "Income tax on net rent",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "plain_english": "Net rent, after deducting expenses such as property tax, maintenance, agent and management fees, is added to your other income and taxed at your marginal rate every year.",
+          "meta": {
+            "source": "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/what-is-taxable-what-is-not/income-from-property-rented-out",
+            "source_title": "IRAS — Income from property rented out",
+            "last_verified": "2026-10-12",
+            "note": "Expenses fixed at assumptions.property.cost_rate (25%) of gross rent rather than IRAS's optional 15% deemed-expense method. Property tax (modelled separately below) is also deductible in practice; that interaction is ignored, which slightly overstates income tax."
+          }
+        },
+        {
+          "id": "property_tax_non_owner_occupied",
+          "label": "Property tax (non-owner-occupied residential)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "value",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 857143, "rate": 0.0042 },
+                { "from": 857143, "to": 1285714, "rate": 0.007 },
+                { "from": 1285714, "to": 1714286, "rate": 0.0098 },
+                { "from": 1714286, "to": null, "rate": 0.0126 }
+              ],
+              "meta": {
+                "source": "https://www.iras.gov.sg/taxes/property-tax/property-owners/property-tax-rates",
+                "source_title": "IRAS — Non-owner-occupier residential tax rates from 1 Jan 2024 (12% on first SGD 30k of Annual Value, 20% next 15k, 28% next 15k, 36% above 60k), re-expressed on property value",
+                "last_verified": "2026-10-12",
+                "note": "Derivation: Annual Value (AV) is the estimated gross annual rent, taken as 3.5% of value (assumptions.property.yield). Each AV threshold is divided by 0.035 (30,000 → 857,143; 45,000 → 1,285,714; 60,000 → 1,714,286) and each AV rate multiplied by 0.035 (12% → 0.42%, 20% → 0.70%, 28% → 0.98%, 36% → 1.26%). If the user changes the yield in the UI this schedule does not move."
+              }
+            },
+            "stack_on_other_income": false
+          },
+          "plain_english": "Singapore charges an annual property tax on the Annual Value, the rent the home could fetch in a year. For a rented-out home the rate is progressive from 12% to 36% of that rental value. On a SGD 1.3m property renting at 3.5% that is about SGD 6,700 a year, roughly 0.5% of value, rising as the value grows.",
+          "meta": {
+            "source": "https://www.iras.gov.sg/taxes/property-tax/property-owners/property-tax-rates",
+            "source_title": "IRAS — Property tax rates",
+            "last_verified": "2026-10-12",
+            "note": "Approximation: AV assumed equal to 3.5% of market value; IRAS assesses AV from comparable rents and it is typically a little below achievable rent."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "sellers_stamp_duty",
+          "label": "Seller's Stamp Duty (sold within 4 years)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.04 },
+          "modifiers": { "applies_until_years": 4 },
+          "plain_english": "Singapore has no capital gains tax, but selling residential property within 4 years of buying triggers Seller's Stamp Duty on the full sale price: 16% in year one, 12% in year two, 8% in year three and 4% in year four. After 4 years there is nothing to pay.",
+          "meta": {
+            "source": "https://www.iras.gov.sg/taxes/stamp-duty/for-property/selling-or-disposing-property/seller's-stamp-duty-(ssd)-for-residential-property",
+            "source_title": "IRAS — SSD for residential property acquired on or after 4 July 2025 (16% / 12% / 8% / 4% over 4 years; previously 12% / 8% / 4% over 3 years)",
+            "last_verified": "2026-10-12",
+            "note": "Simplification: the engine applies a single rate, so the 4th-year rate (4%) is used for any sale within 4 years. A 1-year horizon would really attract 16%. Holding period measured from the purchase date."
+          }
+        },
+        {
+          "id": "agent_fee",
+          "label": "Selling agent commission",
+          "stage": "egress",
+          "category": "cost",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.02 },
+          "plain_english": "Sellers in Singapore commonly pay their property agent around 2% of the sale price plus GST. The regulator sets no fixed rate, so it is negotiable, but it is a cost rather than a tax.",
+          "meta": {
+            "source": "https://www.cea.gov.sg/docs/default-source/consumers/commissions.pdf",
+            "source_title": "Council for Estate Agencies — Commissions (no fixed or standard rate; 2% assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption. GST on commission ignored."
+          }
+        }
+      ]
+    }
+  }
+}

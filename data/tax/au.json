@@ -1,0 +1,255 @@
+{
+  "country": "au",
+  "currency": "AUD",
+  "tax_year": "2025-26",
+  "jurisdiction_note": "Australian resident individual; property rules use New South Wales (transfer duty, land tax).",
+  "meta": {
+    "source": "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents",
+    "source_title": "ATO — Tax rates for Australian residents",
+    "last_verified": "2026-10-12"
+  },
+  "resident_profile": {
+    "other_income_options": [60000, 120000, 250000],
+    "meta": {
+      "source": "https://www.abs.gov.au/statistics/labour/earnings-and-working-conditions/employee-earnings/latest-release",
+      "source_title": "ABS Employee earnings — bands chosen around the median full-time wage",
+      "last_verified": "2026-10-12",
+      "note": "low ≈ median part-time/early career, mid ≈ above-median full-time, high ≈ top bracket."
+    }
+  },
+  "income_tax": {
+    "brackets": [
+      { "from": 0, "to": 18200, "rate": 0 },
+      { "from": 18200, "to": 45000, "rate": 0.16 },
+      { "from": 45000, "to": 135000, "rate": 0.30 },
+      { "from": 135000, "to": 190000, "rate": 0.37 },
+      { "from": 190000, "to": null, "rate": 0.45 }
+    ],
+    "meta": {
+      "source": "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents",
+      "source_title": "ATO — Resident tax rates 2024-25 and 2025-26",
+      "last_verified": "2026-10-12"
+    }
+  },
+  "levies": [
+    {
+      "id": "medicare_levy_income",
+      "label": "Medicare levy on investment income",
+      "stage": "growth",
+      "category": "tax",
+      "base": "income",
+      "kind": { "type": "flat", "rate": 0.02 },
+      "plain_english": "Australia adds a 2% Medicare levy on top of income tax. It applies to your dividends and net rent each year, just like salary.",
+      "meta": {
+        "source": "https://www.ato.gov.au/individuals-and-families/medicare-and-private-health-insurance/medicare-levy",
+        "source_title": "ATO — Medicare levy",
+        "last_verified": "2026-10-12",
+        "note": "Low-income reduction and Medicare levy surcharge ignored."
+      }
+    },
+    {
+      "id": "medicare_levy_gain",
+      "label": "Medicare levy on the taxable capital gain",
+      "stage": "egress",
+      "category": "tax",
+      "base": "gain",
+      "kind": { "type": "flat", "rate": 0.02 },
+      "modifiers": { "inclusion": 0.5, "min_holding_years": 1 },
+      "plain_english": "The discounted capital gain is part of your taxable income in the year you sell, so the 2% Medicare levy applies to it as well.",
+      "meta": {
+        "source": "https://www.ato.gov.au/individuals-and-families/medicare-and-private-health-insurance/medicare-levy",
+        "source_title": "ATO — Medicare levy",
+        "last_verified": "2026-10-12"
+      }
+    }
+  ],
+  "assets": {
+    "equities": {
+      "ingress": [
+        {
+          "id": "brokerage",
+          "label": "Brokerage on purchase",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0.001 },
+          "plain_english": "There is no stamp duty on ASX-listed shares or ETFs. A typical online broker charges about 0.1% to buy, which we treat as a cost rather than a tax.",
+          "meta": {
+            "source": "https://www.asx.com.au/investors/investment-tools-and-resources/fees-and-charges",
+            "source_title": "ASX — Fees and charges (brokerage is set by the broker; 0.1% assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "dividend_tax_franked",
+          "label": "Income tax on dividends (with franking credits)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "modifiers": { "imputation_credit_rate": 0.30 },
+          "plain_english": "Dividends are added to your other income and taxed at your marginal rate. Franked dividends come with a credit for the 30% company tax already paid, which is subtracted from your bill (and refunded if it exceeds it). Roughly 70% of ASX dividends are franked.",
+          "meta": {
+            "source": "https://www.ato.gov.au/individuals-and-families/investments-and-assets/investing-in-shares/dividends-and-franking-credits",
+            "source_title": "ATO — Dividends and franking credits",
+            "last_verified": "2026-10-12",
+            "note": "Franked fraction defaults to assumptions.equities.franked_fraction (0.7)."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "cgt_discount",
+          "label": "Capital gains tax (50% discount after 12 months)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "modifiers": { "inclusion": 0.5, "min_holding_years": 1 },
+          "plain_english": "Australia has no separate capital gains tax rate. When you sell, half of the gain (after holding for at least 12 months) is added to your income for that year and taxed at your marginal rate.",
+          "meta": {
+            "source": "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax/cgt-discount",
+            "source_title": "ATO — CGT discount",
+            "last_verified": "2026-10-12",
+            "note": "Whole gain assumed realised in one year; no staging of the sale."
+          }
+        }
+      ]
+    },
+    "property": {
+      "ingress": [
+        {
+          "id": "nsw_transfer_duty",
+          "label": "NSW transfer (stamp) duty",
+          "stage": "ingress",
+          "category": "tax",
+          "base": "principal",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 17000, "rate": 0.0125 },
+                { "from": 17000, "to": 36000, "rate": 0.015 },
+                { "from": 36000, "to": 97000, "rate": 0.0175 },
+                { "from": 97000, "to": 364000, "rate": 0.035 },
+                { "from": 364000, "to": 1212000, "rate": 0.045 },
+                { "from": 1212000, "to": 3636000, "rate": 0.055 },
+                { "from": 3636000, "to": null, "rate": 0.07 }
+              ],
+              "meta": {
+                "source": "https://www.revenue.nsw.gov.au/taxes-duties-levies-royalties/transfer-duty",
+                "source_title": "Revenue NSW — Transfer duty rates (thresholds indexed annually)",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": false
+          },
+          "plain_english": "Buying a property in NSW triggers transfer duty, a one-off state tax charged on a sliding scale of the purchase price. On a AUD 1.5m purchase it is roughly 4.5%, paid up front before the asset earns anything.",
+          "meta": {
+            "source": "https://www.revenue.nsw.gov.au/taxes-duties-levies-royalties/transfer-duty",
+            "source_title": "Revenue NSW — Transfer duty",
+            "last_verified": "2026-10-12",
+            "note": "Surcharge purchaser duty for foreign buyers not modelled."
+          }
+        },
+        {
+          "id": "conveyancing",
+          "label": "Conveyancing and registration",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "fixed", "amount": 3000 },
+          "plain_english": "Legal conveyancing and title registration fees on purchase, treated as a flat cost rather than a tax.",
+          "meta": {
+            "source": "https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/buying-property",
+            "source_title": "NSW Government — Buying property (fees vary; AUD 3,000 assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "rental_income_tax",
+          "label": "Income tax on net rent",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "plain_english": "Rent, after deducting running costs such as management fees, insurance and repairs, is added to your other income and taxed at your marginal rate every year.",
+          "meta": {
+            "source": "https://www.ato.gov.au/individuals-and-families/investments-and-assets/residential-rental-properties",
+            "source_title": "ATO — Residential rental properties",
+            "last_verified": "2026-10-12",
+            "note": "Depreciation and negative gearing not modelled; costs fixed at assumptions.property.cost_rate of gross rent."
+          }
+        },
+        {
+          "id": "nsw_land_tax",
+          "label": "NSW land tax",
+          "stage": "growth",
+          "category": "tax",
+          "base": "land_value",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 1075000, "rate": 0 },
+                { "from": 1075000, "to": 6571000, "rate": 0.016 },
+                { "from": 6571000, "to": null, "rate": 0.02 }
+              ],
+              "meta": {
+                "source": "https://www.revenue.nsw.gov.au/taxes-duties-levies-royalties/land-tax",
+                "source_title": "Revenue NSW — Land tax thresholds and rates (2025 tax year; thresholds frozen)",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": false
+          },
+          "plain_english": "Investment property in NSW attracts annual land tax on the unimproved land value above a threshold (AUD 1.075m in 2025). The land is assumed to be 60% of the property's value. A AUD 100 base charge is ignored.",
+          "meta": {
+            "source": "https://www.revenue.nsw.gov.au/taxes-duties-levies-royalties/land-tax",
+            "source_title": "Revenue NSW — Land tax",
+            "last_verified": "2026-10-12",
+            "note": "Council rates excluded (treated as part of running costs)."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "cgt_discount",
+          "label": "Capital gains tax (50% discount after 12 months)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "modifiers": { "inclusion": 0.5, "min_holding_years": 1 },
+          "plain_english": "When you sell an investment property held for more than 12 months, half of the gain is added to your income in the year of sale and taxed at your marginal rate. Stamp duty and purchase costs form part of the cost base.",
+          "meta": {
+            "source": "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax/cgt-discount",
+            "source_title": "ATO — CGT discount",
+            "last_verified": "2026-10-12"
+          }
+        },
+        {
+          "id": "agent_fee",
+          "label": "Selling agent commission",
+          "stage": "egress",
+          "category": "cost",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.02 },
+          "plain_english": "Real-estate agents in Sydney typically charge around 2% of the sale price. It is a cost, not a tax, but it still reduces what you walk away with.",
+          "meta": {
+            "source": "https://www.fairtrading.nsw.gov.au/housing-and-property/buying-and-selling-property/selling-a-property/selling-your-property",
+            "source_title": "NSW Fair Trading — Selling your property (commission is negotiable; 2% assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption."
+          }
+        }
+      ]
+    }
+  }
+}

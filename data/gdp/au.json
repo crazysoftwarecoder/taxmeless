@@ -1,0 +1,127 @@
+{
+  "country": "au",
+  "indicator": "GDP per capita (current US$), NY.GDP.PCAP.CD",
+  "unit": "USD",
+  "series": [
+    {
+      "year": 2000,
+      "value": 21909
+    },
+    {
+      "year": 2001,
+      "value": 19733.65
+    },
+    {
+      "year": 2002,
+      "value": 20335.1
+    },
+    {
+      "year": 2003,
+      "value": 23757.59
+    },
+    {
+      "year": 2004,
+      "value": 30886.05
+    },
+    {
+      "year": 2005,
+      "value": 34535.21
+    },
+    {
+      "year": 2006,
+      "value": 36658.82
+    },
+    {
+      "year": 2007,
+      "value": 41128.25
+    },
+    {
+      "year": 2008,
+      "value": 49811.21
+    },
+    {
+      "year": 2009,
+      "value": 42954.85
+    },
+    {
+      "year": 2010,
+      "value": 52313.89
+    },
+    {
+      "year": 2011,
+      "value": 62799.39
+    },
+    {
+      "year": 2012,
+      "value": 68301.44
+    },
+    {
+      "year": 2013,
+      "value": 68476.68
+    },
+    {
+      "year": 2014,
+      "value": 62817.21
+    },
+    {
+      "year": 2015,
+      "value": 56970.36
+    },
+    {
+      "year": 2016,
+      "value": 50084.44
+    },
+    {
+      "year": 2017,
+      "value": 54117.55
+    },
+    {
+      "year": 2018,
+      "value": 57410.17
+    },
+    {
+      "year": 2019,
+      "value": 55194.76
+    },
+    {
+      "year": 2020,
+      "value": 51983.45
+    },
+    {
+      "year": 2021,
+      "value": 60758.9
+    },
+    {
+      "year": 2022,
+      "value": 65169.52
+    },
+    {
+      "year": 2023,
+      "value": 65058.38
+    },
+    {
+      "year": 2024,
+      "value": 64609.99
+    },
+    {
+      "year": 2025,
+      "value": 65129.72
+    }
+  ],
+  "projection": {
+    "method": "cagr_last_10y",
+    "cagr": 0.0135,
+    "meta": {
+      "source": "https://api.worldbank.org/v2/country/AUS/indicator/NY.GDP.PCAP.CD?format=json&per_page=100",
+      "source_title": "World Bank WDI NY.GDP.PCAP.CD",
+      "last_verified": "2026-10-12",
+      "note": "CAGR computed from 2015 (56970.36) to 2025 (65129.72), 10 years."
+    }
+  },
+  "meta": {
+    "source": "https://api.worldbank.org/v2/country/AUS/indicator/NY.GDP.PCAP.CD?format=json&per_page=100",
+    "source_title": "World Bank WDI NY.GDP.PCAP.CD",
+    "last_verified": "2026-10-12",
+    "note": "World Bank API lastupdated 2026-10-08; 26 annual points 2000-2025, nulls dropped."
+  }
+}

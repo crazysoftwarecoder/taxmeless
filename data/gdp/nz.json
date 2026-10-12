@@ -1,0 +1,127 @@
+{
+  "country": "nz",
+  "indicator": "GDP per capita (current US$), NY.GDP.PCAP.CD",
+  "unit": "USD",
+  "series": [
+    {
+      "year": 2000,
+      "value": 13641.1
+    },
+    {
+      "year": 2001,
+      "value": 13882.86
+    },
+    {
+      "year": 2002,
+      "value": 16874.19
+    },
+    {
+      "year": 2003,
+      "value": 21913.71
+    },
+    {
+      "year": 2004,
+      "value": 25420.23
+    },
+    {
+      "year": 2005,
+      "value": 27751.07
+    },
+    {
+      "year": 2006,
+      "value": 26654.59
+    },
+    {
+      "year": 2007,
+      "value": 32479.98
+    },
+    {
+      "year": 2008,
+      "value": 31324.74
+    },
+    {
+      "year": 2009,
+      "value": 28276.73
+    },
+    {
+      "year": 2010,
+      "value": 33761.9
+    },
+    {
+      "year": 2011,
+      "value": 38425.83
+    },
+    {
+      "year": 2012,
+      "value": 40041.75
+    },
+    {
+      "year": 2013,
+      "value": 42984.96
+    },
+    {
+      "year": 2014,
+      "value": 44599.9
+    },
+    {
+      "year": 2015,
+      "value": 38648.73
+    },
+    {
+      "year": 2016,
+      "value": 40088.32
+    },
+    {
+      "year": 2017,
+      "value": 42912.15
+    },
+    {
+      "year": 2018,
+      "value": 43204.13
+    },
+    {
+      "year": 2019,
+      "value": 42872.27
+    },
+    {
+      "year": 2020,
+      "value": 42054.67
+    },
+    {
+      "year": 2021,
+      "value": 49902.15
+    },
+    {
+      "year": 2022,
+      "value": 49141.63
+    },
+    {
+      "year": 2023,
+      "value": 49302.34
+    },
+    {
+      "year": 2024,
+      "value": 49432.36
+    },
+    {
+      "year": 2025,
+      "value": 49591.04
+    }
+  ],
+  "projection": {
+    "method": "cagr_last_10y",
+    "cagr": 0.0252,
+    "meta": {
+      "source": "https://api.worldbank.org/v2/country/NZL/indicator/NY.GDP.PCAP.CD?format=json&per_page=100",
+      "source_title": "World Bank WDI NY.GDP.PCAP.CD",
+      "last_verified": "2026-10-12",
+      "note": "CAGR computed from 2015 (38648.73) to 2025 (49591.04), 10 years."
+    }
+  },
+  "meta": {
+    "source": "https://api.worldbank.org/v2/country/NZL/indicator/NY.GDP.PCAP.CD?format=json&per_page=100",
+    "source_title": "World Bank WDI NY.GDP.PCAP.CD",
+    "last_verified": "2026-10-12",
+    "note": "World Bank API lastupdated 2026-10-08; 26 annual points 2000-2025, nulls dropped."
+  }
+}

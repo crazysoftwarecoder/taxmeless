@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>taxmeless — where does a million dollars grow best after tax?</title>
+    <meta name="description" content="Simulate USD 1,000,000 invested for 10–25 years in 10 countries and see every tax at ingress, growth and egress, for equities and property." />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%232a78d6'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='white' font-family='system-ui'%3E$%3C/text%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="topbar">
+      <div class="brand">
+        <h1>taxmeless</h1>
+        <p>Where does a million dollars grow best <em>after tax</em>?</p>
+      </div>
+      <div class="actions">
+        <button id="copy-link" type="button" class="btn">Copy link</button>
+        <button id="theme-toggle" type="button" class="btn btn-icon" aria-label="Toggle colour theme" title="Toggle colour theme">◐</button>
+        <a class="btn btn-ghost" href="https://github.com/crazysoftwarecoder/taxmeless" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside id="inputs" class="sidebar" aria-label="Simulation inputs"></aside>
+
+      <main id="main" class="content">
+        <section class="card" aria-labelledby="h-summary">
+          <h2 id="h-summary">Where you end up</h2>
+          <p class="lede">Net worth after every tax and cost, from buying in to selling out. Click a row for the exit-tax breakdown.</p>
+          <div id="summary" class="summary-wrap"></div>
+        </section>
+
+        <section class="card" aria-labelledby="h-networth">
+          <h2 id="h-networth">Net worth over time</h2>
+          <p class="lede">Solid lines are after tax; the dashed grey line is the same money with no taxes at all. Click any point to see what was charged that year.</p>
+          <div id="networth-charts" class="networth"></div>
+        </section>
+
+        <section class="card" aria-labelledby="h-tax">
+          <h2 id="h-tax">Total tax by stage</h2>
+          <p class="lede">Ingress is paid when you buy, growth every year you hold, egress when you sell. Click a segment to see the rules behind it.</p>
+          <div id="tax-chart" class="chart chart-tall" role="img" aria-label="Total tax by stage per country"></div>
+        </section>
+
+        <section class="card" aria-labelledby="h-gdp">
+          <h2 id="h-gdp">How incomes rise: GDP per capita</h2>
+          <p class="lede" id="gdp-note"></p>
+          <div id="gdp-chart" class="chart" role="img" aria-label="GDP per capita now and projected"></div>
+        </section>
+
+        <section class="card" aria-labelledby="h-col">
+          <h2 id="h-col">What a family of four spends</h2>
+          <p class="lede" id="col-note"></p>
+          <div id="col-chart" class="chart chart-tall" role="img" aria-label="Annual cost of living for a family of four by country"></div>
+        </section>
+
+        <div id="footer"></div>
+      </main>
+    </div>
+
+    <div id="sheet-backdrop" class="backdrop"></div>
+    <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" aria-hidden="true" hidden>
+      <button id="sheet-close" type="button" class="btn btn-icon sheet-close" aria-label="Close">✕</button>
+      <div id="sheet-chart" class="chart" hidden></div>
+      <div id="sheet-body" class="sheet-body"></div>
+    </aside>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

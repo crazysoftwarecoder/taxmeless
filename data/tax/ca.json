@@ -1,0 +1,261 @@
+{
+  "country": "ca",
+  "currency": "CAD",
+  "tax_year": "2026",
+  "jurisdiction_note": "Canadian resident individual living in Ontario; income tax is the combined federal + Ontario schedule. Property rules use Toronto (Ontario land transfer tax plus Toronto municipal land transfer tax and Toronto property tax).",
+  "meta": {
+    "source": "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html",
+    "source_title": "CRA — Tax rates and income brackets for the 2026 tax return (federal and Ontario)",
+    "last_verified": "2026-10-12",
+    "note": "Income bands are gross salary; basic personal amounts are built into the combined schedule as 0% / reduced bands."
+  },
+  "resident_profile": {
+    "other_income_options": [60000, 120000, 300000],
+    "meta": {
+      "source": "https://www.statcan.gc.ca/en/subjects-start/income_pensions_spending_and_wealth/income",
+      "source_title": "Statistics Canada — Income statistics (median employment income of full-time workers ≈ CAD 60k)",
+      "last_verified": "2026-10-12",
+      "note": "low ≈ median full-year worker, mid ≈ well above median (surtax zone), high ≈ top combined bracket (53.53%)."
+    }
+  },
+  "income_tax": {
+    "brackets": [
+      { "from": 0, "to": 12989, "rate": 0 },
+      { "from": 12989, "to": 16452, "rate": 0.0505 },
+      { "from": 16452, "to": 53891, "rate": 0.1905 },
+      { "from": 53891, "to": 58523, "rate": 0.2315 },
+      { "from": 58523, "to": 94901, "rate": 0.2965 },
+      { "from": 94901, "to": 107785, "rate": 0.3148 },
+      { "from": 107785, "to": 111810, "rate": 0.3389 },
+      { "from": 111810, "to": 117045, "rate": 0.3791 },
+      { "from": 117045, "to": 150000, "rate": 0.4341 },
+      { "from": 150000, "to": 181440, "rate": 0.4497 },
+      { "from": 181440, "to": 220000, "rate": 0.4797 },
+      { "from": 220000, "to": 258482, "rate": 0.4953 },
+      { "from": 258482, "to": null, "rate": 0.5353 }
+    ],
+    "meta": {
+      "source": "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html",
+      "source_title": "CRA — 2026 federal (14/20.5/26/29/33% at 58,523/117,045/181,440/258,482) and Ontario (5.05/9.15/11.16/12.16/13.16% at 53,891/107,785/150,000/220,000) brackets; Ontario surtax 20% above CAD 5,818 and 36% above CAD 7,446 of basic Ontario tax (CRA T4127 January 2026)",
+      "last_verified": "2026-10-12",
+      "note": "Combined marginal schedule derived as federal rate + Ontario rate × (1 + surtax). Surtax kicks in at ≈ CAD 94,901 and ≈ CAD 111,810 of income (derived from the CAD 5,818 / 7,446 thresholds after the Ontario basic personal amount). Federal BPA CAD 16,452 and Ontario BPA ≈ CAD 12,989 (2025 CAD 12,747 indexed 1.9%) modelled as 0% / 5.05%-only bands. Federal BPA phase-down above CAD 181,440, the Ontario Health Premium (max CAD 900) and the Ontario tax reduction are ignored."
+    }
+  },
+  "levies": [],
+  "assets": {
+    "equities": {
+      "ingress": [],
+      "growth": [
+        {
+          "id": "eligible_dividend_tax",
+          "label": "Tax on eligible dividends (gross-up and dividend tax credit)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 58523, "rate": 0 },
+                { "from": 58523, "to": 94901, "rate": 0.0639 },
+                { "from": 94901, "to": 107785, "rate": 0.0892 },
+                { "from": 107785, "to": 111810, "rate": 0.1224 },
+                { "from": 111810, "to": 117045, "rate": 0.1779 },
+                { "from": 117045, "to": 150000, "rate": 0.2538 },
+                { "from": 150000, "to": 181440, "rate": 0.2753 },
+                { "from": 181440, "to": 220000, "rate": 0.3167 },
+                { "from": 220000, "to": 258482, "rate": 0.3382 },
+                { "from": 258482, "to": null, "rate": 0.3934 }
+              ],
+              "meta": {
+                "source": "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-d1/5000-d1-25e.pdf",
+                "source_title": "CRA Federal Worksheet line 40425 — federal dividend tax credit 15.0198% of the taxable (grossed-up) amount of eligible dividends; Ontario Worksheet ON428 line 61520 — Ontario credit 10% (https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5006-d/5006-d-25e.pdf)",
+                "last_verified": "2026-10-12",
+                "note": "Effective rate per bracket = 1.38 × combined ordinary marginal rate − 1.38 × (15.0198% + 10%) = 1.38 × rate − 34.53%. Top bracket: 1.38 × 53.53% − 34.53% = 39.34%, matching published 2026 Ontario tables. The Ontario credit is applied after surtax, which is why the surtax multiplies the Ontario rate but not the credit."
+              }
+            },
+            "stack_on_other_income": true
+          },
+          "plain_english": "Canadian dividends are 'grossed up' by 38% and taxed at your marginal rate, then a dividend tax credit (15.02% federal plus 10% Ontario of the grossed-up amount) is subtracted to reflect the corporate tax already paid. The net effect is a much lower rate than on salary: close to zero below about CAD 58,000 of income, rising to 39.34% in the top bracket.",
+          "meta": {
+            "source": "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-40425-federal-dividend-tax-credit.html",
+            "source_title": "CRA — Line 40425 federal dividend tax credit",
+            "last_verified": "2026-10-12",
+            "note": "Simplifications: (1) brackets are keyed on the cash dividend, not the 1.38× grossed-up amount, so a large dividend crosses brackets slightly later than it should; (2) the negative effective rate below ≈ CAD 58,523 (credit exceeds tax, which can offset tax on other income) is clamped to 0%; (3) all fund distributions assumed to be eligible Canadian dividends — a global index fund would pay foreign dividends taxed at full marginal rates."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "capital_gains",
+          "label": "Capital gains tax (50% inclusion)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "modifiers": { "inclusion": 0.5 },
+          "plain_english": "Canada has no separate capital gains rate. Half of the gain is added to your income in the year of sale and taxed at your combined federal and Ontario marginal rate, so the most you pay is 26.76% of the gain. There is no minimum holding period.",
+          "meta": {
+            "source": "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4037/capital-gains.html",
+            "source_title": "CRA Guide T4037 — Capital Gains (inclusion rate one-half; the proposed two-thirds rate was cancelled on 21 March 2025)",
+            "last_verified": "2026-10-12",
+            "note": "Whole gain realised in one year; TFSA/RRSP wrappers not modelled."
+          }
+        }
+      ]
+    },
+    "property": {
+      "ingress": [
+        {
+          "id": "ontario_land_transfer_tax",
+          "label": "Ontario land transfer tax",
+          "stage": "ingress",
+          "category": "tax",
+          "base": "principal",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 55000, "rate": 0.005 },
+                { "from": 55000, "to": 250000, "rate": 0.01 },
+                { "from": 250000, "to": 400000, "rate": 0.015 },
+                { "from": 400000, "to": 2000000, "rate": 0.02 },
+                { "from": 2000000, "to": null, "rate": 0.025 }
+              ],
+              "meta": {
+                "source": "https://www.ontario.ca/document/land-transfer-tax/calculating-land-transfer-tax",
+                "source_title": "Ontario Ministry of Finance — Calculating land transfer tax (one or two single-family residences)",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": false
+          },
+          "plain_english": "Ontario charges a provincial land transfer tax on every property purchase, on a sliding scale from 0.5% up to 2.5% on the part of the price above CAD 2m. On a CAD 1.37m house it is about CAD 24,000, paid at closing.",
+          "meta": {
+            "source": "https://www.ontario.ca/document/land-transfer-tax/calculating-land-transfer-tax",
+            "source_title": "Ontario Ministry of Finance — Land transfer tax",
+            "last_verified": "2026-10-12",
+            "note": "First-time-buyer refund and the 25% non-resident speculation tax not modelled (resident, investor)."
+          }
+        },
+        {
+          "id": "toronto_municipal_land_transfer_tax",
+          "label": "Toronto municipal land transfer tax",
+          "stage": "ingress",
+          "category": "tax",
+          "base": "principal",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 55000, "rate": 0.005 },
+                { "from": 55000, "to": 250000, "rate": 0.01 },
+                { "from": 250000, "to": 400000, "rate": 0.015 },
+                { "from": 400000, "to": 2000000, "rate": 0.02 },
+                { "from": 2000000, "to": 3000000, "rate": 0.025 },
+                { "from": 3000000, "to": 4000000, "rate": 0.044 },
+                { "from": 4000000, "to": 5000000, "rate": 0.0545 },
+                { "from": 5000000, "to": 10000000, "rate": 0.065 },
+                { "from": 10000000, "to": 20000000, "rate": 0.0755 },
+                { "from": 20000000, "to": null, "rate": 0.086 }
+              ],
+              "meta": {
+                "source": "https://www.toronto.ca/services-payments/property-taxes-utilities/municipal-land-transfer-tax-mltt/municipal-land-transfer-tax-mltt-rates-and-fees/",
+                "source_title": "City of Toronto — MLTT rates and fees (single-family residences; graduated rates above CAD 3m effective 1 April 2026)",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": false
+          },
+          "plain_english": "Buying inside the City of Toronto adds a second, municipal land transfer tax that mirrors the provincial one, so the two together take roughly 3.5% of a CAD 1.37m purchase. Toronto is the only Ontario municipality with its own transfer tax.",
+          "meta": {
+            "source": "https://www.toronto.ca/services-payments/property-taxes-utilities/municipal-land-transfer-tax-mltt/municipal-land-transfer-tax-mltt-rates-and-fees/",
+            "source_title": "City of Toronto — Municipal Land Transfer Tax",
+            "last_verified": "2026-10-12",
+            "note": "First-time-buyer rebate and the 10% municipal non-resident speculation tax not modelled. CAD 92.98 administration fee ignored."
+          }
+        },
+        {
+          "id": "legal_fees",
+          "label": "Legal fees and title insurance",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "fixed", "amount": 2500 },
+          "plain_english": "Real-estate lawyer fees, disbursements and title insurance on purchase, treated as a flat cost rather than a tax.",
+          "meta": {
+            "source": "https://www.ontario.ca/page/buying-home",
+            "source_title": "Ontario — Buying a home (fees vary; CAD 2,500 assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "rental_income_tax",
+          "label": "Income tax on net rent",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "plain_english": "Net rental income (rent minus expenses such as property tax, insurance, management and repairs) is added to your other income and taxed at your combined federal and Ontario marginal rate every year.",
+          "meta": {
+            "source": "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4036.html",
+            "source_title": "CRA Guide T4036 — Rental Income",
+            "last_verified": "2026-10-12",
+            "note": "Capital cost allowance (depreciation) not claimed, so no recapture on sale. Property tax is deductible in reality; that interaction with the property-tax rule below is not modelled. Costs fixed at assumptions.property.cost_rate of gross rent."
+          }
+        },
+        {
+          "id": "toronto_property_tax",
+          "label": "Toronto property tax",
+          "stage": "growth",
+          "category": "tax",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.00767 },
+          "plain_english": "Toronto's 2026 residential property tax is 0.767% of assessed value a year (0.605% city, 0.153% provincial education, 0.009% city building fund). Toronto has one of the lowest rates in Ontario because home values are high.",
+          "meta": {
+            "source": "https://www.toronto.ca/services-payments/property-taxes-utilities/property-tax/property-tax-rates-and-fees/",
+            "source_title": "City of Toronto — 2026 property tax rates (residential total 0.767311%)",
+            "last_verified": "2026-10-12",
+            "note": "Applied to market value; MPAC assessed values lag market and would normally be lower. No vacant-home tax (property is rented)."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "capital_gains",
+          "label": "Capital gains tax (50% inclusion)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "modifiers": { "inclusion": 0.5 },
+          "plain_english": "When you sell an investment property, half of the gain is added to your income in that year and taxed at your combined marginal rate (at most 26.76% of the gain). Land transfer taxes and legal fees form part of the cost base. The principal residence exemption does not apply to a rental.",
+          "meta": {
+            "source": "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4037/capital-gains.html",
+            "source_title": "CRA Guide T4037 — Capital Gains (inclusion rate one-half)",
+            "last_verified": "2026-10-12",
+            "note": "Whole gain realised in one year; no CCA recapture because CCA is not modelled."
+          }
+        },
+        {
+          "id": "agent_commission",
+          "label": "Selling agent commission",
+          "stage": "egress",
+          "category": "cost",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.045 },
+          "plain_english": "Toronto sellers typically pay a total commission of around 4–5% of the sale price, split between the listing and buyer's agents, plus HST on the commission. We assume 4.5% all-in. It is a cost, not a tax.",
+          "meta": {
+            "source": "https://www.reco.on.ca/",
+            "source_title": "Real Estate Council of Ontario (commissions are negotiable; 4.5% assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption; HST on commission folded into the rate."
+          }
+        }
+      ]
+    }
+  }
+}

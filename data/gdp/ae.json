@@ -1,0 +1,123 @@
+{
+  "country": "ae",
+  "indicator": "GDP per capita (current US$), NY.GDP.PCAP.CD",
+  "unit": "USD",
+  "series": [
+    {
+      "year": 2000,
+      "value": 29865.53
+    },
+    {
+      "year": 2001,
+      "value": 27745.17
+    },
+    {
+      "year": 2002,
+      "value": 27753.58
+    },
+    {
+      "year": 2003,
+      "value": 29659.57
+    },
+    {
+      "year": 2004,
+      "value": 33376.69
+    },
+    {
+      "year": 2005,
+      "value": 38719.31
+    },
+    {
+      "year": 2006,
+      "value": 44342.6
+    },
+    {
+      "year": 2007,
+      "value": 45854.74
+    },
+    {
+      "year": 2008,
+      "value": 50054.17
+    },
+    {
+      "year": 2009,
+      "value": 37803.07
+    },
+    {
+      "year": 2010,
+      "value": 44795.28
+    },
+    {
+      "year": 2011,
+      "value": 51921.89
+    },
+    {
+      "year": 2012,
+      "value": 53141.63
+    },
+    {
+      "year": 2013,
+      "value": 53247.23
+    },
+    {
+      "year": 2014,
+      "value": 52725.23
+    },
+    {
+      "year": 2015,
+      "value": 44910.35
+    },
+    {
+      "year": 2016,
+      "value": 42721.11
+    },
+    {
+      "year": 2017,
+      "value": 43733.62
+    },
+    {
+      "year": 2018,
+      "value": 47135.35
+    },
+    {
+      "year": 2019,
+      "value": 45938.61
+    },
+    {
+      "year": 2020,
+      "value": 37991.74
+    },
+    {
+      "year": 2021,
+      "value": 44118.49
+    },
+    {
+      "year": 2022,
+      "value": 50759.76
+    },
+    {
+      "year": 2023,
+      "value": 49850.69
+    },
+    {
+      "year": 2024,
+      "value": 50273.51
+    }
+  ],
+  "projection": {
+    "method": "cagr_last_10y",
+    "cagr": -0.0048,
+    "meta": {
+      "source": "https://api.worldbank.org/v2/country/ARE/indicator/NY.GDP.PCAP.CD?format=json&per_page=100",
+      "source_title": "World Bank WDI NY.GDP.PCAP.CD",
+      "last_verified": "2026-10-12",
+      "note": "CAGR computed from 2014 (52725.23) to 2024 (50273.51), 10 years."
+    }
+  },
+  "meta": {
+    "source": "https://api.worldbank.org/v2/country/ARE/indicator/NY.GDP.PCAP.CD?format=json&per_page=100",
+    "source_title": "World Bank WDI NY.GDP.PCAP.CD",
+    "last_verified": "2026-10-12",
+    "note": "World Bank API lastupdated 2026-10-08; 25 annual points 2000-2024, nulls dropped."
+  }
+}

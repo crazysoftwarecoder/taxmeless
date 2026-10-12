@@ -1,0 +1,105 @@
+{
+  "country": "ae",
+  "currency": "AED",
+  "tax_year": "2026",
+  "jurisdiction_note": "UAE resident individual; property rules use Dubai (Dubai Land Department fees). The UAE levies no personal income tax, no capital gains tax and no tax on dividends or rent for individuals, so the only taxes modelled are Dubai's 4% property transfer fee. Dubai's 5% municipality housing fee is charged to the occupier on their DEWA utility bill (the tenant for a rented home), not the landlord, so it is excluded. Building service charges are a running cost already covered by the property cost rate.",
+  "meta": {
+    "source": "https://u.ae/en/help/faqs/finance-and-investment",
+    "source_title": "UAE Government portal — Finance and investment FAQs (\"the UAE does not levy income tax on individuals\")",
+    "last_verified": "2026-10-12"
+  },
+  "resident_profile": {
+    "other_income_options": [120000, 240000, 600000],
+    "meta": {
+      "source": "https://u.ae/en/help/faqs/finance-and-investment",
+      "source_title": "UAE Government portal — no personal income tax, so salary bands never change the result",
+      "last_verified": "2026-10-12",
+      "note": "Illustrative bands of AED 10k / 20k / 50k a month (private surveys put the Dubai median near AED 14k a month; no official wage statistic was found). They have no effect on any tax because the income tax rate is 0%."
+    }
+  },
+  "income_tax": {
+    "brackets": [{ "from": 0, "to": null, "rate": 0 }],
+    "meta": {
+      "source": "https://u.ae/en/help/faqs/finance-and-investment",
+      "source_title": "UAE Government portal — \"No, the UAE does not levy income tax on individuals\"",
+      "last_verified": "2026-10-12",
+      "note": "Corporate tax (9%) applies only to businesses; 5% VAT applies to goods and services, not to residential property resale or share purchases."
+    }
+  },
+  "levies": [],
+  "assets": {
+    "equities": {
+      "ingress": [
+        {
+          "id": "brokerage",
+          "label": "Brokerage and exchange fees on purchase",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0.00275 },
+          "plain_english": "There is no stamp duty or tax on buying shares in the UAE. A trade on the Dubai Financial Market costs about 0.275% all-in: roughly 0.125% broker commission, 0.05% market fee, 0.05% to the securities regulator and 0.05% to the depository. We treat all of it as a cost, not a tax.",
+          "meta": {
+            "source": "https://emiratesnbdsecurities.com/en/schedule-of-fees",
+            "source_title": "Emirates NBD Securities — Schedule of fees for DFM trades (broker 0.125%, market 0.05%, SCA 0.05%, CDS 0.05%)",
+            "last_verified": "2026-10-12",
+            "note": "DFM's own tariff page could not be retrieved; a licensed broker's published schedule used instead. 5% VAT on broker and market fees ignored. An international index fund bought through a global broker would cost less (~0.1%)."
+          }
+        }
+      ],
+      "growth": [],
+      "egress": []
+    },
+    "property": {
+      "ingress": [
+        {
+          "id": "dld_transfer_fee",
+          "label": "Dubai Land Department transfer fee",
+          "stage": "ingress",
+          "category": "tax",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0.04 },
+          "plain_english": "Dubai has no stamp duty, but the Dubai Land Department charges 4% of the sale value to register a property transfer. The law splits it 2% seller and 2% buyer, yet in practice the buyer almost always pays the full 4%, which is how we model it.",
+          "meta": {
+            "source": "https://dubailand.gov.ae/en/eservices/property-sale-registration",
+            "source_title": "Dubai Land Department — Property sale registration (seller 2% + buyer 2% of sale value)",
+            "last_verified": "2026-10-12",
+            "note": "Full 4% attributed to the buyer per market practice. No annual property tax exists in Dubai."
+          }
+        },
+        {
+          "id": "dld_registration_fees",
+          "label": "Registration trustee, title deed and admin fees",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "fixed", "amount": 4700 },
+          "plain_english": "Fixed fees on top of the 4% transfer fee: AED 4,000 plus 5% VAT to the registration trustee office for a sale of AED 500,000 or more, AED 250 for the title deed, AED 225 for the map and AED 20 in knowledge and innovation fees, about AED 4,700 in total.",
+          "meta": {
+            "source": "https://dubailand.gov.ae/en/eservices/property-sale-registration",
+            "source_title": "Dubai Land Department — Property sale registration fees (service partner AED 4,000 + VAT; title deed AED 250; map AED 225; knowledge AED 10; innovation AED 10)",
+            "last_verified": "2026-10-12",
+            "note": "4,000 × 1.05 + 250 + 225 + 20 = 4,695, rounded to 4,700. Conveyancing is not required in Dubai; buyer's agent commission not included."
+          }
+        }
+      ],
+      "growth": [],
+      "egress": [
+        {
+          "id": "agent_fee",
+          "label": "Selling agent commission",
+          "stage": "egress",
+          "category": "cost",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.02 },
+          "plain_english": "Dubai brokers' fees are set by agreement under the brokerage by-law, and the customary rate for a resale is 2% of the sale price plus 5% VAT. It is a cost, not a tax, but it still reduces what you walk away with.",
+          "meta": {
+            "source": "https://dubailand.gov.ae/media/i31iv1n0/real_estate_brokerage_practice_guide_2024.pdf",
+            "source_title": "Dubai Land Department / RERA — Real estate brokerage practice guide 2024 (By-Law 85 of 2006: fee by agreement; 2% customary)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption. VAT on commission ignored. No exit tax, capital gains tax or seller's fee exists; the 2% seller share of the DLD fee is customarily borne by the buyer."
+          }
+        }
+      ]
+    }
+  }
+}

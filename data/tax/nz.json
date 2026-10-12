@@ -1,0 +1,160 @@
+{
+  "country": "nz",
+  "currency": "NZD",
+  "tax_year": "2025-26",
+  "jurisdiction_note": "New Zealand tax resident individual (1 April 2025 to 31 March 2026 rates). Property rules use Auckland for council rates. NZ has no general capital gains tax and no stamp duty; the only exit tax modelled is the 2-year bright-line test on residential property.",
+  "meta": {
+    "source": "https://www.ird.govt.nz/income-tax/income-tax-for-individuals/tax-codes-and-tax-rates-for-individuals/tax-rates-for-individuals",
+    "source_title": "Inland Revenue (IRD) — Tax rates for individuals",
+    "last_verified": "2026-10-12"
+  },
+  "resident_profile": {
+    "other_income_options": [55000, 100000, 200000],
+    "meta": {
+      "source": "https://www.stats.govt.nz/information-releases/labour-market-statistics-income-june-2025-quarter/",
+      "source_title": "Stats NZ — Labour market statistics (income): June 2025 quarter (median weekly wage and salary income ≈ NZD 1,340, ≈ NZD 70k a year)",
+      "last_verified": "2026-10-12",
+      "note": "low ≈ below-median wage earner, mid ≈ above-median full-time professional, high ≈ inside the 39% top bracket (over NZD 180,000)."
+    }
+  },
+  "income_tax": {
+    "brackets": [
+      { "from": 0, "to": 15600, "rate": 0.105 },
+      { "from": 15600, "to": 53500, "rate": 0.175 },
+      { "from": 53500, "to": 78100, "rate": 0.30 },
+      { "from": 78100, "to": 180000, "rate": 0.33 },
+      { "from": 180000, "to": null, "rate": 0.39 }
+    ],
+    "meta": {
+      "source": "https://www.ird.govt.nz/income-tax/income-tax-for-individuals/tax-codes-and-tax-rates-for-individuals/tax-rates-for-individuals",
+      "source_title": "IRD — Tax rates for individuals from 1 April 2025 (thresholds raised on 31 July 2024; 2024-25 used blended composite rates)",
+      "last_verified": "2026-10-12",
+      "note": "ACC earners' levy (1.67% up to NZD 152,790 in 2025-26) applies to salary only, not to investment income, so it is not modelled."
+    }
+  },
+  "levies": [],
+  "assets": {
+    "equities": {
+      "ingress": [
+        {
+          "id": "brokerage",
+          "label": "Brokerage on purchase",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0.001 },
+          "plain_english": "New Zealand has no stamp duty or transaction tax on buying shares or index funds. A typical online broker charges around 0.1% to buy, which we treat as a cost rather than a tax.",
+          "meta": {
+            "source": "https://www.nzx.com/services/nzx-participants",
+            "source_title": "NZX — Trading participants (brokerage is set by the broker; 0.1% assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption, consistent with the other countries."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "dividend_tax_imputed",
+          "label": "Income tax on dividends (with imputation credits)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "modifiers": { "imputation_credit_rate": 0.28 },
+          "plain_english": "Dividends are added to your other income and taxed at your marginal rate. Dividends from NZ companies usually carry imputation credits for the 28% company tax already paid, which are subtracted from your bill. For an index fund we assume about 70% of dividends carry credits.",
+          "meta": {
+            "source": "https://www.ird.govt.nz/pages/campaigns/income-tax/investment-income/dividends",
+            "source_title": "IRD — Dividends (worked example: NZD 100 dividend = NZD 72 cash + NZD 28 imputation credits; 33% RWT reduced by credits)",
+            "last_verified": "2026-10-12",
+            "note": "Simplifications: (1) In NZ, excess imputation credits are NOT refunded, they are carried forward (Taxation (Base Maintenance and Miscellaneous Provisions) Act 2005); this engine refunds them, which overstates the benefit for the low income band where the 17.5%/30% marginal rate is below 28%. (2) Imputed fraction defaults to assumptions.equities.franked_fraction (0.7). (3) A PIE fund would instead cap tax at the 28% prescribed investor rate; not modelled. (4) The FIF regime for foreign shares is not applied because NZ and most ASX-listed Australian shares are exempt from it."
+          }
+        }
+      ],
+      "egress": []
+    },
+    "property": {
+      "ingress": [
+        {
+          "id": "conveyancing",
+          "label": "Conveyancing and title registration",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "fixed", "amount": 2000 },
+          "plain_english": "New Zealand has no stamp duty or transfer tax on buying property. You still pay a lawyer or conveyancer to review the agreement, title and LIM report and to register the transfer with LINZ, roughly NZD 1,500 to 2,500.",
+          "meta": {
+            "source": "https://www.settled.govt.nz/blog/piles-of-paperwork-all-the-documentation-youll-come-across-when-buying-a-house/",
+            "source_title": "settled.govt.nz (Real Estate Authority) — paperwork and lawyer's role when buying (fees vary; NZD 2,000 assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption. LIM and building inspection reports not included."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "rental_income_tax",
+          "label": "Income tax on net rent",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "plain_english": "Rent, after deducting running costs such as management, insurance, repairs and council rates, is added to your other income and taxed at your marginal rate every year. There is no separate landlord tax.",
+          "meta": {
+            "source": "https://www.ird.govt.nz/property/renting-out-residential-property/residential-rental-income-and-paying-tax-on-it",
+            "source_title": "IRD — Residential rental income and paying tax on it",
+            "last_verified": "2026-10-12",
+            "note": "Interest deductibility rules are irrelevant because no leverage is modelled. Ring-fencing of rental losses not modelled (net rent is positive). Running costs fixed at assumptions.property.cost_rate of gross rent, and council rates are modelled separately below."
+          }
+        },
+        {
+          "id": "auckland_council_rates",
+          "label": "Auckland Council rates",
+          "stage": "growth",
+          "category": "tax",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.0029 },
+          "plain_english": "Every property owner pays annual rates to the local council, calculated mainly on the property's capital value. In Auckland the average residential bill for 2025/2026 is about NZD 4,070 on an average value of NZD 1.416m, roughly 0.29% of value each year.",
+          "meta": {
+            "source": "https://akhaveyoursay.aucklandcouncil.govt.nz/annual-plan-2025-2026/changes-rates-fees-charges",
+            "source_title": "Auckland Council — Annual Plan 2025/2026: changes to rates, fees and charges (average residential CV NZD 1,416,000; average rates NZD 4,068.06)",
+            "last_verified": "2026-10-12",
+            "note": "Derived as 4,068.06 / 1,416,000 = 0.287%, rounded to 0.29%. Actual rates include a fixed uniform annual general charge and targeted rates, so the effective percentage falls slightly for higher-value homes. No land tax exists in NZ."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "bright_line_test",
+          "label": "Bright-line test (sold within 2 years)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "modifiers": { "applies_until_years": 2 },
+          "plain_english": "New Zealand has no general capital gains tax, but if you sell residential property within 2 years of buying it, the profit is treated as income and taxed at your marginal rate. Hold for 2 years or more and the gain is tax free.",
+          "meta": {
+            "source": "https://www.ird.govt.nz/property/buying-and-selling/when-you-need-to-pay/the-brightline-test",
+            "source_title": "IRD — The bright-line test (2 years for sales on or after 1 July 2024)",
+            "last_verified": "2026-10-12",
+            "note": "Engine treats a sale at exactly 2 years as outside the test; IRD counts the end date falling within 2 years of the start date. Main-home exclusion and rollover relief not relevant to an investment property. Intention-based taxation (property bought to resell) not modelled."
+          }
+        },
+        {
+          "id": "agent_fee",
+          "label": "Selling agent commission",
+          "stage": "egress",
+          "category": "cost",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.03 },
+          "plain_english": "Real-estate agents in New Zealand typically charge a tiered commission that works out around 3% of the sale price on a higher-value home, plus GST. It is a cost, not a tax, but it still reduces what you walk away with.",
+          "meta": {
+            "source": "https://www.settled.govt.nz/selling-a-home/thinking-of-selling/thinking-about-your-finances-when-selling",
+            "source_title": "settled.govt.nz (Real Estate Authority) — Thinking about your finances when selling (commission is negotiable; 3% assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption. Typical structures are ~3.95% on the first NZD 400k then ~2% on the balance plus 15% GST, which is close to 3% all-in on a NZD 1.7m+ sale. Marketing costs excluded."
+          }
+        }
+      ]
+    }
+  }
+}

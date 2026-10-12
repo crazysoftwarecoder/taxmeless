@@ -1,0 +1,239 @@
+{
+  "country": "us",
+  "currency": "USD",
+  "tax_year": "2026",
+  "jurisdiction_note": "US resident individual filing as single; federal tax only, living in Texas, which has no state income tax. Property rules use Texas property tax and Texas title/closing costs.",
+  "meta": {
+    "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
+    "source_title": "IRS Rev. Proc. 2025-32 — 2026 inflation adjustments (tables 3 and section 3.03)",
+    "last_verified": "2026-10-12",
+    "note": "Income bands are treated as taxable income, i.e. after the USD 16,100 standard deduction for 2026."
+  },
+  "resident_profile": {
+    "other_income_options": [60000, 150000, 700000],
+    "meta": {
+      "source": "https://www.bls.gov/news.release/wkyeng.nr0.htm",
+      "source_title": "BLS — Usual weekly earnings of wage and salary workers (median full-time ≈ USD 62k/yr)",
+      "last_verified": "2026-10-12",
+      "note": "low ≈ median full-time earner, mid ≈ well above median (24% bracket), high ≈ top 37% bracket and 20% capital-gains bracket."
+    }
+  },
+  "income_tax": {
+    "brackets": [
+      { "from": 0, "to": 12400, "rate": 0.10 },
+      { "from": 12400, "to": 50400, "rate": 0.12 },
+      { "from": 50400, "to": 105700, "rate": 0.22 },
+      { "from": 105700, "to": 201775, "rate": 0.24 },
+      { "from": 201775, "to": 256225, "rate": 0.32 },
+      { "from": 256225, "to": 640600, "rate": 0.35 },
+      { "from": 640600, "to": null, "rate": 0.37 }
+    ],
+    "meta": {
+      "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
+      "source_title": "IRS Rev. Proc. 2025-32, Table 3 — Section 1(j)(2)(C) unmarried individuals, tax year 2026",
+      "last_verified": "2026-10-12",
+      "note": "Rates made permanent by the One Big Beautiful Bill Act (2025). Brackets apply to taxable income; the standard deduction is assumed already used against other income."
+    }
+  },
+  "levies": [
+    {
+      "id": "niit_income",
+      "label": "Net Investment Income Tax (3.8%) on dividends and net rent",
+      "stage": "growth",
+      "category": "tax",
+      "base": "income",
+      "kind": { "type": "flat", "rate": 0.038 },
+      "modifiers": { "applies_if_other_income_above": 200000 },
+      "plain_english": "If your income is above USD 200,000 (single), an extra 3.8% Medicare-style tax applies to investment income such as dividends and rental profit. It sits on top of the normal income or dividend tax. It does not apply at all if you are under the threshold.",
+      "meta": {
+        "source": "https://www.irs.gov/individuals/net-investment-income-tax",
+        "source_title": "IRS — Net Investment Income Tax (3.8%, USD 200,000 single threshold, not indexed)",
+        "last_verified": "2026-10-12",
+        "note": "Statutory test is the lesser of net investment income or MAGI above the threshold; we apply it to the whole investment income once other income exceeds USD 200,000."
+      }
+    },
+    {
+      "id": "niit_gain",
+      "label": "Net Investment Income Tax (3.8%) on the capital gain",
+      "stage": "egress",
+      "category": "tax",
+      "base": "gain",
+      "kind": { "type": "flat", "rate": 0.038 },
+      "modifiers": { "applies_if_other_income_above": 200000 },
+      "plain_english": "Capital gains count as net investment income, so the same 3.8% surtax applies to the gain when you sell if your income is above USD 200,000. It is charged in addition to the long-term capital gains rate.",
+      "meta": {
+        "source": "https://www.irs.gov/individuals/net-investment-income-tax",
+        "source_title": "IRS — Net Investment Income Tax",
+        "last_verified": "2026-10-12",
+        "note": "Whole gain realised in one year; threshold tested on the other-income band only, not on income plus the gain."
+      }
+    }
+  ],
+  "assets": {
+    "equities": {
+      "ingress": [],
+      "growth": [
+        {
+          "id": "qualified_dividend_tax",
+          "label": "Tax on qualified dividends (0% / 15% / 20%)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 49450, "rate": 0 },
+                { "from": 49450, "to": 545500, "rate": 0.15 },
+                { "from": 545500, "to": null, "rate": 0.20 }
+              ],
+              "meta": {
+                "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
+                "source_title": "IRS Rev. Proc. 2025-32, section 3.03 — maximum zero-rate (USD 49,450) and 15%-rate (USD 545,500) amounts, all other individuals, 2026",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": true
+          },
+          "plain_english": "Dividends from a US index fund are almost all 'qualified', so they are taxed at the lower capital-gains rates instead of ordinary rates. The dividends are stacked on top of your other income: 0% while your total stays under USD 49,450, 15% up to USD 545,500, and 20% above that.",
+          "meta": {
+            "source": "https://www.irs.gov/taxtopics/tc404",
+            "source_title": "IRS Topic 404 — Dividends (qualified dividends taxed at capital-gain rates)",
+            "last_verified": "2026-10-12",
+            "note": "100% of fund distributions assumed qualified; no state income tax in Texas."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "ltcg_equities",
+          "label": "Long-term capital gains tax (0% / 15% / 20%)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 49450, "rate": 0 },
+                { "from": 49450, "to": 545500, "rate": 0.15 },
+                { "from": 545500, "to": null, "rate": 0.20 }
+              ],
+              "meta": {
+                "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
+                "source_title": "IRS Rev. Proc. 2025-32, section 3.03 — 2026 capital gains rate thresholds, all other individuals",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": true
+          },
+          "plain_english": "When you sell fund units held for more than a year, the profit is a long-term capital gain. It is added on top of your other income and taxed at 0%, 15% or 20% depending on where it lands, far below ordinary rates. Texas adds no state tax.",
+          "meta": {
+            "source": "https://www.irs.gov/taxtopics/tc409",
+            "source_title": "IRS Topic 409 — Capital gains and losses",
+            "last_verified": "2026-10-12",
+            "note": "Short-term (held one year or less, ordinary rates) not modelled: the simulator always holds at least one year. Whole gain realised in one year."
+          }
+        }
+      ]
+    },
+    "property": {
+      "ingress": [
+        {
+          "id": "title_closing_costs",
+          "label": "Title insurance and closing costs",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0.0075 },
+          "plain_english": "Texas has no real-estate transfer tax or stamp duty. Buyers do pay a state-regulated title insurance premium (about USD 5,200 on a USD 1m purchase) plus escrow, recording and survey fees, which together we approximate at 0.75% of the price. These are costs, not taxes.",
+          "meta": {
+            "source": "https://www.tdi.texas.gov/title/titlerates2026.html",
+            "source_title": "Texas Department of Insurance — Title insurance basic premium rates effective 1 March 2026 (USD 5,226 on a USD 1,000,000 policy)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption: 0.52% title premium plus roughly 0.25% for escrow, recording, survey and lender-free closing fees."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "rental_income_tax",
+          "label": "Federal income tax on net rent",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "plain_english": "Rental profit (rent minus running costs) is ordinary income. It is added to your salary and taxed at your federal marginal rate each year. Texas has no state income tax, so nothing is added at state level.",
+          "meta": {
+            "source": "https://www.irs.gov/taxtopics/tc414",
+            "source_title": "IRS Topic 414 — Rental income and expenses",
+            "last_verified": "2026-10-12",
+            "note": "Depreciation deduction (27.5-year straight line) is ignored, which overstates the annual tax; its later recapture at 25% on sale is also ignored. Costs fixed at assumptions.property.cost_rate of gross rent."
+          }
+        },
+        {
+          "id": "texas_property_tax",
+          "label": "Texas property tax (local)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.018 },
+          "plain_english": "Texas has no income tax but high local property taxes levied by the school district, county, city and special districts. Statewide, 2025 levies came to about 1.86% of taxable value, so we charge 1.8% of the property's market value every year. Investment property gets no homestead exemption or appraisal cap.",
+          "meta": {
+            "source": "https://comptroller.texas.gov/taxes/property-tax/rates/index.php",
+            "source_title": "Texas Comptroller — 2025 property tax rates and levies datasets (statewide calculated levies USD 89.4bn ÷ county taxable value USD 4.8tn = 1.86%)",
+            "last_verified": "2026-10-12",
+            "note": "Derived statewide average; metro rates range roughly 1.6%–2.2%. Property tax is deductible against rental income in reality; that interaction is not modelled."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "ltcg_property",
+          "label": "Long-term capital gains tax on the property (0% / 15% / 20%)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 49450, "rate": 0 },
+                { "from": 49450, "to": 545500, "rate": 0.15 },
+                { "from": 545500, "to": null, "rate": 0.20 }
+              ],
+              "meta": {
+                "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
+                "source_title": "IRS Rev. Proc. 2025-32, section 3.03 — 2026 capital gains rate thresholds, all other individuals",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": true
+          },
+          "plain_english": "Selling an investment property held more than a year produces a long-term capital gain, taxed at 0%, 15% or 20% once stacked on your other income. Purchase closing costs are part of the cost base. Texas adds no state capital gains tax.",
+          "meta": {
+            "source": "https://www.irs.gov/taxtopics/tc409",
+            "source_title": "IRS Topic 409 — Capital gains and losses (25% rate on unrecaptured section 1250 gain)",
+            "last_verified": "2026-10-12",
+            "note": "Depreciation recapture (25% on depreciation previously claimed) is ignored because depreciation is not modelled; 1031 exchanges not modelled."
+          }
+        },
+        {
+          "id": "agent_commission",
+          "label": "Selling agent commission",
+          "stage": "egress",
+          "category": "cost",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.055 },
+          "plain_english": "US sellers have traditionally paid both agents' commissions, typically 5–6% of the sale price in Texas. Commissions are negotiable and have been drifting down since the 2024 NAR settlement, but 5.5% is still a realistic total.",
+          "meta": {
+            "source": "https://www.trec.texas.gov/",
+            "source_title": "Texas Real Estate Commission (commissions are negotiable; 5.5% assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption."
+          }
+        }
+      ]
+    }
+  }
+}

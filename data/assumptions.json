@@ -1,0 +1,27 @@
+{
+  "principal_usd": 1000000,
+  "horizon_years_default": 15,
+  "equities": {
+    "growth": 0.07,
+    "yield": 0.02,
+    "franked_fraction": 0.7,
+    "meta": {
+      "source": "https://www.msci.com/documents/10199/178e6643-6ae6-47b9-82be-e1fc565ededb",
+      "source_title": "Assumption: long-run developed-market equity total return ~9% split 7% price / 2% dividend",
+      "last_verified": "2026-10-12",
+      "note": "User-tweakable in the UI. franked_fraction only matters where a country has imputation credits."
+    }
+  },
+  "property": {
+    "growth": 0.05,
+    "yield": 0.035,
+    "cost_rate": 0.25,
+    "land_fraction": 0.6,
+    "meta": {
+      "source": "https://www.rba.gov.au/publications/bulletin/2024/jul/",
+      "source_title": "Assumption: long-run residential price growth ~5%, gross yield ~3.5%, 25% of rent to costs, 60% land share",
+      "last_verified": "2026-10-12",
+      "note": "No leverage, vacancy or depreciation modelled. Net rent is reinvested into the same asset."
+    }
+  }
+}
