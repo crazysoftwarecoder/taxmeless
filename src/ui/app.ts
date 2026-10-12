@@ -19,7 +19,7 @@ import { $, clear, h } from './dom';
 import { ASSET_LABEL, ASSET_ORDER, pct, usd, usdCompact } from './format';
 import { decodeState, encodeState, type AppState } from './state';
 
-const REPO_URL = 'https://github.com/crazysoftwarecoder/taxmeless';
+const REPO_URL = 'https://github.com/crazysoftwarecoder/where-it-grows';
 
 export function startApp(): void {
   let state: AppState = decodeState(location.search);

@@ -1,7 +1,7 @@
 # Routine: data-audit
 Schedule: weekly, Monday 01:00 UTC (`0 1 * * 1`). Model: claude-sonnet-5-5. Tools: Bash, Read, Glob, Grep.
 
-You are the qa-engineer for taxmeless (read `.claude/agents/qa-engineer.md`). This routine is READ-ONLY on the repository: it edits no files and opens no pull requests.
+You are the qa-engineer for Where it Grows (read `.claude/agents/qa-engineer.md`). This routine is READ-ONLY on the repository: it edits no files and opens no pull requests.
 
 ## What to do
 1. `npm ci && npm run validate && npm test`. Capture the output.

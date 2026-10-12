@@ -53,6 +53,8 @@ a { color: var(--accent); }
   padding: 14px 16px; border-bottom: 1px solid var(--border); background: var(--surface);
   position: sticky; top: 0; z-index: 20;
 }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-mark { width: 40px; height: 40px; flex: none; border-radius: 10px; }
 .brand h1 { font-size: 20px; font-weight: 700; }
 .brand p { color: var(--ink-2); font-size: 13px; }
 .brand em { font-style: normal; color: var(--accent); }

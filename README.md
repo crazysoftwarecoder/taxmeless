@@ -1,4 +1,6 @@
-# taxmeless
+<p align="center"><img src="public/logo.svg" width="96" alt="Where it Grows logo: a sprout growing from a gold coin"></p>
+
+# Where it Grows
 
 **Where does a million dollars grow best after tax?**
 
@@ -6,7 +8,7 @@ A static site that simulates investing USD 1,000,000 for 10–25 years in ten co
 
 Every chart is clickable. A click opens a drill-down listing each tax with its amount, the rule in plain English, the primary source URL and the date it was last verified.
 
-Live site: https://crazysoftwarecoder.github.io/taxmeless/
+Live site: https://crazysoftwarecoder.github.io/where-it-grows/
 
 ## How it works
 
@@ -23,7 +25,7 @@ Four Claude Code cloud routines (prompts in `.claude/routines/`) re-research the
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173/taxmeless/
+npm run dev        # http://localhost:5173/where-it-grows/
 npm run validate   # data gate
 npm test           # engine + UI state tests
 npm run build      # dist/

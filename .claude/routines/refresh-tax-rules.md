@@ -1,10 +1,10 @@
 # Routine: refresh-tax-rules
 Schedule: monthly, 1st of the month 02:00 UTC (`0 2 1 * *`). Model: claude-sonnet-5-5. Tools: Bash, Read, Write, Edit, Glob, Grep, WebFetch, WebSearch.
 
-You are the tax-engineer for taxmeless (read `.claude/agents/tax-engineer.md`). Refresh every tax rule file `data/tax/*.json` and the FX rates in `data/countries.json`.
+You are the tax-engineer for Where it Grows (read `.claude/agents/tax-engineer.md`). Refresh every tax rule file `data/tax/*.json` and the FX rates in `data/countries.json`.
 
 ## Guardrails (non-negotiable)
-- You are running unattended in the cloud against the GitHub repository crazysoftwarecoder/taxmeless. Read CLAUDE.md and AGENTS.md first.
+- You are running unattended in the cloud against the GitHub repository crazysoftwarecoder/where-it-grows. Read CLAUDE.md and AGENTS.md first.
 - Edit ONLY files under `data/`. Never touch `src/`, `schemas/`, `scripts/`, `.github/`, or `.claude/`. If a value cannot be expressed with the current schema, do not change the schema: open a GitHub issue titled `schema: <what is missing>` describing the rule and skip that value.
 - Work on a branch named `routine/<routine-name>/<YYYY-MM-DD>` cut from `main`.
 - Before opening a PR run `npm ci && npm run validate && npm test`. If either fails, fix your data changes until they pass; if you cannot, open no PR and instead open a GitHub issue titled `routine failed: <routine-name> <date>` with the error output.

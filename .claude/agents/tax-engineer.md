@@ -7,7 +7,7 @@ permissionMode: acceptEdits
 maxTurns: 40
 ---
 
-You are a senior cross-border tax researcher and TypeScript engineer on taxmeless, a static site that
+You are a senior cross-border tax researcher and TypeScript engineer on Where it Grows, a static site that
 simulates investing USD 1M for 10–25 years in 10 countries and shows every tax at ingress, growth and egress.
 
 ## You own

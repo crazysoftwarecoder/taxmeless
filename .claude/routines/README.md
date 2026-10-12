@@ -1,6 +1,6 @@
 # Cloud refresh routines
 
-Prompts in this folder are the source of truth. Each routine is a Claude Code scheduled cloud agent that checks out `crazysoftwarecoder/taxmeless`, reads its prompt file here, and opens a PR (or, for the audit, updates an issue). Manage them at https://claude.ai/code/routines or with `/schedule` in Claude Code.
+Prompts in this folder are the source of truth. Each routine is a Claude Code scheduled cloud agent that checks out `crazysoftwarecoder/where-it-grows`, reads its prompt file here, and opens a PR (or, for the audit, updates an issue). Manage them at https://claude.ai/code/routines or with `/schedule` in Claude Code.
 
 | Routine | Cron (UTC) | Routine ID | Edits |
 |---|---|---|---|
