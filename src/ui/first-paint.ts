@@ -4,7 +4,8 @@ import { availableCountries, dataset } from '../data/loader';
 import { compareAll } from '../engine/compare';
 import { deflateLedger } from '../engine/deflate';
 import { assignCountrySlots } from './charts/palette';
-import { inputsPanel } from './components/inputs-panel';
+import { createInputsPanel } from './components/inputs-panel';
+import { renderHero } from './components/hero';
 import { renderSummary } from './components/summary';
 import { $, clear } from './dom';
 import { decodeState, type AppState } from './state';
@@ -35,7 +36,10 @@ export function firstPaint(): void {
   if (state.real) ledgers = ledgers.map((l) => deflateLedger(l, state.infl / 100));
   const inputsHost = $('#inputs');
   clear(inputsHost);
-  inputsHost.append(inputsPanel(state, availableCountries, () => {}));
+  const panel = createInputsPanel(availableCountries, () => {});
+  inputsHost.append(panel.el);
+  panel.sync(state);
+  renderHero($('#hero'), ledgers, state, names);
   renderSummary($('#summary'), ledgers, state, names, () => {});
   // Reserve the space the net-worth charts will take so nothing shifts when the chart bundle arrives.
   const charts = new Set(ledgers.map((l) => l.asset)).size;

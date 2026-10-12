@@ -12,7 +12,8 @@ import { taxStackOption, type TaxStackMeta } from './charts/taxstack';
 import { assignCountrySlots, countryColor, echarts, isDark, mountChart } from './charts/theme';
 import { renderDrilldown, type DrillTarget } from './components/drilldown';
 import { freshnessFooter } from './components/freshness';
-import { inputsPanel } from './components/inputs-panel';
+import { createInputsPanel, type InputsPanel } from './components/inputs-panel';
+import { renderHero } from './components/hero';
 import { renderSummary as renderSummaryTables } from './components/summary';
 import { firstPaintInputs } from './first-paint';
 import { $, clear, h } from './dom';
@@ -64,9 +65,7 @@ export function startApp(): void {
       realNote: state.real ? `USD amounts are in today's dollars (${state.infl}% inflation removed); local-currency amounts are as charged in that year.` : undefined,
     });
     sheetChart.hidden = true;
-    sheet.hidden = false;
-    sheet.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('sheet-open');
+    showSheet();
     $('#sheet-close').focus();
     void t;
   }
@@ -94,21 +93,26 @@ export function startApp(): void {
         h('span', { class: 'verified' }, `verified ${g.meta.last_verified}`),
       ),
     );
-    sheet.hidden = false;
-    sheet.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('sheet-open');
+    showSheet();
     $('#sheet-close').focus();
     requestAnimationFrame(() => sheetChartInstance?.resize());
   }
 
+  function showSheet(): void {
+    sheet.classList.add('is-open');
+    sheet.removeAttribute('inert');
+    sheet.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('sheet-open');
+  }
   function closeSheet(): void {
-    sheet.hidden = true;
+    sheet.classList.remove('is-open');
+    sheet.setAttribute('inert', '');
     sheet.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('sheet-open');
   }
   $('#sheet-close').addEventListener('click', closeSheet);
   $('#sheet-backdrop').addEventListener('click', closeSheet);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) closeSheet(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sheet.classList.contains('is-open')) closeSheet(); });
 
   function renderSummary(): void {
     renderSummaryTables(summaryHost, ledgers, state, names, (country, asset) => openSheet({ country, asset, stage: 'egress' }));
@@ -157,14 +161,20 @@ export function startApp(): void {
     nwHost.style.minHeight = '';
   }
 
+  let panel: InputsPanel | undefined;
   function render(): void {
     history.replaceState(null, '', `${location.pathname}${encodeState(state)}`);
     assignCountrySlots(state.countries);
-    clear(inputsHost);
-    inputsHost.append(inputsPanel(state, availableCountries, (patch) => { state = { ...state, ...patch }; render(); }));
+    if (!panel) {
+      panel = createInputsPanel(availableCountries, (patch) => { state = { ...state, ...patch }; render(); });
+      clear(inputsHost);
+      inputsHost.append(panel.el);
+    }
+    panel.sync(state);
 
     ledgers = compareAll(inputs(), dataset);
     if (state.real) ledgers = ledgers.map((l) => deflateLedger(l, state.infl / 100));
+    renderHero($('#hero'), ledgers, state, names);
     renderSummary();
     renderNetworth();
     taxChart.setOption(taxStackOption(ledgers, names), { notMerge: true });

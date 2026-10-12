@@ -17,8 +17,8 @@ export function isDark(): boolean {
 }
 
 export const chrome = () => (isDark()
-  ? { surface: '#1a1a19', ink: '#f0efec', ink2: '#c3c2b7', muted: '#898781', grid: '#2c2c2a', axis: '#383835', series: SERIES_DARK }
-  : { surface: '#fcfcfb', ink: '#0b0b0b', ink2: '#52514e', muted: '#898781', grid: '#e1e0d9', axis: '#c3c2b7', series: SERIES_LIGHT });
+  ? { surface: '#0f1b15', ink: '#eef2ea', ink2: '#b9c6bd', muted: '#93a39a', grid: '#1d2c24', axis: '#2c3d34', series: SERIES_DARK }
+  : { surface: '#fffdf8', ink: '#13241c', ink2: '#44554c', muted: '#5f6d65', grid: '#ece6d9', axis: '#cfc7b5', series: SERIES_LIGHT });
 
 /**
  * Stable colour slots for the current selection: a country keeps its slot while selected, prefers its home slot,

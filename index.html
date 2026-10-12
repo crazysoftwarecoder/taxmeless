@@ -29,6 +29,7 @@
       <aside id="inputs" class="sidebar" aria-label="Simulation inputs"></aside>
 
       <main id="main" class="content">
+        <section id="hero" class="hero" aria-live="polite"></section>
         <section class="card" aria-labelledby="h-summary">
           <h2 id="h-summary">Where you end up</h2>
           <p class="lede">Net worth after every tax and cost, from buying in to selling out. Click a row for the exit-tax breakdown.</p>
@@ -68,7 +69,7 @@
     </div>
 
     <div id="sheet-backdrop" class="backdrop"></div>
-    <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" aria-hidden="true" hidden>
+    <aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Tax details" aria-hidden="true" inert>
       <button id="sheet-close" type="button" class="btn btn-icon sheet-close" aria-label="Close">✕</button>
       <div id="sheet-chart" class="chart" hidden></div>
       <div id="sheet-body" class="sheet-body"></div>

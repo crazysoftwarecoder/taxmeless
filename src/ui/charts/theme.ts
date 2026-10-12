@@ -14,7 +14,7 @@ export const baseOption = () => {
   const c = chrome();
   return {
     backgroundColor: 'transparent',
-    textStyle: { fontFamily: 'system-ui, -apple-system, "Segoe UI", sans-serif', color: c.ink2 },
+    textStyle: { fontFamily: '"Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif', color: c.ink2 },
     animationDuration: 300,
     grid: { left: 8, right: 16, top: 36, bottom: 8, containLabel: true },
     tooltip: {
@@ -23,7 +23,7 @@ export const baseOption = () => {
       backgroundColor: c.surface,
       borderColor: c.grid,
       textStyle: { color: c.ink, fontSize: 12 },
-      extraCssText: 'box-shadow: 0 4px 16px rgba(0,0,0,.12); border-radius: 8px;',
+      extraCssText: 'box-shadow: 0 12px 32px -12px rgba(19,36,28,.35); border-radius: 12px; padding: 10px 12px;',
     },
     legend: { type: 'scroll' as const, top: 0, left: 0, right: 0, icon: 'roundRect', pageIconColor: c.ink2, pageIconInactiveColor: c.axis, pageTextStyle: { color: c.muted }, itemWidth: 12, itemHeight: 12, textStyle: { color: c.ink2 } },
     axisStyle: {
