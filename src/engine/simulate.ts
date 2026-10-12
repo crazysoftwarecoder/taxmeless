@@ -35,7 +35,8 @@ interface PathYear {
   events: TaxEvent[];
 }
 
-const usesIncomeTaxRef = (r: Rule) => r.kind.type === 'schedule' && '$ref' in r.kind.schedule && r.kind.stack_on_other_income;
+/** Rules whose base is stacked on top of other income; each one stacks on the previous ones in the same year. */
+const stacks = (r: Rule) => r.kind.type === 'schedule' && r.kind.stack_on_other_income;
 
 /**
  * Simulate one country × one asset. Pure and deterministic.
@@ -68,6 +69,7 @@ export function simulate(inputs: SimInputs, tax: TaxFile, asset: Asset, assumpti
     return t;
   };
 
+  const stackLog: { growth: number[]; egress: number[] } = { growth: [], egress: [] };
   const runPath = (taxesOn: boolean): PathResult => {
     const years: PathYear[] = [];
     // Per-year asset history (pre-egress) used to split gains by accrual date.
@@ -111,15 +113,18 @@ export function simulate(inputs: SimInputs, tax: TaxFile, asset: Asset, assumpti
         fx,
       };
       const out: TaxEvent[] = [];
-      let stacked = 0; // taxable amounts already stacked on the income-tax schedule this stage-year
+      const offset = stage === 'growth' ? (inputs.incomeStackOffset?.growth?.[year] ?? 0)
+        : stage === 'egress' ? (inputs.incomeStackOffset?.egress ?? 0) : 0;
+      let stacked = 0; // taxable amounts this holding stacked this stage-year
       for (const r of rulesFor(stage, taxesOn)) {
-        const ref = usesIncomeTaxRef(r);
-        const ev = applyRule(r, ref ? { ...base, otherIncome: otherIncome + stacked } : base);
+        const st = stacks(r);
+        const ev = applyRule(r, st ? { ...base, otherIncome: otherIncome + offset + stacked } : base);
         if (ev) {
           out.push(ev);
-          if (ref) stacked += ev.taxable;
+          if (st) stacked += ev.taxable;
         }
       }
+      if (taxesOn && stage !== 'ingress') stackLog[stage][year] = stacked;
       return out;
     };
     const sum = (evs: TaxEvent[]) => evs.reduce((a, e) => a + e.amount, 0);
@@ -246,6 +251,7 @@ export function simulate(inputs: SimInputs, tax: TaxFile, asset: Asset, assumpti
       events: n.events,
       grossValueUsd: (gross[i]?.closing ?? 0) / fx,
       netValueUsd: n.closing / fx,
+      stackedLocal: { growth: stackLog.growth[i] ?? 0, egress: stackLog.egress[i] ?? 0 },
     };
   });
 

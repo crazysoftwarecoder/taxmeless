@@ -16,6 +16,7 @@ export interface AppState {
   prYield: number;
   prCost: number;
   lvr: number; // percent
+  alloc: number; // percent of capital in equities when asset = both
   rate: number; // mortgage rate, percent
   income: IncomeBand;
   real: boolean;
@@ -33,6 +34,7 @@ export const DEFAULT_STATE: AppState = {
   prYield: 3.5,
   prCost: 25,
   lvr: 0,
+  alloc: 50,
   rate: 6,
   income: 'mid',
   real: false,
@@ -52,6 +54,7 @@ const StateSchema = z.object({
   py: num(0, 20, DEFAULT_STATE.prYield),
   pc: num(0, 90, DEFAULT_STATE.prCost),
   lv: num(0, 90, DEFAULT_STATE.lvr),
+  al: num(0, 100, DEFAULT_STATE.alloc),
   mr: num(0, 25, DEFAULT_STATE.rate),
   inc: z.enum(['low', 'mid', 'high']).catch(DEFAULT_STATE.income),
   rt: z.enum(['0', '1']).catch('0'),
@@ -67,7 +70,7 @@ export function decodeState(search: string): AppState {
     principal: s.p,
     countries: countries.length ? countries : DEFAULT_STATE.countries,
     asset: s.a,
-    eqGrowth: s.eg, eqYield: s.ey, prGrowth: s.pg, prYield: s.py, prCost: s.pc, lvr: s.lv, rate: s.mr,
+    eqGrowth: s.eg, eqYield: s.ey, prGrowth: s.pg, prYield: s.py, prCost: s.pc, lvr: s.lv, rate: s.mr, alloc: Math.round(s.al),
     income: s.inc,
     real: s.rt === '1',
     infl: s.inf,
@@ -87,6 +90,7 @@ export function encodeState(s: AppState): string {
   put('py', s.prYield, DEFAULT_STATE.prYield);
   put('pc', s.prCost, DEFAULT_STATE.prCost);
   put('lv', s.lvr, DEFAULT_STATE.lvr);
+  put('al', s.alloc, DEFAULT_STATE.alloc);
   put('mr', s.rate, DEFAULT_STATE.rate);
   put('inc', s.income, DEFAULT_STATE.income);
   put('rt', s.real ? 1 : 0, 0);

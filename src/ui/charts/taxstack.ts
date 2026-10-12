@@ -6,10 +6,13 @@ import { baseOption, chrome, STAGE_SLOT } from './theme';
 
 export interface TaxStackMeta { country: CountryCode; asset: Ledger['asset']; stage: Stage }
 
+const parts = (ls: Ledger[]) => ls.filter((l) => l.asset !== 'portfolio');
+
 const STAGES: Stage[] = ['ingress', 'growth', 'egress'];
 
 /** Total tax by stage, one stacked bar per (country, asset). */
-export function taxStackOption(ledgers: Ledger[], names: Record<CountryCode, string>): EChartsCoreOption {
+export function taxStackOption(all: Ledger[], names: Record<CountryCode, string>): EChartsCoreOption {
+  const ledgers = parts(all);
   const b = baseOption();
   const c = chrome();
   const assets = [...new Set(ledgers.map((l) => l.asset))];

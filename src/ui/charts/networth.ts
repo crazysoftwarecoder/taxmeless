@@ -1,13 +1,13 @@
 import type { EChartsCoreOption } from 'echarts/core';
-import type { Asset, CountryCode } from '../../../schemas';
-import type { Ledger } from '../../engine/types';
+import type { CountryCode } from '../../../schemas';
+import type { Ledger, LedgerAsset } from '../../engine/types';
 import { usdCompact } from '../format';
 import { baseOption, chrome, countryColor } from './theme';
 
-export interface NetworthSeriesMeta { country: CountryCode; asset: Asset }
+export interface NetworthSeriesMeta { country: CountryCode; asset: LedgerAsset }
 
 /** Net value per country for one asset, plus one dashed untaxed benchmark (gross path of the first ledger). */
-export function networthOption(ledgers: Ledger[], asset: Asset, names: Record<CountryCode, string>, compact = false): EChartsCoreOption {
+export function networthOption(ledgers: Ledger[], asset: LedgerAsset, names: Record<CountryCode, string>, compact = false): EChartsCoreOption {
   const b = baseOption();
   const c = chrome();
   const rows = ledgers.filter((l) => l.asset === asset);

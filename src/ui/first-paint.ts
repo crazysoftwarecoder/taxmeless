@@ -13,6 +13,7 @@ export function firstPaintInputs(state: AppState): Parameters<typeof compareAll>
   return {
     countries: state.countries,
     asset: state.asset,
+    allocation: state.alloc / 100,
     horizonYears: state.horizon,
     principalUsd: state.principal,
     equities: { growth: state.eqGrowth / 100, yield: state.eqYield / 100 },
@@ -37,7 +38,8 @@ export function firstPaint(): void {
   inputsHost.append(inputsPanel(state, availableCountries, () => {}));
   renderSummary($('#summary'), ledgers, state, names, () => {});
   // Reserve the space the net-worth charts will take so nothing shifts when the chart bundle arrives.
-  const panels = state.asset === 'both' && !matchMedia('(min-width: 1200px)').matches ? 2 : 1;
-  $('#networth-charts').style.minHeight = `${panels * 360 + (panels - 1) * 16}px`;
+  const charts = new Set(ledgers.map((l) => l.asset)).size;
+  const rowsOfCharts = matchMedia('(min-width: 1200px)').matches ? (charts === 3 ? 2 : 1) : charts;
+  $('#networth-charts').style.minHeight = `${rowsOfCharts * 360 + (rowsOfCharts - 1) * 16}px`;
   document.body.classList.remove('booting');
 }

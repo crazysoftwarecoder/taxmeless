@@ -1,9 +1,9 @@
-import type { Asset, CountryCode, Stage } from '../../../schemas';
-import type { Ledger, TaxEvent } from '../../engine/types';
+import type { CountryCode, Stage } from '../../../schemas';
+import type { Ledger, LedgerAsset, TaxEvent } from '../../engine/types';
 import { clear, h } from '../dom';
 import { ASSET_LABEL, local, pct, STAGE_LABEL, usd } from '../format';
 
-export interface DrillTarget { country: CountryCode; asset: Asset; year?: number; stage?: Stage }
+export interface DrillTarget { country: CountryCode; asset: LedgerAsset; year?: number; stage?: Stage }
 
 export interface DrilldownCtx {
   names: Record<CountryCode, string>;

@@ -136,7 +136,10 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .chart { width: 100%; height: 280px; min-width: 0; overflow: hidden; }
 .chart-tall { height: 340px; }
 .networth { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 1200px) { .networth.two-up { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+@media (min-width: 1200px) {
+  .networth.two-up, .networth.three-up { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .networth.three-up > :first-child { grid-column: 1 / -1; }
+}
 .chart-panel { min-width: 0; }
 .chart-panel h3 { font-size: 13px; color: var(--ink-2); font-weight: 500; margin-bottom: 4px; }
 
@@ -196,3 +199,7 @@ body.sheet-open .content .chart > div:not(:first-child) { visibility: hidden !im
 
 /* Hide the layout until the first synchronous render so nothing visibly shifts. */
 .booting .layout { visibility: hidden; }
+
+.alloc { display: grid; gap: 4px; margin: 4px 0 10px; font-size: 12px; color: var(--ink-2); }
+.alloc input[type=range] { width: 100%; accent-color: var(--accent); }
+.alloc-value { font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: pre; }

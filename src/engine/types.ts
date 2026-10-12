@@ -1,6 +1,8 @@
 import type { Asset, Base, CountryCode, Meta, Stage } from '../../schemas';
 
 export type IncomeBand = 'low' | 'mid' | 'high';
+/** A ledger is one asset, or the combined portfolio of both. */
+export type LedgerAsset = Asset | 'portfolio';
 export const INCOME_BAND_INDEX: Record<IncomeBand, 0 | 1 | 2> = { low: 0, mid: 1, high: 2 };
 
 export interface SimInputs {
@@ -13,6 +15,11 @@ export interface SimInputs {
   startDate?: string;
   /** Annual CPI used for cost-base indexation. Defaults to 0.025. */
   inflation?: number;
+  /**
+   * Taxable income (local currency) already stacked on the taxpayer's other income by another holding in the
+   * same year, e.g. the equities half of a portfolio. growth is indexed by year; egress applies in the sale year.
+   */
+  incomeStackOffset?: { growth?: number[]; egress?: number };
 }
 
 /** One application of one rule in one year. Amounts: `amount` local currency, `amountUsd` converted. */
@@ -51,11 +58,13 @@ export interface YearRow {
   /** Counterfactual with cost rules only, no tax rules. */
   grossValueUsd: number;
   netValueUsd: number;
+  /** Taxable amounts this holding stacked on other income (local currency), for portfolio stacking. */
+  stackedLocal: { growth: number; egress: number };
 }
 
 export interface Ledger {
   country: CountryCode;
-  asset: Asset;
+  asset: LedgerAsset;
   currency: string;
   /** Local currency units per USD. */
   fx: number;

@@ -4,3 +4,4 @@ export * from './simulate';
 export * from './compare';
 export * from './projections';
 export * from './deflate';
+export * from './combine';

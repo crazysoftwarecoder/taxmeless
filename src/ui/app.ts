@@ -3,7 +3,7 @@ import { compareAll, fxFor } from '../engine/compare';
 import { deflateLedger } from '../engine/deflate';
 import { COL_CATEGORY_KEYS } from '../../schemas';
 import { dataTable } from './components/data-table';
-import type { Ledger } from '../engine/types';
+import type { Ledger, LedgerAsset } from '../engine/types';
 import { availableCountries, dataset } from '../data/loader';
 import { COL_LABEL, colBars, colOption, type ColBar } from './charts/col';
 import { gdpBars, gdpHistoryOption, gdpOption, type GdpBar } from './charts/gdp';
@@ -16,7 +16,7 @@ import { inputsPanel } from './components/inputs-panel';
 import { renderSummary as renderSummaryTables } from './components/summary';
 import { firstPaintInputs } from './first-paint';
 import { $, clear, h } from './dom';
-import { ASSET_LABEL, pct, usd, usdCompact } from './format';
+import { ASSET_LABEL, ASSET_ORDER, pct, usd, usdCompact } from './format';
 import { decodeState, encodeState, type AppState } from './state';
 
 const REPO_URL = 'https://github.com/crazysoftwarecoder/taxmeless';
@@ -39,7 +39,7 @@ export function startApp(): void {
   const sheet = $('#sheet');
   const sheetBody = $('#sheet-body');
   const sheetChart = $('#sheet-chart');
-  const nwCharts = new Map<Asset, echarts.ECharts>();
+  const nwCharts = new Map<LedgerAsset, echarts.ECharts>();
   let ledgers: Ledger[] = [];
 
   $('#footer').append(freshnessFooter(dataset, REPO_URL));
@@ -116,7 +116,7 @@ export function startApp(): void {
 
 
   function renderNetworth(): void {
-    const assets: Asset[] = state.asset === 'both' ? ['equities', 'property'] : [state.asset];
+    const assets: LedgerAsset[] = ASSET_ORDER.filter((a) => ledgers.some((l) => l.asset === a));
     // Create or remove per-asset chart panels.
     for (const [asset, chart] of nwCharts) {
       if (!assets.includes(asset)) { chart.dispose(); nwCharts.delete(asset); nwHost.querySelector(`[data-asset="${asset}"]`)?.remove(); }
@@ -150,7 +150,10 @@ export function startApp(): void {
       const t = nwHost.querySelector(`[data-asset="${asset}"] h3`);
       if (t) t.textContent = `${ASSET_LABEL[asset]} · net worth after tax${state.real ? " (today's dollars)" : ''}`;
     }
+    // Keep panels in display order (portfolio first).
+    for (const asset of assets) { const el = nwHost.querySelector(`[data-asset="${asset}"]`); if (el) nwHost.append(el); }
     nwHost.classList.toggle('two-up', assets.length === 2);
+    nwHost.classList.toggle('three-up', assets.length === 3);
     nwHost.style.minHeight = '';
   }
 
@@ -191,7 +194,7 @@ export function startApp(): void {
   let lastCol: ColBar[] = [];
   const tableBuilders: Record<string, () => HTMLElement> = {
     networth: () => {
-      const assets: Asset[] = state.asset === 'both' ? ['equities', 'property'] : [state.asset];
+      const assets: LedgerAsset[] = ASSET_ORDER.filter((a) => ledgers.some((l) => l.asset === a));
       const wrap = h('div', { class: 'tables' });
       for (const asset of assets) {
         const ls = ledgers.filter((l) => l.asset === asset);
@@ -207,7 +210,7 @@ export function startApp(): void {
     tax: () => dataTable(
       `Total tax by stage over ${state.horizon} years${state.real ? " (today's dollars)" : ''}`,
       ['Country', 'Asset', 'Ingress', 'Growth', 'Egress', 'Total tax', 'Costs'],
-      ledgers.map((l) => [names[l.country], ASSET_LABEL[l.asset], usd(l.totalsUsd.taxes.ingress), usd(l.totalsUsd.taxes.growth), usd(l.totalsUsd.taxes.egress), usd(l.totalsUsd.taxes.all), usd(l.totalsUsd.costs.all)]),
+      ledgers.filter((l) => l.asset !== 'portfolio').map((l) => [names[l.country], ASSET_LABEL[l.asset], usd(l.totalsUsd.taxes.ingress), usd(l.totalsUsd.taxes.growth), usd(l.totalsUsd.taxes.egress), usd(l.totalsUsd.taxes.all), usd(l.totalsUsd.costs.all)]),
     ),
     gdp: () => dataTable(
       'GDP per capita (current USD)',

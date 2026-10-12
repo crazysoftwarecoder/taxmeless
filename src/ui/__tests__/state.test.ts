@@ -22,6 +22,11 @@ describe('url state codec', () => {
     expect(decodeState(q).lvr).toBe(60);
     expect(decodeState('?lv=150').lvr).toBe(0);
   });
+  it('round-trips the allocation', () => {
+    expect(encodeState({ ...DEFAULT_STATE, alloc: 70 })).toBe('?al=70');
+    expect(decodeState('?al=70').alloc).toBe(70);
+    expect(decodeState('?al=140').alloc).toBe(50);
+  });
   it('caps the number of countries', () => {
     const d = decodeState('?c=au,us,uk,ca,nz,sg,ae,de,ch,in');
     expect(d.countries).toHaveLength(8);

@@ -79,6 +79,7 @@ export function inputsPanel(
     h('section', { class: 'group' },
       h('h2', null, 'Asset'),
       seg('Asset', state.asset, [{ value: 'both', label: 'Both' }, { value: 'equities', label: 'Equities' }, { value: 'property', label: 'Property' }], 'asset'),
+      state.asset === 'both' ? allocationSlider(state, onChange) : null,
       state.asset !== 'property' ? h('div', { class: 'row' },
         numField('Equity growth', 'eqGrowth', { min: -20, max: 30, step: 0.5, suffix: '%' }),
         numField('Dividend yield', 'eqYield', { min: 0, max: 20, step: 0.25, suffix: '%' }),
@@ -116,5 +117,21 @@ export function inputsPanel(
       h('h2', null, `Countries `, h('span', { class: 'count' }, `${state.countries.length}/${MAX_COUNTRIES}`)),
       countryList,
     ),
+  );
+}
+
+function allocationSlider(state: AppState, onChange: (patch: Partial<AppState>) => void): HTMLElement {
+  const fmt = (v: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', notation: 'compact', maximumFractionDigits: 2 }).format(v);
+  const text = (eq: number) => `Equities ${eq}% · ${fmt(state.principal * eq / 100)}  |  Property ${100 - eq}% · ${fmt(state.principal * (100 - eq) / 100)}`;
+  const label = h('output', { class: 'alloc-value' }, text(state.alloc));
+  return h('div', { class: 'alloc' },
+    h('label', { class: 'field-label', for: 'alloc-range' }, 'Split of your capital'),
+    h('input', {
+      id: 'alloc-range', type: 'range', min: 0, max: 100, step: 5, value: state.alloc,
+      'aria-label': 'Percent of capital in equities', 'aria-valuetext': text(state.alloc),
+      oninput: (e: Event) => { label.textContent = text(Number((e.target as HTMLInputElement).value)); },
+      onchange: (e: Event) => onChange({ alloc: Number((e.target as HTMLInputElement).value) }),
+    }),
+    label,
   );
 }
