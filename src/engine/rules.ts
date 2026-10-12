@@ -67,6 +67,10 @@ export function applyRule(rule: Rule, ctx: RuleContext): TaxEvent | null {
 
   const heldLongEnough = m.min_holding_years === undefined || ctx.holdingYears >= m.min_holding_years;
   let base = ctx.bases[rule.base];
+  if (m.assessed_growth_cap !== undefined && (rule.base === 'principal' || rule.base === 'value')) {
+    // Year 1 is assessed at the purchase price; increases start the following year.
+    base = Math.min(ctx.bases.value, ctx.bases.principal * Math.pow(1 + m.assessed_growth_cap, Math.max(0, ctx.holdingYears - 1)));
+  }
   let indexation = 0;
   if (rule.base === 'gain' && ctx.gainWindow && (m.accrual_from || m.accrual_until || m.cost_base_indexation)) {
     const w = ctx.gainWindow(m.accrual_from, m.accrual_until, !!m.cost_base_indexation && heldLongEnough);

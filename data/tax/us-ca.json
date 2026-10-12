@@ -1,0 +1,759 @@
+{
+  "country": "us-ca",
+  "currency": "USD",
+  "tax_year": "2026",
+  "jurisdiction_note": "USA (California) — federal + California state, City of Los Angeles property. US resident individual filing as single, living in the City of Los Angeles: federal income tax plus California personal income tax; property rules use Proposition 13 property tax and Los Angeles County / City of Los Angeles documentary transfer taxes including Measure ULA.",
+  "meta": {
+    "source": "https://www.ftb.ca.gov/forms/2025/2025-540-tax-rate-schedules.pdf",
+    "source_title": "FTB 2025 Form 540 Tax Rate Schedules (Schedule X, single) and IRS Rev. Proc. 2025-32 (federal 2026)",
+    "last_verified": "2026-10-12",
+    "note": "Federal: 2026 brackets (IRS Rev. Proc. 2025-32). California: the 2025 tax-year Schedule X is used because FTB has not yet published the 2026 indexed schedule (it does so late in the year); CA brackets are indexed annually but future indexing is not modelled. Income bands are treated as taxable income after the federal USD 16,100 standard deduction, and California taxable income is assumed equal (CA standard deduction is only USD 5,706, so CA taxable income is really ~USD 10k higher). Simplifications: the federal SALT deduction (cap USD 40,000 under 2025 law, phased down above USD 500k MAGI) is ignored, so state income and property taxes are not deducted federally; property tax is not deducted from rental income; depreciation and its recapture are ignored; CA personal exemption credit (USD 153) ignored. Measure ULA is approximated with a marginal schedule that recovers the whole-price cliff (see that rule)."
+  },
+  "resident_profile": {
+    "other_income_options": [
+      60000,
+      150000,
+      700000
+    ],
+    "meta": {
+      "source": "https://www.bls.gov/news.release/wkyeng.nr0.htm",
+      "source_title": "BLS — Usual weekly earnings of wage and salary workers (median full-time ≈ USD 62k/yr)",
+      "last_verified": "2026-10-12",
+      "note": "low ≈ median full-time earner, mid ≈ well above median (24% bracket), high ≈ top 37% bracket and 20% capital-gains bracket. Same federal taxable-income bands as us-tx; California taxable income assumed equal."
+    }
+  },
+  "income_tax": {
+    "brackets": [
+      {
+        "from": 0,
+        "to": 12400,
+        "rate": 0.1
+      },
+      {
+        "from": 12400,
+        "to": 50400,
+        "rate": 0.12
+      },
+      {
+        "from": 50400,
+        "to": 105700,
+        "rate": 0.22
+      },
+      {
+        "from": 105700,
+        "to": 201775,
+        "rate": 0.24
+      },
+      {
+        "from": 201775,
+        "to": 256225,
+        "rate": 0.32
+      },
+      {
+        "from": 256225,
+        "to": 640600,
+        "rate": 0.35
+      },
+      {
+        "from": 640600,
+        "to": null,
+        "rate": 0.37
+      }
+    ],
+    "meta": {
+      "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
+      "source_title": "IRS Rev. Proc. 2025-32, Table 3 — Section 1(j)(2)(C) unmarried individuals, tax year 2026",
+      "last_verified": "2026-10-12",
+      "note": "Rates made permanent by the One Big Beautiful Bill Act (2025). Brackets apply to taxable income; the standard deduction is assumed already used against other income."
+    }
+  },
+  "levies": [
+    {
+      "id": "niit_income",
+      "label": "Net Investment Income Tax (3.8%) on dividends and net rent",
+      "stage": "growth",
+      "category": "tax",
+      "base": "income",
+      "kind": {
+        "type": "flat",
+        "rate": 0.038
+      },
+      "modifiers": {
+        "applies_if_other_income_above": 200000
+      },
+      "plain_english": "If your income is above USD 200,000 (single), an extra 3.8% Medicare-style tax applies to investment income such as dividends and rental profit. It sits on top of the normal income or dividend tax. It does not apply at all if you are under the threshold.",
+      "meta": {
+        "source": "https://www.irs.gov/individuals/net-investment-income-tax",
+        "source_title": "IRS — Net Investment Income Tax (3.8%, USD 200,000 single threshold, not indexed)",
+        "last_verified": "2026-10-12",
+        "note": "Statutory test is the lesser of net investment income or MAGI above the threshold; we apply it to the whole investment income once other income exceeds USD 200,000."
+      }
+    },
+    {
+      "id": "niit_gain",
+      "label": "Net Investment Income Tax (3.8%) on the capital gain",
+      "stage": "egress",
+      "category": "tax",
+      "base": "gain",
+      "kind": {
+        "type": "flat",
+        "rate": 0.038
+      },
+      "modifiers": {
+        "applies_if_other_income_above": 200000
+      },
+      "plain_english": "Capital gains count as net investment income, so the same 3.8% surtax applies to the gain when you sell if your income is above USD 200,000. It is charged in addition to the long-term capital gains rate.",
+      "meta": {
+        "source": "https://www.irs.gov/individuals/net-investment-income-tax",
+        "source_title": "IRS — Net Investment Income Tax",
+        "last_verified": "2026-10-12",
+        "note": "Whole gain realised in one year; threshold tested on the other-income band only, not on income plus the gain."
+      }
+    }
+  ],
+  "assets": {
+    "equities": {
+      "ingress": [],
+      "growth": [
+        {
+          "id": "qualified_dividend_tax",
+          "label": "Tax on qualified dividends (0% / 15% / 20%)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                {
+                  "from": 0,
+                  "to": 49450,
+                  "rate": 0
+                },
+                {
+                  "from": 49450,
+                  "to": 545500,
+                  "rate": 0.15
+                },
+                {
+                  "from": 545500,
+                  "to": null,
+                  "rate": 0.2
+                }
+              ],
+              "meta": {
+                "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
+                "source_title": "IRS Rev. Proc. 2025-32, section 3.03 — maximum zero-rate (USD 49,450) and 15%-rate (USD 545,500) amounts, all other individuals, 2026",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": true,
+            "stack_group": "federal"
+          },
+          "plain_english": "Dividends from a US index fund are almost all 'qualified', so they are taxed at the lower capital-gains rates instead of ordinary rates. The dividends are stacked on top of your other income: 0% while your total stays under USD 49,450, 15% up to USD 545,500, and 20% above that.",
+          "meta": {
+            "source": "https://www.irs.gov/taxtopics/tc404",
+            "source_title": "IRS Topic 404 — Dividends (qualified dividends taxed at capital-gain rates)",
+            "last_verified": "2026-10-12",
+            "note": "100% of fund distributions assumed qualified. California tax on the same dividends is a separate rule."
+          }
+        },
+        {
+          "id": "ca_dividend_tax",
+          "label": "California income tax on dividends (1%–13.3%)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                {
+                  "from": 0,
+                  "to": 11079,
+                  "rate": 0.01
+                },
+                {
+                  "from": 11079,
+                  "to": 26264,
+                  "rate": 0.02
+                },
+                {
+                  "from": 26264,
+                  "to": 41452,
+                  "rate": 0.04
+                },
+                {
+                  "from": 41452,
+                  "to": 57542,
+                  "rate": 0.06
+                },
+                {
+                  "from": 57542,
+                  "to": 72724,
+                  "rate": 0.08
+                },
+                {
+                  "from": 72724,
+                  "to": 371479,
+                  "rate": 0.093
+                },
+                {
+                  "from": 371479,
+                  "to": 445771,
+                  "rate": 0.103
+                },
+                {
+                  "from": 445771,
+                  "to": 742953,
+                  "rate": 0.113
+                },
+                {
+                  "from": 742953,
+                  "to": 1000000,
+                  "rate": 0.123
+                },
+                {
+                  "from": 1000000,
+                  "to": null,
+                  "rate": 0.133
+                }
+              ],
+              "meta": {
+                "source": "https://www.ftb.ca.gov/forms/2025/2025-540-tax-rate-schedules.pdf",
+                "source_title": "FTB 2025 Form 540 Tax Rate Schedule X (single) plus 1% Mental Health Services Tax on taxable income over USD 1,000,000",
+                "last_verified": "2026-10-12",
+                "note": "2025 tax year (2026 schedule not yet published). Top bracket 12.3% + 1% Mental Health Services Tax (Prop. 63, R&TC §17043) = 13.3% above USD 1,000,000."
+              }
+            },
+            "stack_on_other_income": true,
+            "stack_group": "state"
+          },
+          "plain_english": "California has no special rate for dividends: they are taxed as ordinary income at 1% to 12.3%, plus an extra 1% on income above USD 1 million. The dividends are stacked on top of your other California income, so most people pay 9.3% or more on them. This is on top of the federal dividend tax.",
+          "meta": {
+            "source": "https://www.ftb.ca.gov/forms/2025/2025-540-tax-rate-schedules.pdf",
+            "source_title": "FTB 2025 Form 540 Tax Rate Schedules — California taxes dividends as ordinary income",
+            "last_verified": "2026-10-12",
+            "note": "Stacks only on California income (stack_group state), not on the federal stack. 2025 brackets."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "ltcg_equities",
+          "label": "Long-term capital gains tax (0% / 15% / 20%)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                {
+                  "from": 0,
+                  "to": 49450,
+                  "rate": 0
+                },
+                {
+                  "from": 49450,
+                  "to": 545500,
+                  "rate": 0.15
+                },
+                {
+                  "from": 545500,
+                  "to": null,
+                  "rate": 0.2
+                }
+              ],
+              "meta": {
+                "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
+                "source_title": "IRS Rev. Proc. 2025-32, section 3.03 — 2026 capital gains rate thresholds, all other individuals",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": true,
+            "stack_group": "federal"
+          },
+          "plain_english": "When you sell fund units held for more than a year, the profit is a long-term capital gain. It is added on top of your other income and taxed federally at 0%, 15% or 20% depending on where it lands, far below ordinary rates. California tax on the same gain is charged separately.",
+          "meta": {
+            "source": "https://www.irs.gov/taxtopics/tc409",
+            "source_title": "IRS Topic 409 — Capital gains and losses",
+            "last_verified": "2026-10-12",
+            "note": "Short-term (held one year or less, ordinary rates) not modelled: the simulator always holds at least one year. Whole gain realised in one year."
+          }
+        },
+        {
+          "id": "ca_cgt_equities",
+          "label": "California income tax on the capital gain (1%–13.3%)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                {
+                  "from": 0,
+                  "to": 11079,
+                  "rate": 0.01
+                },
+                {
+                  "from": 11079,
+                  "to": 26264,
+                  "rate": 0.02
+                },
+                {
+                  "from": 26264,
+                  "to": 41452,
+                  "rate": 0.04
+                },
+                {
+                  "from": 41452,
+                  "to": 57542,
+                  "rate": 0.06
+                },
+                {
+                  "from": 57542,
+                  "to": 72724,
+                  "rate": 0.08
+                },
+                {
+                  "from": 72724,
+                  "to": 371479,
+                  "rate": 0.093
+                },
+                {
+                  "from": 371479,
+                  "to": 445771,
+                  "rate": 0.103
+                },
+                {
+                  "from": 445771,
+                  "to": 742953,
+                  "rate": 0.113
+                },
+                {
+                  "from": 742953,
+                  "to": 1000000,
+                  "rate": 0.123
+                },
+                {
+                  "from": 1000000,
+                  "to": null,
+                  "rate": 0.133
+                }
+              ],
+              "meta": {
+                "source": "https://www.ftb.ca.gov/forms/2025/2025-540-tax-rate-schedules.pdf",
+                "source_title": "FTB 2025 Form 540 Tax Rate Schedule X (single) plus 1% Mental Health Services Tax on taxable income over USD 1,000,000",
+                "last_verified": "2026-10-12",
+                "note": "2025 tax year (2026 schedule not yet published). Top bracket 12.3% + 1% Mental Health Services Tax (Prop. 63, R&TC §17043) = 13.3% above USD 1,000,000."
+              }
+            },
+            "stack_on_other_income": true,
+            "stack_group": "state"
+          },
+          "plain_english": "California gives no capital-gains discount and no lower rate: the whole gain is added to your income in the year you sell and taxed at ordinary rates up to 13.3%. A large one-off gain therefore pushes much of itself into the top brackets. This is charged in addition to federal capital gains tax.",
+          "meta": {
+            "source": "https://www.ftb.ca.gov/file/personal/income-types/capital-gains-and-losses.html",
+            "source_title": "FTB — Capital gains and losses (California taxes capital gains as ordinary income)",
+            "last_verified": "2026-10-12",
+            "note": "Whole gain realised in one year; stacks on California income only (stack_group state)."
+          }
+        }
+      ]
+    },
+    "property": {
+      "ingress": [
+        {
+          "id": "title_escrow_costs",
+          "label": "Title insurance, escrow and closing costs",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": {
+            "type": "flat",
+            "rate": 0.01
+          },
+          "plain_english": "In Los Angeles the buyer pays for the lender-free closing: owner's title insurance (customarily split or seller-paid in Southern California), escrow fees, recording and inspection. Together these come to roughly 1% of the price. They are costs, not taxes; the transfer taxes are customarily paid by the seller when you sell.",
+          "meta": {
+            "source": "https://www.insurance.ca.gov/01-consumers/105-type/95-guides/08-title/index.cfm",
+            "source_title": "California Department of Insurance — Title insurance consumer guide (escrow and title fees are negotiable, rates filed with CDI)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption: ~1% of price."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "rental_income_tax",
+          "label": "Federal income tax on net rent",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "$ref": "income_tax"
+            },
+            "stack_on_other_income": true,
+            "stack_group": "federal"
+          },
+          "plain_english": "Rental profit (rent minus running costs) is ordinary income. It is added to your salary and taxed at your federal marginal rate each year. California also taxes it; that is shown as a separate rule.",
+          "meta": {
+            "source": "https://www.irs.gov/taxtopics/tc414",
+            "source_title": "IRS Topic 414 — Rental income and expenses",
+            "last_verified": "2026-10-12",
+            "note": "Depreciation deduction (27.5-year straight line) is ignored, which overstates the annual tax; its later recapture at 25% on sale is also ignored. Costs fixed at assumptions.property.cost_rate of gross rent."
+          }
+        },
+        {
+          "id": "ca_rental_income_tax",
+          "label": "California income tax on net rent (1%–13.3%)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                {
+                  "from": 0,
+                  "to": 11079,
+                  "rate": 0.01
+                },
+                {
+                  "from": 11079,
+                  "to": 26264,
+                  "rate": 0.02
+                },
+                {
+                  "from": 26264,
+                  "to": 41452,
+                  "rate": 0.04
+                },
+                {
+                  "from": 41452,
+                  "to": 57542,
+                  "rate": 0.06
+                },
+                {
+                  "from": 57542,
+                  "to": 72724,
+                  "rate": 0.08
+                },
+                {
+                  "from": 72724,
+                  "to": 371479,
+                  "rate": 0.093
+                },
+                {
+                  "from": 371479,
+                  "to": 445771,
+                  "rate": 0.103
+                },
+                {
+                  "from": 445771,
+                  "to": 742953,
+                  "rate": 0.113
+                },
+                {
+                  "from": 742953,
+                  "to": 1000000,
+                  "rate": 0.123
+                },
+                {
+                  "from": 1000000,
+                  "to": null,
+                  "rate": 0.133
+                }
+              ],
+              "meta": {
+                "source": "https://www.ftb.ca.gov/forms/2025/2025-540-tax-rate-schedules.pdf",
+                "source_title": "FTB 2025 Form 540 Tax Rate Schedule X (single) plus 1% Mental Health Services Tax on taxable income over USD 1,000,000",
+                "last_verified": "2026-10-12",
+                "note": "2025 tax year (2026 schedule not yet published). Top bracket 12.3% + 1% Mental Health Services Tax (Prop. 63, R&TC §17043) = 13.3% above USD 1,000,000."
+              }
+            },
+            "stack_on_other_income": true,
+            "stack_group": "state"
+          },
+          "plain_english": "California taxes rental profit as ordinary income at its own rates of 1% to 13.3%, added on top of your other California income. It is in addition to federal income tax on the same rent. Losses follow California's passive-loss rules, which mirror the federal ones.",
+          "meta": {
+            "source": "https://www.ftb.ca.gov/forms/2025/2025-540-tax-rate-schedules.pdf",
+            "source_title": "FTB 2025 Form 540 Tax Rate Schedules — rental income taxed as ordinary income",
+            "last_verified": "2026-10-12",
+            "note": "Depreciation ignored; property tax not deducted from rent. Stacks on California income only."
+          }
+        },
+        {
+          "id": "ca_prop13_property_tax",
+          "label": "Property tax (Proposition 13, City of Los Angeles)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "principal",
+          "kind": {
+            "type": "flat",
+            "rate": 0.012
+          },
+          "modifiers": {
+            "assessed_growth_cap": 0.02
+          },
+          "plain_english": "Under Proposition 13, California property tax is 1% of the assessed value plus voter-approved bond levies, about 1.19% in total in the City of Los Angeles. The assessed value starts at your purchase price and can rise by at most 2% a year, however fast the market grows, so the tax falls steadily as a share of market value. We charge 1.2% of that capped assessed value each year.",
+          "meta": {
+            "source": "https://auditor.lacounty.gov/wp-content/uploads/2026/05/2025-2026-Taxpayers-Guide.pdf",
+            "source_title": "LA County Auditor-Controller — 2025-26 Taxpayers' Guide (1% general levy; voter-approved debt rates: LAUSD 0.1196%, LA Community College District 0.0485%, City of LA 0.0122%, MWD 0.0070%)",
+            "last_verified": "2026-10-12",
+            "note": "Ad valorem total for a typical City of LA tax rate area ≈ 1.187% in FY 2025-26; rounded to 1.2% to include a small allowance for parcel-based direct assessments (lighting, stormwater Measure W, etc.), which are really fixed charges. Assessment cap per Cal. Const. art. XIIIA and the LA County Assessor (assessor.lacounty.gov). Not deducted from rental income."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "ltcg_property",
+          "label": "Long-term capital gains tax on the property (0% / 15% / 20%)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                {
+                  "from": 0,
+                  "to": 49450,
+                  "rate": 0
+                },
+                {
+                  "from": 49450,
+                  "to": 545500,
+                  "rate": 0.15
+                },
+                {
+                  "from": 545500,
+                  "to": null,
+                  "rate": 0.2
+                }
+              ],
+              "meta": {
+                "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
+                "source_title": "IRS Rev. Proc. 2025-32, section 3.03 — 2026 capital gains rate thresholds, all other individuals",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": true,
+            "stack_group": "federal"
+          },
+          "plain_english": "Selling an investment property held more than a year produces a long-term capital gain, taxed federally at 0%, 15% or 20% once stacked on your other income. Purchase closing costs are part of the cost base. California taxes the same gain separately as ordinary income.",
+          "meta": {
+            "source": "https://www.irs.gov/taxtopics/tc409",
+            "source_title": "IRS Topic 409 — Capital gains and losses (25% rate on unrecaptured section 1250 gain)",
+            "last_verified": "2026-10-12",
+            "note": "Depreciation recapture (25% on depreciation previously claimed) is ignored because depreciation is not modelled; 1031 exchanges not modelled."
+          }
+        },
+        {
+          "id": "ca_cgt_property",
+          "label": "California income tax on the property gain (1%–13.3%)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                {
+                  "from": 0,
+                  "to": 11079,
+                  "rate": 0.01
+                },
+                {
+                  "from": 11079,
+                  "to": 26264,
+                  "rate": 0.02
+                },
+                {
+                  "from": 26264,
+                  "to": 41452,
+                  "rate": 0.04
+                },
+                {
+                  "from": 41452,
+                  "to": 57542,
+                  "rate": 0.06
+                },
+                {
+                  "from": 57542,
+                  "to": 72724,
+                  "rate": 0.08
+                },
+                {
+                  "from": 72724,
+                  "to": 371479,
+                  "rate": 0.093
+                },
+                {
+                  "from": 371479,
+                  "to": 445771,
+                  "rate": 0.103
+                },
+                {
+                  "from": 445771,
+                  "to": 742953,
+                  "rate": 0.113
+                },
+                {
+                  "from": 742953,
+                  "to": 1000000,
+                  "rate": 0.123
+                },
+                {
+                  "from": 1000000,
+                  "to": null,
+                  "rate": 0.133
+                }
+              ],
+              "meta": {
+                "source": "https://www.ftb.ca.gov/forms/2025/2025-540-tax-rate-schedules.pdf",
+                "source_title": "FTB 2025 Form 540 Tax Rate Schedule X (single) plus 1% Mental Health Services Tax on taxable income over USD 1,000,000",
+                "last_verified": "2026-10-12",
+                "note": "2025 tax year (2026 schedule not yet published). Top bracket 12.3% + 1% Mental Health Services Tax (Prop. 63, R&TC §17043) = 13.3% above USD 1,000,000."
+              }
+            },
+            "stack_on_other_income": true,
+            "stack_group": "state"
+          },
+          "plain_english": "California taxes the whole gain on an investment property as ordinary income in the year of sale, at rates up to 13.3%, with no discount for holding it long. Suspended passive rental losses are released against the gain, as they are federally. This is in addition to federal capital gains tax.",
+          "meta": {
+            "source": "https://www.ftb.ca.gov/file/personal/income-types/capital-gains-and-losses.html",
+            "source_title": "FTB — Capital gains and losses",
+            "last_verified": "2026-10-12",
+            "note": "Depreciation recapture ignored; 1031 exchanges not modelled. Stacks on California income only."
+          }
+        },
+        {
+          "id": "la_county_transfer_tax",
+          "label": "LA County documentary transfer tax ($1.10 per $1,000)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "value",
+          "kind": {
+            "type": "flat",
+            "rate": 0.0011
+          },
+          "plain_english": "Los Angeles County charges a documentary transfer tax of USD 1.10 per USD 1,000 of the sale price when a deed is recorded. In Los Angeles the seller customarily pays it, so we charge it when you sell.",
+          "meta": {
+            "source": "https://www.lavote.gov/home/records/real-estate-records/documentary-transfer-tax",
+            "source_title": "LA County Registrar-Recorder/County Clerk — Documentary Transfer Tax (USD 1.10 per USD 1,000; City of LA additional rate)",
+            "last_verified": "2026-10-12",
+            "note": "Seller-paid by local custom; modelled at egress on market value."
+          }
+        },
+        {
+          "id": "la_city_transfer_tax",
+          "label": "City of Los Angeles transfer tax ($4.50 per $1,000)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "value",
+          "kind": {
+            "type": "flat",
+            "rate": 0.0045
+          },
+          "plain_english": "The City of Los Angeles adds its own base real property transfer tax of USD 4.50 per USD 1,000 (0.45%) of the sale price. Like the county tax it is customarily paid by the seller.",
+          "meta": {
+            "source": "https://finance.lacity.gov/tax-education/specialty-taxes/real-property-transfer-tax",
+            "source_title": "City of LA Office of Finance — Real Property Transfer Tax (LAMC §21.9.2: USD 4.50 per USD 1,000)",
+            "last_verified": "2026-10-12",
+            "note": "Seller-paid by local custom."
+          }
+        },
+        {
+          "id": "la_measure_ula",
+          "label": "Measure ULA \"mansion tax\" (4% / 5.5% of the whole price)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "value",
+          "kind": {
+            "type": "schedule",
+            "stack_on_other_income": false,
+            "schedule": {
+              "brackets": [
+                {
+                  "from": 0,
+                  "to": 5400000,
+                  "rate": 0
+                },
+                {
+                  "from": 5400000,
+                  "to": 5625000,
+                  "rate": 1
+                },
+                {
+                  "from": 5625000,
+                  "to": 10900000,
+                  "rate": 0.04
+                },
+                {
+                  "from": 10900000,
+                  "to": 11073016,
+                  "rate": 1
+                },
+                {
+                  "from": 11073016,
+                  "to": null,
+                  "rate": 0.055
+                }
+              ],
+              "meta": {
+                "source": "https://finance.lacity.gov/faq/measure-ula",
+                "source_title": "City of LA Office of Finance — Measure ULA FAQ (thresholds USD 5,400,000 and USD 10,900,000 for sales on/after 1 July 2026; USD 5,300,000 / 10,600,000 in FY 2025-26)",
+                "last_verified": "2026-10-12",
+                "note": "Engineered marginal schedule: the 100% bands (225,000 = 4%×5.4M/0.96 and 173,016 = 1.5%×10.9M/0.945) make the tax exactly 4% of the whole price above USD 5,625,000 and exactly 5.5% above USD 11,073,016."
+              }
+            }
+          },
+          "plain_english": "Since 2023 the City of Los Angeles charges an extra transfer tax on expensive sales: 4% of the ENTIRE price once it exceeds USD 5.4 million and 5.5% of the entire price above USD 10.9 million (thresholds from 1 July 2026). Below the first threshold nothing is due. The seller pays it, so it only matters if the property is worth more than USD 5.4 million when you sell, which usually means a leveraged purchase.",
+          "meta": {
+            "source": "https://finance.lacity.gov/faq/measure-ula",
+            "source_title": "City of LA Office of Finance — Measure ULA (LAMC §21.9.2(b)) FAQ",
+            "last_verified": "2026-10-12",
+            "note": "The real tax is a cliff on the whole price, which a marginal schedule cannot express exactly. We use a schedule on sale value with a narrow 100% band just above each threshold that rebuilds the cliff amount: the tax is exact above USD 5.625m and 11.07m, and ramps in (understating by up to ~USD 216k) inside the 225k/173k bands. Thresholds are indexed every 1 July by chained CPI; we hold the FY 2026-27 nominal thresholds fixed, which overstates ULA for sales many years out. The June 2026 council proposals to amend ULA target new multifamily construction and do not affect resale of an existing home; a statewide repeal initiative was withdrawn from the November 2026 ballot."
+          }
+        },
+        {
+          "id": "agent_commission",
+          "label": "Selling agent commission",
+          "stage": "egress",
+          "category": "cost",
+          "base": "value",
+          "kind": {
+            "type": "flat",
+            "rate": 0.05
+          },
+          "plain_english": "US sellers have traditionally paid both agents' commissions. In Los Angeles the total is typically 4.5–6% of the sale price; commissions are negotiable and have drifted down since the 2024 NAR settlement, so we assume 5%.",
+          "meta": {
+            "source": "https://www.dre.ca.gov/Consumers/",
+            "source_title": "California Department of Real Estate — consumer information (commissions are negotiable; 5% assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption."
+          }
+        }
+      ]
+    }
+  },
+  "property_leverage": {
+    "interest_deductible": true,
+    "rental_loss": [
+      {
+        "treatment": "carry_forward_incl_gains"
+      }
+    ],
+    "plain_english": "Mortgage interest is deductible against rent on Schedule E federally and in California. Rental losses are passive: they cannot offset salary and are suspended, then released in full when you sell. California conforms to the federal passive-loss rules (IRC §469), except that it does not follow the real-estate-professional exception.",
+    "meta": {
+      "source": "https://www.irs.gov/publications/p925",
+      "source_title": "IRS Publication 925 — Passive Activity and At-Risk Rules",
+      "last_verified": "2026-10-12",
+      "note": "The $25,000 active-participation allowance (phased out between $100k and $150k MAGI) is ignored; it would only help the low income band. Released losses are applied against the gain. California conforms to §469 via R&TC §17561 (FTB Form 3801), with the real-estate-professional exception not adopted; that difference does not affect this taxpayer."
+    }
+  }
+}

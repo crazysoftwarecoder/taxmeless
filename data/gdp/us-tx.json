@@ -1,0 +1,127 @@
+{
+  "country": "us-tx",
+  "indicator": "GDP per capita (current US$), BEA state GDP / Census population via FRED",
+  "unit": "USD",
+  "series": [
+    {
+      "year": 2000,
+      "value": 35434.67
+    },
+    {
+      "year": 2001,
+      "value": 36595.69
+    },
+    {
+      "year": 2002,
+      "value": 36714.86
+    },
+    {
+      "year": 2003,
+      "value": 38167.28
+    },
+    {
+      "year": 2004,
+      "value": 41137.35
+    },
+    {
+      "year": 2005,
+      "value": 44066.23
+    },
+    {
+      "year": 2006,
+      "value": 47442.48
+    },
+    {
+      "year": 2007,
+      "value": 50292.29
+    },
+    {
+      "year": 2008,
+      "value": 51550.45
+    },
+    {
+      "year": 2009,
+      "value": 47543.72
+    },
+    {
+      "year": 2010,
+      "value": 49745.1
+    },
+    {
+      "year": 2011,
+      "value": 52710.09
+    },
+    {
+      "year": 2012,
+      "value": 54806.83
+    },
+    {
+      "year": 2013,
+      "value": 57658.7
+    },
+    {
+      "year": 2014,
+      "value": 59050.26
+    },
+    {
+      "year": 2015,
+      "value": 57738.29
+    },
+    {
+      "year": 2016,
+      "value": 56709.1
+    },
+    {
+      "year": 2017,
+      "value": 58934.35
+    },
+    {
+      "year": 2018,
+      "value": 63163.47
+    },
+    {
+      "year": 2019,
+      "value": 64333.55
+    },
+    {
+      "year": 2020,
+      "value": 62029.72
+    },
+    {
+      "year": 2021,
+      "value": 72067.37
+    },
+    {
+      "year": 2022,
+      "value": 82810.37
+    },
+    {
+      "year": 2023,
+      "value": 87195.57
+    },
+    {
+      "year": 2024,
+      "value": 89598.23
+    },
+    {
+      "year": 2025,
+      "value": 92474.3
+    }
+  ],
+  "projection": {
+    "method": "cagr_last_10y",
+    "cagr": 0.0482,
+    "meta": {
+      "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=TXNGSP",
+      "source_title": "FRED TXNGSP (BEA nominal GDP, Texas) and TXPOP (Census resident population)",
+      "last_verified": "2026-10-12",
+      "note": "CAGR computed from 2015 (57738.29) to 2025 (92474.3), 10 years. Population: https://fred.stlouisfed.org/graph/fredgraph.csv?id=TXPOP"
+    }
+  },
+  "meta": {
+    "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=TXNGSP",
+    "source_title": "FRED TXNGSP (BEA nominal GDP, Texas) and TXPOP (Census resident population)",
+    "last_verified": "2026-10-12",
+    "note": "Population source: https://fred.stlouisfed.org/graph/fredgraph.csv?id=TXPOP. Per capita = TXNGSP (millions USD) x1e6 / (TXPOP thousands x1e3), annual, 2000-2025 (26 points). State-level series replaces the national World Bank series."
+  }
+}

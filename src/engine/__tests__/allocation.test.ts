@@ -41,7 +41,7 @@ describe('capital allocation', () => {
     const [, eq, pr] = compareAll(inputs, dataset);
     const fx = dataset.countries.countries.find((c) => c.code === 'au')!.fx_to_usd.value;
     const alone = simulate({ ...inputs, principalUsd: 700_000 }, dataset.tax.au!, 'property', dataset.assumptions, fx);
-    expect(eq!.rows[15]!.stackedLocal.egress).toBeGreaterThan(0);
+    expect(eq!.rows[15]!.stackedLocal.egress.income).toBeGreaterThan(0);
     expect(pr!.totalsUsd.taxes.all).toBeGreaterThan(alone.totalsUsd.taxes.all);
     // Singapore exempts dividends and gains, so nothing stacks and the property half is unchanged
     const sgPr = compareAll({ ...inputs, countries: ['sg'] }, dataset)[2]!;

@@ -1,0 +1,96 @@
+{
+  "country": "us-tx",
+  "household": "2 adults + 2 children",
+  "city": "Houston",
+  "currency": "USD",
+  "base_year": 2024,
+  "categories": {
+    "housing_rent": {
+      "value": 25392,
+      "meta": {
+        "source": "https://www.huduser.gov/portal/datasets/fmr/fmrs/FY2026_code/2026summary.odn?cbsasub=METRO26420M26420&year=2026&fmrtype=Final&selection_type=hmfa",
+        "source_title": "HUD FY2026 Fair Market Rents, Houston-The Woodlands-Sugar Land, TX HUD Metro FMR Area",
+        "last_verified": "2026-10-12",
+        "note": "HUD FY2026 Final metro FMR, 3-bedroom $2,116/month x12 (FY2025: $2,038). FMR is a 40th-percentile gross rent (contract rent + tenant-paid utilities), so it overlaps partly with the utilities category."
+      }
+    },
+    "food": {
+      "value": 13952,
+      "meta": {
+        "source": "https://api.bls.gov/publicAPI/v1/timeseries/data/",
+        "source_title": "BLS Consumer Expenditure Survey 2024 via BLS Public Data API: married couple with children, oldest child 6-17 (series LB0606), scaled by South region / US all-consumer-unit ratio (LB11)",
+        "last_verified": "2026-10-12",
+        "note": "Food (CXUFOODTOTL): US family $15,759; regional scaling factor 0.8853."
+      }
+    },
+    "transport": {
+      "value": 19036,
+      "meta": {
+        "source": "https://api.bls.gov/publicAPI/v1/timeseries/data/",
+        "source_title": "BLS Consumer Expenditure Survey 2024 via BLS Public Data API: married couple with children, oldest child 6-17 (series LB0606), scaled by South region / US all-consumer-unit ratio (LB11)",
+        "last_verified": "2026-10-12",
+        "note": "Transportation (CXUTRANS): US family $19,856; regional scaling factor 0.9587."
+      }
+    },
+    "childcare_education": {
+      "value": 12525,
+      "meta": {
+        "source": "https://info.childcareaware.org/hubfs/Affordability_Analysis_Updated_2024.pdf",
+        "source_title": "Child Care Aware of America, Child Care in America: 2024 Affordability Analysis, Table I (center-based, 4-year-old) + BLS CE 2024 Education",
+        "last_verified": "2026-10-12",
+        "note": "One child in full-time center care for a 4-year-old, Texas state average $10,225 (statewide, not metro-specific) + BLS CE 2024 education for married couple with children oldest 6-17 (US $3,484 x South ratio 0.6603 = $2,300); second child assumed in free public school. CE babysitting/daycare (item 670320) removed from other to avoid double counting."
+      }
+    },
+    "healthcare": {
+      "value": 9456,
+      "meta": {
+        "source": "https://meps.ahrq.gov/data_files/publications/rf51/rf51.pdf",
+        "source_title": "AHRQ MEPS-IC Research Findings #51, Figure 9: average annual employee contribution for family coverage by state, 2021-2023 average (private sector) + BLS CE 2024 out-of-pocket health",
+        "last_verified": "2026-10-12",
+        "note": "Employer-plan family premium employee share, Texas $7,141 (2021-23 pooled, not inflated) + out-of-pocket medical services, drugs and supplies from BLS CE 2024 (healthcare minus health insurance) for married couple with children oldest 6-17: US $2,650 x South ratio 0.8735 = $2,315. Excludes employer-paid share of premiums."
+      }
+    },
+    "utilities": {
+      "value": 6099,
+      "meta": {
+        "source": "https://api.bls.gov/publicAPI/v1/timeseries/data/",
+        "source_title": "BLS Consumer Expenditure Survey 2024 via BLS Public Data API: married couple with children, oldest child 6-17 (series LB0606), scaled by South region / US all-consumer-unit ratio (LB11)",
+        "last_verified": "2026-10-12",
+        "note": "Utilities, fuels and public services incl. phone/internet (CXUUTILS): US family $6,225; regional scaling factor 0.9797."
+      }
+    },
+    "other": {
+      "value": 16993,
+      "meta": {
+        "source": "https://api.bls.gov/publicAPI/v1/timeseries/data/",
+        "source_title": "BLS Consumer Expenditure Survey 2024 via BLS Public Data API: married couple with children, oldest child 6-17 (series LB0606), scaled by South region / US all-consumer-unit ratio (LB11)",
+        "last_verified": "2026-10-12",
+        "note": "Apparel, household operations (less babysitting/daycare 670320), housekeeping supplies, furnishings, entertainment, personal care, reading, tobacco, miscellaneous: US family $19,261; regional scaling factor 0.8822. Excludes alcohol, cash contributions and personal insurance/pensions."
+      }
+    }
+  },
+  "inflation": {
+    "cpi_assumed": 0.0128,
+    "meta": {
+      "source": "https://data.bls.gov/timeseries/CUURS37BSA0",
+      "source_title": "BLS CPI-U, Houston-The Woodlands-Sugar Land (series CUURS37BSA0, not seasonally adjusted)",
+      "last_verified": "2026-10-12",
+      "note": "All items, August 2026 282.338 vs August 2025 278.771 = 1.3% y/y (latest published; retrieved via BLS Public Data API)."
+    }
+  },
+  "median_household_income": {
+    "value": 116166,
+    "meta": {
+      "source": "https://info.childcareaware.org/hubfs/Affordability_Analysis_Updated_2024.pdf",
+      "source_title": "Child Care Aware 2024 Affordability Analysis, citing U.S. Census Bureau ACS 2023 Table B19126",
+      "last_verified": "2026-10-12",
+      "note": "Median income of married-couple families with own children under 18, Texas statewide (ACS 2023 1-year), not metro-specific."
+    }
+  },
+  "meta": {
+    "source": "https://api.bls.gov/publicAPI/v1/timeseries/data/",
+    "source_title": "BLS Consumer Expenditure Survey 2024 via BLS Public Data API (married couple with children, oldest 6-17; South region scaling) + HUD FY2026 FMR + Child Care Aware 2024 + AHRQ MEPS-IC",
+    "last_verified": "2026-10-12",
+    "note": "Primary sources only, no secondary (Numbeo) data. Method identical for Houston and Los Angeles: national CE family-type means scaled per category by Census-region/US all-household ratios (CE does not publish this household type by metro); metro 3-bedroom HUD FMR for rent; state center-based 4-year-old childcare; state employer family premium share. Context: Houston-The Woodlands-Sugar Land 2023-24 CE (all households): $85,377 total spend vs $77,907 US (https://www.bls.gov/regions/southwest/news-release/2026/consumerexpenditures_houston_20260105.htm). Total $103,453."
+  }
+}

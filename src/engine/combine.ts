@@ -1,4 +1,10 @@
-import type { Ledger, StageTotals, YearRow } from './types';
+import type { Ledger, StackByGroup, StageTotals, YearRow } from './types';
+
+const addGroups = (a: StackByGroup, b: StackByGroup): StackByGroup => {
+  const out: StackByGroup = { ...a };
+  for (const [k, v] of Object.entries(b)) out[k] = (out[k] ?? 0) + v;
+  return out;
+};
 
 const add = (a: StageTotals, b: StageTotals): StageTotals => ({ ingress: a.ingress + b.ingress, growth: a.growth + b.growth, egress: a.egress + b.egress });
 const LABEL = { equities: 'Equities', property: 'Property', portfolio: 'Portfolio' } as const;
@@ -19,7 +25,7 @@ export function combineLedgers(a: Ledger, b: Ledger): Ledger {
       events: [...ra.events.map(tag(a)), ...rb.events.map(tag(b))],
       grossValueUsd: ra.grossValueUsd + rb.grossValueUsd,
       netValueUsd: ra.netValueUsd + rb.netValueUsd,
-      stackedLocal: { growth: ra.stackedLocal.growth + rb.stackedLocal.growth, egress: ra.stackedLocal.egress + rb.stackedLocal.egress },
+      stackedLocal: { growth: addGroups(ra.stackedLocal.growth, rb.stackedLocal.growth), egress: addGroups(ra.stackedLocal.egress, rb.stackedLocal.egress) },
     };
   });
   const taxes = { ...add(a.totalsUsd.taxes, b.totalsUsd.taxes), all: a.totalsUsd.taxes.all + b.totalsUsd.taxes.all };

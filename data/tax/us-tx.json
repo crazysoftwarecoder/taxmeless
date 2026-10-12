@@ -1,8 +1,8 @@
 {
-  "country": "us",
+  "country": "us-tx",
   "currency": "USD",
   "tax_year": "2026",
-  "jurisdiction_note": "US resident individual filing as single; federal tax only, living in Texas, which has no state income tax. Property rules use Texas property tax and Texas title/closing costs.",
+  "jurisdiction_note": "USA (Texas) — federal only (no state income tax), Harris County/Houston property tax. US resident individual filing as single, living in the City of Houston (Harris County, Houston ISD). Texas has no state income tax and no real-estate transfer tax.",
   "meta": {
     "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
     "source_title": "IRS Rev. Proc. 2025-32 — 2026 inflation adjustments (tables 3 and section 3.03)",
@@ -147,7 +147,8 @@
                 "last_verified": "2026-10-12"
               }
             },
-            "stack_on_other_income": true
+            "stack_on_other_income": true,
+            "stack_group": "federal"
           },
           "plain_english": "Dividends from a US index fund are almost all 'qualified', so they are taxed at the lower capital-gains rates instead of ordinary rates. The dividends are stacked on top of your other income: 0% while your total stays under USD 49,450, 15% up to USD 545,500, and 20% above that.",
           "meta": {
@@ -191,7 +192,8 @@
                 "last_verified": "2026-10-12"
               }
             },
-            "stack_on_other_income": true
+            "stack_on_other_income": true,
+            "stack_group": "federal"
           },
           "plain_english": "When you sell fund units held for more than a year, the profit is a long-term capital gain. It is added on top of your other income and taxed at 0%, 15% or 20% depending on where it lands, far below ordinary rates. Texas adds no state tax.",
           "meta": {
@@ -236,7 +238,8 @@
             "schedule": {
               "$ref": "income_tax"
             },
-            "stack_on_other_income": true
+            "stack_on_other_income": true,
+            "stack_group": "federal"
           },
           "plain_english": "Rental profit (rent minus running costs) is ordinary income. It is added to your salary and taxed at your federal marginal rate each year. Texas has no state income tax, so nothing is added at state level.",
           "meta": {
@@ -248,20 +251,20 @@
         },
         {
           "id": "texas_property_tax",
-          "label": "Texas property tax (local)",
+          "label": "Texas property tax (Harris County / City of Houston / HISD)",
           "stage": "growth",
           "category": "tax",
           "base": "value",
           "kind": {
             "type": "flat",
-            "rate": 0.018
+            "rate": 0.021
           },
-          "plain_english": "Texas has no income tax but high local property taxes levied by the school district, county, city and special districts. Statewide, 2025 levies came to about 1.86% of taxable value, so we charge 1.8% of the property's market value every year. Investment property gets no homestead exemption or appraisal cap.",
+          "plain_english": "Texas has no income tax but high local property taxes. A rental home inside the City of Houston pays Houston ISD, the City of Houston, Harris County, the county flood control and hospital districts, the Port of Houston, Houston Community College and the county education department: together about 2.1% of appraised value every year. Investment property gets no homestead exemption or 10% appraisal cap, so the tax follows market value.",
           "meta": {
-            "source": "https://comptroller.texas.gov/taxes/property-tax/rates/index.php",
-            "source_title": "Texas Comptroller — 2025 property tax rates and levies datasets (statewide calculated levies USD 89.4bn ÷ county taxable value USD 4.8tn = 1.86%)",
+            "source": "https://hcad.org/assets/uploads/pdf/UPLOAD_4THQTR2025.pdf",
+            "source_title": "Harris Central Appraisal District / Harris County Tax Office — 4th quarter 2025 allocations (rates per USD 100: Houston ISD 0.8683, City of Houston 0.51919, Harris County 0.38529, Flood Control 0.04897, Hospital District 0.16348, Houston Community College 0.096183, Port of Houston 0.00615, Dept of Education 0.004799; total 2.092%)",
             "last_verified": "2026-10-12",
-            "note": "Derived statewide average; metro rates range roughly 1.6%–2.2%. Property tax is deductible against rental income in reality; that interaction is not modelled."
+            "note": "Sum of the overlapping Houston-inside-the-loop taxing units ≈ 2.09%; HISD adopted 0.8783 for tax year 2025 (houstonisd.org), taking the total to ≈ 2.10%. Rounded to 2.1%. MUD/ESD districts outside the city core can add 0.3–1.0%. Property tax is deductible against rental income in reality; that interaction is not modelled."
           }
         }
       ],
@@ -298,7 +301,8 @@
                 "last_verified": "2026-10-12"
               }
             },
-            "stack_on_other_income": true
+            "stack_on_other_income": true,
+            "stack_group": "federal"
           },
           "plain_english": "Selling an investment property held more than a year produces a long-term capital gain, taxed at 0%, 15% or 20% once stacked on your other income. Purchase closing costs are part of the cost base. Texas adds no state capital gains tax.",
           "meta": {

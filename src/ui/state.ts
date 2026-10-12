@@ -26,7 +26,7 @@ export interface AppState {
 export const DEFAULT_STATE: AppState = {
   horizon: 15,
   principal: 1_000_000,
-  countries: ['au', 'us', 'uk', 'sg'],
+  countries: ['au', 'us-tx', 'us-ca', 'uk', 'sg'],
   asset: 'both',
   eqGrowth: 7,
   eqYield: 2,
@@ -46,7 +46,7 @@ const num = (min: number, max: number, d: number) => z.coerce.number().min(min).
 const StateSchema = z.object({
   h: num(1, 40, DEFAULT_STATE.horizon),
   p: num(1000, 1e9, DEFAULT_STATE.principal),
-  c: z.string().transform((s) => s.split(',').map((x) => x.trim()).filter((x) => CountryCodeSchema.safeParse(x).success) as CountryCode[]).catch(DEFAULT_STATE.countries),
+  c: z.string().transform((s) => s.split(',').map((x) => x.trim()).map((x) => (x === 'us' ? 'us-tx' : x)).filter((x) => CountryCodeSchema.safeParse(x).success) as CountryCode[]).catch(DEFAULT_STATE.countries),
   a: z.enum(['equities', 'property', 'both']).catch(DEFAULT_STATE.asset),
   eg: num(-20, 30, DEFAULT_STATE.eqGrowth),
   ey: num(0, 20, DEFAULT_STATE.eqYield),

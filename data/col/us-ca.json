@@ -1,0 +1,96 @@
+{
+  "country": "us-ca",
+  "household": "2 adults + 2 children",
+  "city": "Los Angeles",
+  "currency": "USD",
+  "base_year": 2024,
+  "categories": {
+    "housing_rent": {
+      "value": 39576,
+      "meta": {
+        "source": "https://www.huduser.gov/portal/datasets/fmr/fmrs/FY2026_code/2026summary.odn?fips=0603799999&year=2026&fmrtype=Final&selection_type=county",
+        "source_title": "HUD FY2026 Fair Market Rents, Los Angeles-Long Beach-Glendale, CA HUD Metro FMR Area",
+        "last_verified": "2026-10-12",
+        "note": "HUD FY2026 Final metro FMR, 3-bedroom $3,298/month x12 (FY2025: $3,335); metro value taken from HUD FY2026 table as republished by Kimball, Tirey & St. John (https://www.kts-law.com/wp-content/uploads/2025/09/LA-2026-FMR.pdf) because HUD page renders only ZIP-level SAFMRs. FMR is a 40th-percentile gross rent (contract rent + tenant-paid utilities), so it overlaps partly with the utilities category."
+      }
+    },
+    "food": {
+      "value": 18203,
+      "meta": {
+        "source": "https://api.bls.gov/publicAPI/v1/timeseries/data/",
+        "source_title": "BLS Consumer Expenditure Survey 2024 via BLS Public Data API: married couple with children, oldest child 6-17 (series LB0606), scaled by West region / US all-consumer-unit ratio (LB11)",
+        "last_verified": "2026-10-12",
+        "note": "Food (CXUFOODTOTL): US family $15,759; regional scaling factor 1.1551."
+      }
+    },
+    "transport": {
+      "value": 23054,
+      "meta": {
+        "source": "https://api.bls.gov/publicAPI/v1/timeseries/data/",
+        "source_title": "BLS Consumer Expenditure Survey 2024 via BLS Public Data API: married couple with children, oldest child 6-17 (series LB0606), scaled by West region / US all-consumer-unit ratio (LB11)",
+        "last_verified": "2026-10-12",
+        "note": "Transportation (CXUTRANS): US family $19,856; regional scaling factor 1.1611."
+      }
+    },
+    "childcare_education": {
+      "value": 20491,
+      "meta": {
+        "source": "https://info.childcareaware.org/hubfs/Affordability_Analysis_Updated_2024.pdf",
+        "source_title": "Child Care Aware of America, Child Care in America: 2024 Affordability Analysis, Table I (center-based, 4-year-old) + BLS CE 2024 Education",
+        "last_verified": "2026-10-12",
+        "note": "One child in full-time center care for a 4-year-old, California state average $16,665 (statewide, not metro-specific) + BLS CE 2024 education for married couple with children oldest 6-17 (US $3,484 x West ratio 1.0982 = $3,826); second child assumed in free public school. CE babysitting/daycare (item 670320) removed from other to avoid double counting."
+      }
+    },
+    "healthcare": {
+      "value": 10015,
+      "meta": {
+        "source": "https://meps.ahrq.gov/data_files/publications/rf51/rf51.pdf",
+        "source_title": "AHRQ MEPS-IC Research Findings #51, Figure 9: average annual employee contribution for family coverage by state, 2021-2023 average (private sector) + BLS CE 2024 out-of-pocket health",
+        "last_verified": "2026-10-12",
+        "note": "Employer-plan family premium employee share, California $6,970 (2021-23 pooled, not inflated) + out-of-pocket medical services, drugs and supplies from BLS CE 2024 (healthcare minus health insurance) for married couple with children oldest 6-17: US $2,650 x West ratio 1.1489 = $3,045. Excludes employer-paid share of premiums."
+      }
+    },
+    "utilities": {
+      "value": 6543,
+      "meta": {
+        "source": "https://api.bls.gov/publicAPI/v1/timeseries/data/",
+        "source_title": "BLS Consumer Expenditure Survey 2024 via BLS Public Data API: married couple with children, oldest child 6-17 (series LB0606), scaled by West region / US all-consumer-unit ratio (LB11)",
+        "last_verified": "2026-10-12",
+        "note": "Utilities, fuels and public services incl. phone/internet (CXUUTILS): US family $6,225; regional scaling factor 1.0511."
+      }
+    },
+    "other": {
+      "value": 22832,
+      "meta": {
+        "source": "https://api.bls.gov/publicAPI/v1/timeseries/data/",
+        "source_title": "BLS Consumer Expenditure Survey 2024 via BLS Public Data API: married couple with children, oldest child 6-17 (series LB0606), scaled by West region / US all-consumer-unit ratio (LB11)",
+        "last_verified": "2026-10-12",
+        "note": "Apparel, household operations (less babysitting/daycare 670320), housekeeping supplies, furnishings, entertainment, personal care, reading, tobacco, miscellaneous: US family $19,261; regional scaling factor 1.1854. Excludes alcohol, cash contributions and personal insurance/pensions."
+      }
+    }
+  },
+  "inflation": {
+    "cpi_assumed": 0.0363,
+    "meta": {
+      "source": "https://data.bls.gov/timeseries/CUURS49ASA0",
+      "source_title": "BLS CPI-U, Los Angeles-Long Beach-Anaheim (series CUURS49ASA0, not seasonally adjusted)",
+      "last_verified": "2026-10-12",
+      "note": "All items, August 2026 356.993 vs August 2025 344.503 = 3.6% y/y (latest published; retrieved via BLS Public Data API)."
+    }
+  },
+  "median_household_income": {
+    "value": 138719,
+    "meta": {
+      "source": "https://info.childcareaware.org/hubfs/Affordability_Analysis_Updated_2024.pdf",
+      "source_title": "Child Care Aware 2024 Affordability Analysis, citing U.S. Census Bureau ACS 2023 Table B19126",
+      "last_verified": "2026-10-12",
+      "note": "Median income of married-couple families with own children under 18, California statewide (ACS 2023 1-year), not metro-specific."
+    }
+  },
+  "meta": {
+    "source": "https://api.bls.gov/publicAPI/v1/timeseries/data/",
+    "source_title": "BLS Consumer Expenditure Survey 2024 via BLS Public Data API (married couple with children, oldest 6-17; West region scaling) + HUD FY2026 FMR + Child Care Aware 2024 + AHRQ MEPS-IC",
+    "last_verified": "2026-10-12",
+    "note": "Primary sources only, no secondary (Numbeo) data. Method identical for Houston and Los Angeles: national CE family-type means scaled per category by Census-region/US all-household ratios (CE does not publish this household type by metro); metro 3-bedroom HUD FMR for rent; state center-based 4-year-old childcare; state employer family premium share. Context: Los Angeles-Long Beach-Anaheim 2023-24 CE (all households): $90,594 total spend vs $77,907 US (https://www.bls.gov/regions/west/news-release/2026/consumerexpenditures_losangeles_20260116.htm). Total $140,714."
+  }
+}

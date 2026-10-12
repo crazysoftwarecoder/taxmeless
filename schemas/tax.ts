@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { MetaSchema } from './meta';
 
-export const CountryCodeSchema = z.enum(['au', 'us', 'uk', 'ca', 'nz', 'sg', 'ae', 'de', 'ch', 'in']);
+export const CountryCodeSchema = z.enum(['au', 'us-tx', 'us-ca', 'uk', 'ca', 'nz', 'sg', 'ae', 'de', 'ch', 'in']);
 export type CountryCode = z.infer<typeof CountryCodeSchema>;
 
 const IsoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'date must be YYYY-MM-DD');
@@ -47,6 +47,11 @@ export const RuleKindSchema = z.discriminatedUnion('type', [
     schedule: ScheduleRefSchema,
     /** true: the base is stacked on top of the taxpayer's other income before brackets apply. */
     stack_on_other_income: z.boolean(),
+    /**
+     * Which tax system this schedule belongs to (e.g. 'federal', 'state'). Income stacks only on earlier income
+     * of the same group, so a state tax on the same dividend does not see it twice. Default 'income'.
+     */
+    stack_group: z.string().regex(/^[a-z_]+$/).optional(),
   }),
   z.object({
     type: z.literal('flat_above_allowance'),
@@ -84,6 +89,11 @@ export const ModifiersSchema = z.object({
   accrual_until: IsoDate.optional(),
   /** base 'gain' only: index the cost base by CPI (SimInputs.inflation) before computing the taxable gain. Requires min_holding_years to be met if set. */
   cost_base_indexation: z.boolean().optional(),
+  /**
+   * Assessed value grows from the purchase price by at most this rate per year, never above market value
+   * (California Proposition 13). Applies to base 'principal' or 'value'.
+   */
+  assessed_growth_cap: z.number().min(0).max(1).optional(),
   /** Floor on the tax as a share of the taxable amount (e.g. AU 30% minimum tax on capital gains). */
   minimum_rate: z.number().min(0).max(1).optional(),
 });

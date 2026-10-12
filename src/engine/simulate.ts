@@ -1,6 +1,6 @@
 import type { Asset, Assumptions, Base, Rule, Schedule, Stage, TaxFile } from '../../schemas';
 import { applyRule, type GainWindow, type RuleContext } from './rules';
-import { INCOME_BAND_INDEX, type Ledger, type SimInputs, type StageTotals, type TaxEvent, type YearRow } from './types';
+import { INCOME_BAND_INDEX, type Ledger, type StackByGroup, type SimInputs, type StageTotals, type TaxEvent, type YearRow } from './types';
 
 const STAGES: Stage[] = ['ingress', 'growth', 'egress'];
 export const DEFAULT_START_DATE = '2026-10-12';
@@ -35,8 +35,9 @@ interface PathYear {
   events: TaxEvent[];
 }
 
-/** Rules whose base is stacked on top of other income; each one stacks on the previous ones in the same year. */
-const stacks = (r: Rule) => r.kind.type === 'schedule' && r.kind.stack_on_other_income;
+/** The stacking group of a rule whose base sits on top of other income, or undefined. */
+const stackGroup = (r: Rule): string | undefined =>
+  r.kind.type === 'schedule' && r.kind.stack_on_other_income ? (r.kind.stack_group ?? 'income') : undefined;
 
 /**
  * Simulate one country × one asset. Pure and deterministic.
@@ -69,7 +70,7 @@ export function simulate(inputs: SimInputs, tax: TaxFile, asset: Asset, assumpti
     return t;
   };
 
-  const stackLog: { growth: number[]; egress: number[] } = { growth: [], egress: [] };
+  const stackLog: { growth: StackByGroup[]; egress: StackByGroup[] } = { growth: [], egress: [] };
   const runPath = (taxesOn: boolean): PathResult => {
     const years: PathYear[] = [];
     // Per-year asset history (pre-egress) used to split gains by accrual date.
@@ -113,15 +114,15 @@ export function simulate(inputs: SimInputs, tax: TaxFile, asset: Asset, assumpti
         fx,
       };
       const out: TaxEvent[] = [];
-      const offset = stage === 'growth' ? (inputs.incomeStackOffset?.growth?.[year] ?? 0)
-        : stage === 'egress' ? (inputs.incomeStackOffset?.egress ?? 0) : 0;
-      let stacked = 0; // taxable amounts this holding stacked this stage-year
+      const offset: StackByGroup = stage === 'growth' ? (inputs.incomeStackOffset?.growth?.[year] ?? {})
+        : stage === 'egress' ? (inputs.incomeStackOffset?.egress ?? {}) : {};
+      const stacked: StackByGroup = {}; // taxable amounts this holding stacked this stage-year, per tax system
       for (const r of rulesFor(stage, taxesOn)) {
-        const st = stacks(r);
-        const ev = applyRule(r, st ? { ...base, otherIncome: otherIncome + offset + stacked } : base);
+        const g = stackGroup(r);
+        const ev = applyRule(r, g ? { ...base, otherIncome: otherIncome + (offset[g] ?? 0) + (stacked[g] ?? 0) } : base);
         if (ev) {
           out.push(ev);
-          if (st) stacked += ev.taxable;
+          if (g) stacked[g] = (stacked[g] ?? 0) + ev.taxable;
         }
       }
       if (taxesOn && stage !== 'ingress') stackLog[stage][year] = stacked;
@@ -251,7 +252,7 @@ export function simulate(inputs: SimInputs, tax: TaxFile, asset: Asset, assumpti
       events: n.events,
       grossValueUsd: (gross[i]?.closing ?? 0) / fx,
       netValueUsd: n.closing / fx,
-      stackedLocal: { growth: stackLog.growth[i] ?? 0, egress: stackLog.egress[i] ?? 0 },
+      stackedLocal: { growth: stackLog.growth[i] ?? {}, egress: stackLog.egress[i] ?? {} },
     };
   });
 

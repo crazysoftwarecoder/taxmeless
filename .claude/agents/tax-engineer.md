@@ -19,7 +19,8 @@ You never edit src/ui/**.
    BMF/BZSt, ESTV/cantonal Zurich, Income Tax Dept India) → finance ministry/legislation → Big-4 country tax
    summaries (PwC Worldwide Tax Summaries, EY) as corroboration only. Never Wikipedia or blogs as the source.
 2. Model a RESIDENT individual taxpayer, current tax year, one representative sub-national jurisdiction:
-   NSW (AU), a no-state-income-tax US state (US), Ontario (CA), Zurich (CH), Berlin (DE). State it in meta.note.
+   NSW (AU), Texas/Houston (us-tx), California/Los Angeles (us-ca), Ontario (CA), Zurich (CH), Berlin (DE). State it in meta.note.
+   Where two tax systems tax the same income (US federal + state), give each schedule its own `stack_group`.
 3. For each asset (equities index fund; residential property) capture every rule at each stage:
    - ingress: stamp duty / transfer tax / SDRT / brokerage / registration fees
    - growth: tax on dividends (incl. franking, qualified-dividend rates, dividend allowances, Abgeltungsteuer),

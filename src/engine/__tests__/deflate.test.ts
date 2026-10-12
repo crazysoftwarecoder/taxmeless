@@ -4,7 +4,7 @@ import type { Ledger } from '../types';
 
 const z = { ingress: 0, growth: 0, egress: 0 };
 const row = (year: number, net: number, tax = 0) => ({
-  year, openingValueUsd: net, incomeUsd: 0, growthUsd: 0, taxesUsd: { ...z, growth: tax }, costsUsd: z, events: [], grossValueUsd: net + tax, netValueUsd: net, stackedLocal: { growth: 0, egress: 0 },
+  year, openingValueUsd: net, incomeUsd: 0, growthUsd: 0, taxesUsd: { ...z, growth: tax }, costsUsd: z, events: [], grossValueUsd: net + tax, netValueUsd: net, stackedLocal: { growth: {}, egress: {} },
 });
 const ledger: Ledger = {
   country: 'au', asset: 'equities', currency: 'AUD', fx: 1, principalUsd: 100, horizonYears: 2, purchasePriceUsd: 100, loanUsd: 0,

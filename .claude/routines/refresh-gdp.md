@@ -14,7 +14,8 @@ You are the income-tracker for Where it Grows (read `.claude/agents/income-track
 - Set `meta.last_verified` to today's date (UTC, YYYY-MM-DD) only for values you actually re-checked against the source.
 
 ## Domain rules
-1. For each country, call `https://api.worldbank.org/v2/country/{ISO3}/indicator/NY.GDP.PCAP.CD?format=json&per_page=100` (ISO3 from `data/countries.json`). Append any new year with a non-null value; apply revisions to existing years and note `revised YYYY-MM` in `meta.note`.
+1. For US state entries (`us-tx`, `us-ca`) use BEA state GDP and Census population via FRED (no key): `https://fred.stlouisfed.org/graph/fredgraph.csv?id=TXNGSP` and `?id=TXPOP` (CANGSP/CAPOP for California); per capita = GDP×1e6 / (POP×1e3).
+2. For every other country, call `https://api.worldbank.org/v2/country/{ISO3}/indicator/NY.GDP.PCAP.CD?format=json&per_page=100` (ISO3 from `data/countries.json`). Append any new year with a non-null value; apply revisions to existing years and note `revised YYYY-MM` in `meta.note`.
 2. Recompute `projection.cagr` as the compound annual growth over the last 10 available years (4 dp) when `projection.method` is `cagr_last_10y`.
 3. Keep the series sorted ascending, at least 15 points, values in current USD. Update `meta.last_verified`.
 4. Optionally refresh `median_household_income` from the national statistics office if present.
