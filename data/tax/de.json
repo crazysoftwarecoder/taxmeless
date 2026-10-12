@@ -1,0 +1,196 @@
+{
+  "country": "de",
+  "currency": "EUR",
+  "tax_year": "2026",
+  "jurisdiction_note": "German tax resident, single, no church tax; property rules use Berlin (Grunderwerbsteuer 6%, Grundsteuer B Hebesatz 470%).",
+  "meta": {
+    "source": "https://www.gesetze-im-internet.de/estg/__32a.html",
+    "source_title": "§ 32a EStG — Einkommensteuertarif (Fassung ab Veranlagungszeitraum 2026)",
+    "last_verified": "2026-10-12",
+    "note": "Solidaritätszuschlag (5.5% of income tax above a Freigrenze of roughly EUR 20k of tax, § 4 SolzG) is not modelled on income because the engine cannot compute tax-on-tax; it is folded into the 26.375% Abgeltungsteuer rate where it always applies."
+  },
+  "resident_profile": {
+    "other_income_options": [40000, 65000, 130000],
+    "meta": {
+      "source": "https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/04/PD26_113_621.html",
+      "source_title": "Destatis — Mittlerer Bruttojahresverdienst Vollzeit 2025: EUR 54,066",
+      "last_verified": "2026-10-12",
+      "note": "low ≈ below-median full-time, mid ≈ above-median full-time, high ≈ well inside the 42% zone. Amounts are taxable income after deductions."
+    }
+  },
+  "income_tax": {
+    "brackets": [
+      { "from": 0, "to": 12348, "rate": 0 },
+      { "from": 12348, "to": 15000, "rate": 0.16 },
+      { "from": 15000, "to": 17799, "rate": 0.22 },
+      { "from": 17799, "to": 30000, "rate": 0.26 },
+      { "from": 30000, "to": 45000, "rate": 0.31 },
+      { "from": 45000, "to": 60000, "rate": 0.36 },
+      { "from": 60000, "to": 69879, "rate": 0.40 },
+      { "from": 69879, "to": 277826, "rate": 0.42 },
+      { "from": 277826, "to": null, "rate": 0.45 }
+    ],
+    "meta": {
+      "source": "https://www.gesetze-im-internet.de/estg/__32a.html",
+      "source_title": "§ 32a EStG — tariff 2026: Grundfreibetrag 12,348; progression zones to 17,799 and 69,878; 42% from 69,879; 45% from 277,826",
+      "last_verified": "2026-10-12",
+      "note": "Approximation. The statutory tariff is a continuous quadratic formula (14% rising to 23.97% between 12,348 and 17,799, then 23.97% rising to 42% up to 69,878). It is approximated here by step brackets chosen so that cumulative tax at each zone boundary matches the formula to within about EUR 10 (formula: EUR 1,034.87 at 17,799 and EUR 18,213.13 at 69,878)."
+    }
+  },
+  "levies": [],
+  "assets": {
+    "equities": {
+      "ingress": [
+        {
+          "id": "brokerage",
+          "label": "Brokerage on purchase",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0.001 },
+          "plain_english": "Germany has no stamp duty or transaction tax on buying shares or ETFs. A typical online broker charges around 0.1% of the order, which we treat as a cost rather than a tax.",
+          "meta": {
+            "source": "https://www.bafin.de/DE/Verbraucher/GeldanlageWertpapiere/Wertpapiere/wertpapiere_node.html",
+            "source_title": "BaFin — Wertpapiere für Verbraucher (brokerage is set by the broker; 0.1% assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "abgeltungsteuer_dividends",
+          "label": "Abgeltungsteuer on fund distributions (26.375%, after EUR 1,000 allowance and 30% Teilfreistellung)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": { "type": "flat_above_allowance", "rate": 0.26375, "allowance": 1000 },
+          "modifiers": { "taxable_fraction": 0.7 },
+          "plain_english": "Investment income in Germany is taxed at a flat 25% plus the 5.5% solidarity surcharge on that tax, so 26.375% in total, regardless of your salary. For an equity fund only 70% of distributions are taxable (the Teilfreistellung), and the first EUR 1,000 a year of investment income (Sparer-Pauschbetrag) is tax-free.",
+          "meta": {
+            "source": "https://www.gesetze-im-internet.de/estg/__32d.html",
+            "source_title": "§ 32d EStG (25% flat rate), § 20 Abs. 9 EStG (Sparer-Pauschbetrag EUR 1,000), § 20 InvStG (30% Teilfreistellung for Aktienfonds)",
+            "last_verified": "2026-10-12",
+            "note": "Solidaritätszuschlag 5.5% folded into the rate (0.25 × 1.055 = 0.26375). Church tax ignored. Vorabpauschale (annual deemed minimum distribution) ignored. Option to be assessed at marginal rates if lower (Günstigerprüfung) ignored. Teilfreistellung cited: https://www.gesetze-im-internet.de/invstg_2018/__20.html"
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "abgeltungsteuer_gains",
+          "label": "Abgeltungsteuer on the gain (26.375% on 70% of the gain)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": { "type": "flat_above_allowance", "rate": 0.26375, "allowance": 0 },
+          "modifiers": { "taxable_fraction": 0.7 },
+          "plain_english": "When you sell, the gain on an equity fund is taxed at the same flat 26.375%, but only 70% of the gain counts because of the 30% Teilfreistellung for equity funds. There is no holding-period discount for shares or funds, and no separate capital gains tax rate.",
+          "meta": {
+            "source": "https://www.gesetze-im-internet.de/invstg_2018/__20.html",
+            "source_title": "§ 20 InvStG — Teilfreistellung 30% for Aktienfonds; § 32d EStG flat rate 25% + Soli",
+            "last_verified": "2026-10-12",
+            "note": "The EUR 1,000 Sparer-Pauschbetrag is assumed fully used by distributions in the year of sale, so the allowance on gains is 0. Whole gain assumed realised in one year."
+          }
+        }
+      ]
+    },
+    "property": {
+      "ingress": [
+        {
+          "id": "grunderwerbsteuer_berlin",
+          "label": "Berlin real-estate transfer tax (Grunderwerbsteuer) 6%",
+          "stage": "ingress",
+          "category": "tax",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0.06 },
+          "plain_english": "Buying property in Berlin triggers a one-off transfer tax of 6% of the purchase price, paid by the buyer before the property earns anything. It is one of the highest rates among the German states.",
+          "meta": {
+            "source": "https://www.berlin.de/sen/finanzen/steuern/informationen-fuer-steuerzahler-/faq-steuern/artikel.9062.php",
+            "source_title": "Senatsverwaltung für Finanzen Berlin — FAQ Grunderwerbsteuer (6% since 1 January 2014)",
+            "last_verified": "2026-10-12"
+          }
+        },
+        {
+          "id": "notary_land_registry",
+          "label": "Notary and land-registry fees",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0.02 },
+          "plain_english": "Every German property purchase must be notarised and entered in the land register. The statutory fee scale works out at roughly 1.5% for the notary and 0.5% for the Grundbuch, about 2% in total, which we treat as a cost.",
+          "meta": {
+            "source": "https://www.gesetze-im-internet.de/gnotkg/",
+            "source_title": "GNotKG — Gerichts- und Notarkostengesetz (fee scale; ~2% of price assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Approximation; actual fees depend on the fee table and on whether a mortgage is registered."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "rental_income_tax",
+          "label": "Income tax on net rent",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "plain_english": "Rental income, after deducting running costs, is added to your other income and taxed at your marginal income-tax rate each year (§ 21 EStG). There is no flat rate for rent as there is for dividends.",
+          "meta": {
+            "source": "https://www.gesetze-im-internet.de/estg/__21.html",
+            "source_title": "§ 21 EStG — Einkünfte aus Vermietung und Verpachtung",
+            "last_verified": "2026-10-12",
+            "note": "Building depreciation (AfA, 2–3% p.a.) and the solidarity surcharge are not modelled; costs fixed at assumptions.property.cost_rate of gross rent."
+          }
+        },
+        {
+          "id": "grundsteuer_berlin",
+          "label": "Berlin property tax (Grundsteuer B)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.001 },
+          "plain_english": "Berlin charges an annual property tax based on an assessed value, a tax rate of 0.31 per mille for residential property and a municipal multiplier of 470%. That is about 0.15% of the assessed value, which is usually below market value, so we approximate it as 0.1% of market value per year.",
+          "meta": {
+            "source": "https://www.berlin.de/grundsteuer/",
+            "source_title": "Berlin.de — Informationen zur Berliner Grundsteuer (Steuermesszahl 0.31‰ Wohngrundstücke, Hebesatz 470% from 2025)",
+            "last_verified": "2026-10-12",
+            "note": "Approximation: 0.31‰ × 470% = 0.1457% of the Grundsteuerwert; Grundsteuerwert under the Bundesmodell is typically well below market value. Landlords may pass Grundsteuer on to tenants via Nebenkosten; that is ignored here."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "spekulationssteuer",
+          "label": "Income tax on the gain if sold within 10 years (Spekulationsfrist)",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "modifiers": { "exempt_after_years": 10 },
+          "plain_english": "If you sell a privately held investment property within 10 years of buying it, the whole gain is added to your income in the year of sale and taxed at your marginal rate. Hold it for more than 10 years and the gain is completely tax-free.",
+          "meta": {
+            "source": "https://www.gesetze-im-internet.de/estg/__23.html",
+            "source_title": "§ 23 EStG — Private Veräußerungsgeschäfte (10-year period for land)",
+            "last_verified": "2026-10-12",
+            "note": "Exemption is modelled as applying once the holding period reaches 10 years; the law requires more than 10 years between acquisition and sale contracts. Depreciation recapture ignored."
+          }
+        },
+        {
+          "id": "agent_fee",
+          "label": "Selling agent commission (seller's share)",
+          "stage": "egress",
+          "category": "cost",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.0357 },
+          "plain_english": "Estate-agent commission in Berlin is customarily 7.14% including VAT, and since 2020 the law requires it to be split equally between buyer and seller when the agent acts for both. The seller's half, 3.57% of the sale price, is a cost rather than a tax.",
+          "meta": {
+            "source": "https://www.gesetze-im-internet.de/bgb/__656c.html",
+            "source_title": "§ 656c BGB — split of agent commission for residential sales (commission level is market practice; 3.57% assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption."
+          }
+        }
+      ]
+    }
+  }
+}

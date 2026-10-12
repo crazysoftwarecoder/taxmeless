@@ -1,0 +1,276 @@
+{
+  "country": "ch",
+  "currency": "CHF",
+  "tax_year": "2026",
+  "jurisdiction_note": "Swiss tax resident, single, no church tax, living in the city of Zurich (cantonal Steuerfuss 95%, communal Steuerfuss 119%).",
+  "meta": {
+    "source": "https://www.estv.admin.ch/dam/de/sd-web/vFK3ntWLQ4s4/2-215-D-2025-d.pdf",
+    "source_title": "ESTV Rundschreiben 2-215-D-2025 — Tarif 2026 direkte Bundessteuer (Art. 36 DBG)",
+    "last_verified": "2026-10-12",
+    "note": "Cantonal law: Steuergesetz des Kantons Zürich LS 631.1 (§ 35 income tariff, § 47 wealth tariff, § 225 Grundstückgewinnsteuer), consolidated text in force 1 January 2026."
+  },
+  "resident_profile": {
+    "other_income_options": [70000, 110000, 220000],
+    "meta": {
+      "source": "https://www.admin.ch/de/newnsb/CzozNgBTCJOrNyvwsItyp",
+      "source_title": "BFS Lohnstrukturerhebung 2024 — median gross monthly wage CHF 7,024 (Zurich region CHF 7,502)",
+      "last_verified": "2026-10-12",
+      "note": "low ≈ below-median full-time, mid ≈ above-median full-time, high ≈ senior professional. Amounts are taxable income after deductions."
+    }
+  },
+  "income_tax": {
+    "brackets": [
+      { "from": 0, "to": 7000, "rate": 0 },
+      { "from": 7000, "to": 12000, "rate": 0.0428 },
+      { "from": 12000, "to": 15200, "rate": 0.0642 },
+      { "from": 15200, "to": 16800, "rate": 0.0719 },
+      { "from": 16800, "to": 24800, "rate": 0.0933 },
+      { "from": 24800, "to": 34500, "rate": 0.115 },
+      { "from": 34500, "to": 43500, "rate": 0.1372 },
+      { "from": 43500, "to": 45700, "rate": 0.1548 },
+      { "from": 45700, "to": 58800, "rate": 0.1765 },
+      { "from": 58800, "to": 76400, "rate": 0.201 },
+      { "from": 76400, "to": 82100, "rate": 0.252 },
+      { "from": 82100, "to": 110400, "rate": 0.259 },
+      { "from": 110400, "to": 144100, "rate": 0.303 },
+      { "from": 144100, "to": 185100, "rate": 0.3454 },
+      { "from": 185100, "to": 197400, "rate": 0.3674 },
+      { "from": 197400, "to": 266700, "rate": 0.3888 },
+      { "from": 266700, "to": null, "rate": 0.41 }
+    ],
+    "meta": {
+      "source": "https://www.estv.admin.ch/dam/de/sd-web/vFK3ntWLQ4s4/2-215-D-2025-d.pdf",
+      "source_title": "Combined marginal rate: federal tariff 2026 (Art. 36 DBG, ESTV) + Zurich cantonal Grundtarif § 35 StG × (95% canton + 119% city of Zurich)",
+      "last_verified": "2026-10-12",
+      "note": "Approximation built by summing the federal marginal rate (0.77%…13.2%) and the cantonal simple-tax rate (0%…13%, § 35 Abs. 1 StG ZH) multiplied by 2.14 (cantonal Steuerfuss 95% for 2026–27 per zh.ch + communal Steuerfuss 119% per stadt-zuerich.ch budget 2026). Sub-CHF 2,000 slivers merged. Above CHF 793,900 federal tax becomes a flat 11.5% of total income; that step-down is ignored. Federal and cantonal taxable income are assumed equal (different deductions ignored). Personalsteuer CHF 24 ignored."
+    }
+  },
+  "levies": [],
+  "assets": {
+    "equities": {
+      "ingress": [
+        {
+          "id": "umsatzabgabe_purchase",
+          "label": "Federal securities transfer stamp duty (Umsatzabgabe) on purchase",
+          "stage": "ingress",
+          "category": "tax",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0.0015 },
+          "plain_english": "Switzerland charges a federal stamp duty every time securities are bought or sold through a Swiss bank or broker: 0.15% for Swiss securities and 0.30% for foreign ones. We assume a Swiss-domiciled index fund, so 0.15% of the purchase.",
+          "meta": {
+            "source": "https://www.estv.admin.ch/de/umsatzabgabe-kurz-erklaert",
+            "source_title": "ESTV — Umsatzabgabe kurz erklärt (1.5‰ inländische, 3.0‰ ausländische Wertpapiere)",
+            "last_verified": "2026-10-12",
+            "note": "A foreign-domiciled ETF would pay 0.30%. Swiss-domiciled fund units are themselves exempt from Umsatzabgabe on issue; the 0.15% is a conservative simplification covering secondary-market purchase."
+          }
+        },
+        {
+          "id": "brokerage",
+          "label": "Brokerage on purchase",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0.001 },
+          "plain_english": "Brokerage charged by the bank or online broker to execute the purchase, assumed at 0.1%. Swiss full-service banks often charge more; this is a cost rather than a tax.",
+          "meta": {
+            "source": "https://www.finma.ch/de/finma-public/bewilligte-institute-personen-und-produkte/",
+            "source_title": "FINMA — licensed institutions (brokerage is set by the broker; 0.1% assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "dividend_income_tax",
+          "label": "Income tax on dividends (federal + cantonal + communal)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "plain_english": "Dividends and fund distributions are ordinary income in Switzerland, added to your salary and taxed at your marginal federal, cantonal and communal rate. There is no dividend allowance or imputation credit for a portfolio investor.",
+          "meta": {
+            "source": "https://www.fedlex.admin.ch/eli/cc/1991/1184_1184_1184/de",
+            "source_title": "DBG Art. 20 Abs. 1 lit. c — Erträge aus beweglichem Vermögen; § 20 StG ZH",
+            "last_verified": "2026-10-12",
+            "note": "Partial taxation (Teilbesteuerung, 70% federal / 50% Zurich) applies only to qualified holdings of at least 10% of a company and is not applicable to an index fund. 35% Verrechnungssteuer withheld on Swiss dividends is fully refundable to residents and ignored."
+          }
+        },
+        {
+          "id": "wealth_tax",
+          "label": "Zurich wealth tax (cantonal + communal) on the portfolio value",
+          "stage": "growth",
+          "category": "tax",
+          "base": "value",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 81000, "rate": 0 },
+                { "from": 81000, "to": 322000, "rate": 0.00107 },
+                { "from": 322000, "to": 726000, "rate": 0.00214 },
+                { "from": 726000, "to": 1371000, "rate": 0.00321 },
+                { "from": 1371000, "to": 2339000, "rate": 0.00428 },
+                { "from": 2339000, "to": 3304000, "rate": 0.00535 },
+                { "from": 3304000, "to": null, "rate": 0.00642 }
+              ],
+              "meta": {
+                "source": "https://www.notes.zh.ch/appl/zhlex_r.nsf/WebView/A1B72A220CD6E747C1258DC4002A921E/$File/631.1_8.6.97_132.pdf",
+                "source_title": "§ 47 Abs. 1 StG ZH — Vermögenssteuer Grundtarif (0‰ to 3‰) × 2.14 (95% canton + 119% city of Zurich)",
+                "last_verified": "2026-10-12",
+                "note": "Simple-tax rates 0.5‰/1‰/1.5‰/2‰/2.5‰/3‰ multiplied by the combined Steuerfuss of 214%. Works out to ≈0.17% at CHF 0.8m, ≈0.25% at CHF 1.5m and ≈0.33% at CHF 2.5m of net wealth."
+              }
+            },
+            "stack_on_other_income": false
+          },
+          "plain_english": "Switzerland has no capital gains tax on shares, but every canton taxes your net wealth each year. In the city of Zurich the combined rate rises from about 0.1% to 0.64% as wealth grows; on a portfolio of CHF 1–3 million it averages roughly 0.2–0.35% per year.",
+          "meta": {
+            "source": "https://www.notes.zh.ch/appl/zhlex_r.nsf/WebView/A1B72A220CD6E747C1258DC4002A921E/$File/631.1_8.6.97_132.pdf",
+            "source_title": "§ 47 StG ZH — Vermögenssteuer; Steuerfüsse: zh.ch (95%) and stadt-zuerich.ch Budget 2026 (119%)",
+            "last_verified": "2026-10-12",
+            "note": "The portfolio is assumed to be the taxpayer's only taxable wealth; other assets would push it into higher brackets. No federal wealth tax."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "umsatzabgabe_sale",
+          "label": "Federal securities transfer stamp duty (Umsatzabgabe) on sale",
+          "stage": "egress",
+          "category": "tax",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.0015 },
+          "plain_english": "The same 0.15% federal stamp duty applies when you sell the fund through a Swiss broker. Capital gains themselves are tax-free for a private investor, so this is the only tax at exit.",
+          "meta": {
+            "source": "https://www.estv.admin.ch/de/umsatzabgabe-kurz-erklaert",
+            "source_title": "ESTV — Umsatzabgabe kurz erklärt",
+            "last_verified": "2026-10-12",
+            "note": "Private capital gains on movable assets are exempt under DBG Art. 16 Abs. 3 and § 16 Abs. 3 StG ZH, so no capital gains rule is listed. Professional securities dealer status (gewerbsmässiger Wertschriftenhandel) is assumed not to apply."
+          }
+        }
+      ]
+    },
+    "property": {
+      "ingress": [
+        {
+          "id": "notary_land_registry",
+          "label": "Notary and land-registry fees (no transfer tax in Zurich)",
+          "stage": "ingress",
+          "category": "cost",
+          "base": "principal",
+          "kind": { "type": "flat", "rate": 0.003 },
+          "plain_english": "The canton of Zurich abolished its property transfer tax (Handänderungssteuer) in 2005, so buying property only costs the notary's fee of about 1 per mille and the land-registry fee of about 1 per mille, plus VAT and small ancillary charges. We round the total to 0.3% of the price.",
+          "meta": {
+            "source": "https://www.notes.zh.ch/appl/zhlex_r.nsf/WebView/A1B72A220CD6E747C1258DC4002A921E/$File/631.1_8.6.97_132.pdf",
+            "source_title": "StG ZH §§ 227–233 Handänderungssteuer (repealed); Zurich notary/Grundbuch fee scale ≈ 1‰ + 1‰",
+            "last_verified": "2026-10-12",
+            "note": "Approximation; fees are usually shared between buyer and seller but the buyer is assumed to bear them here."
+          }
+        }
+      ],
+      "growth": [
+        {
+          "id": "rental_income_tax",
+          "label": "Income tax on net rent (federal + cantonal + communal)",
+          "stage": "growth",
+          "category": "tax",
+          "base": "income",
+          "kind": { "type": "schedule", "schedule": { "$ref": "income_tax" }, "stack_on_other_income": true },
+          "plain_english": "Net rental income is added to your other income and taxed at your marginal federal, cantonal and communal rate every year. Maintenance costs are deductible, either actual or as a flat percentage of rent.",
+          "meta": {
+            "source": "https://www.fedlex.admin.ch/eli/cc/1991/1184_1184_1184/de",
+            "source_title": "DBG Art. 21 — Erträge aus unbeweglichem Vermögen; Art. 32 Abs. 2 maintenance deduction",
+            "last_verified": "2026-10-12",
+            "note": "Costs fixed at assumptions.property.cost_rate of gross rent; no mortgage interest (no leverage modelled)."
+          }
+        },
+        {
+          "id": "wealth_tax",
+          "label": "Zurich wealth tax (cantonal + communal) on the property value",
+          "stage": "growth",
+          "category": "tax",
+          "base": "value",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 81000, "rate": 0 },
+                { "from": 81000, "to": 322000, "rate": 0.00107 },
+                { "from": 322000, "to": 726000, "rate": 0.00214 },
+                { "from": 726000, "to": 1371000, "rate": 0.00321 },
+                { "from": 1371000, "to": 2339000, "rate": 0.00428 },
+                { "from": 2339000, "to": 3304000, "rate": 0.00535 },
+                { "from": 3304000, "to": null, "rate": 0.00642 }
+              ],
+              "meta": {
+                "source": "https://www.notes.zh.ch/appl/zhlex_r.nsf/WebView/A1B72A220CD6E747C1258DC4002A921E/$File/631.1_8.6.97_132.pdf",
+                "source_title": "§ 47 Abs. 1 StG ZH — Vermögenssteuer Grundtarif × 2.14 (95% canton + 119% city of Zurich)",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": false
+          },
+          "plain_english": "Real estate counts towards your taxable wealth too, so the annual Zurich wealth tax applies to the property's tax value. On a property worth CHF 1–3 million that is roughly 0.2–0.35% per year.",
+          "meta": {
+            "source": "https://www.notes.zh.ch/appl/zhlex_r.nsf/WebView/A1B72A220CD6E747C1258DC4002A921E/$File/631.1_8.6.97_132.pdf",
+            "source_title": "§ 39 and § 47 StG ZH — Vermögenssteuer on Grundstücke",
+            "last_verified": "2026-10-12",
+            "note": "The cantonal Vermögenssteuerwert of property is usually around 70% of market value; applying the tariff to full market value overstates the tax slightly. No mortgage debt deducted."
+          }
+        }
+      ],
+      "egress": [
+        {
+          "id": "grundstueckgewinnsteuer",
+          "label": "Zurich real-estate gains tax (Grundstückgewinnsteuer), 35% reduction for a 15-year hold",
+          "stage": "egress",
+          "category": "tax",
+          "base": "gain",
+          "kind": {
+            "type": "schedule",
+            "schedule": {
+              "brackets": [
+                { "from": 0, "to": 4000, "rate": 0.10 },
+                { "from": 4000, "to": 10000, "rate": 0.15 },
+                { "from": 10000, "to": 18000, "rate": 0.20 },
+                { "from": 18000, "to": 30000, "rate": 0.25 },
+                { "from": 30000, "to": 50000, "rate": 0.30 },
+                { "from": 50000, "to": 100000, "rate": 0.35 },
+                { "from": 100000, "to": null, "rate": 0.40 }
+              ],
+              "meta": {
+                "source": "https://www.notes.zh.ch/appl/zhlex_r.nsf/WebView/A1B72A220CD6E747C1258DC4002A921E/$File/631.1_8.6.97_132.pdf",
+                "source_title": "§ 225 Abs. 1 StG ZH — Grundstückgewinnsteuer tariff 10% to 40%",
+                "last_verified": "2026-10-12"
+              }
+            },
+            "stack_on_other_income": false
+          },
+          "modifiers": { "taxable_fraction": 0.65 },
+          "plain_english": "Unlike shares, gains on property are taxed in Zurich by a separate progressive tax that reaches 40% on the part of the gain above CHF 100,000. The bill is cut by 5% after five years of ownership and by 3 points for each further year, up to 50% off after 20 years; we apply the 15-year discount of 35%.",
+          "meta": {
+            "source": "https://www.notes.zh.ch/appl/zhlex_r.nsf/WebView/A1B72A220CD6E747C1258DC4002A921E/$File/631.1_8.6.97_132.pdf",
+            "source_title": "§ 225 Abs. 3 StG ZH — Ermässigung nach Besitzesdauer (5 y 5%, 10 y 20%, 15 y 35%, 20+ y 50%)",
+            "last_verified": "2026-10-12",
+            "note": "The statutory reduction is a percentage off the tax; the engine applies it as a 35% reduction of the taxable gain (taxable_fraction 0.65), which is equivalent once most of the gain sits in the 40% bracket. The 35% figure is fixed for the default 15-year horizon; a 10-year hold would get 20% and 20+ years 50%. Gains under CHF 5,000 exempt (ignored). Surcharges for sales within 2 years ignored."
+          }
+        },
+        {
+          "id": "agent_fee",
+          "label": "Selling agent commission",
+          "stage": "egress",
+          "category": "cost",
+          "base": "value",
+          "kind": { "type": "flat", "rate": 0.02 },
+          "plain_english": "Swiss estate agents typically charge around 2% of the sale price plus VAT, paid by the seller. It is a cost rather than a tax but reduces what you walk away with.",
+          "meta": {
+            "source": "https://www.svit.ch/de",
+            "source_title": "SVIT Schweizerischer Verband der Immobilienwirtschaft (commission is negotiable; 2% assumed)",
+            "last_verified": "2026-10-12",
+            "note": "Assumption."
+          }
+        }
+      ]
+    }
+  }
+}
