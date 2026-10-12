@@ -1,0 +1,87 @@
+{
+  "country": "uk",
+  "household": "2 adults + 2 children",
+  "city": "London",
+  "currency": "GBP",
+  "base_year": 2024,
+  "categories": {
+    "housing_rent": {
+      "value": 34200,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/London",
+        "source_title": "Numbeo cost of living — London (updated 11 Oct 2026, 2,038 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source for rent only; 3-bedroom apartment outside city centre, monthly x12"
+      }
+    },
+    "food": {
+      "value": 4618,
+      "meta": {
+        "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook4expenditurebyhouseholdcharacteristic",
+        "source_title": "ONS Family Spending workbook 4, Table A56 — households with children, all, 3-year average FYE2023-FYE2025 (avg 3.8 persons)",
+        "last_verified": "2026-10-12",
+        "note": "Food & non-alcoholic drinks, £88.80/week x52; UK-wide (London non-housing spend is within 1% of UK, Table A33)"
+      }
+    },
+    "transport": {
+      "value": 5663,
+      "meta": {
+        "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook4expenditurebyhouseholdcharacteristic",
+        "source_title": "ONS Family Spending workbook 4, Table A56 — households with children, all, 3-year average FYE2023-FYE2025 (avg 3.8 persons)",
+        "last_verified": "2026-10-12",
+        "note": "Transport, £108.90/week x52"
+      }
+    },
+    "childcare_education": {
+      "value": 26685,
+      "meta": {
+        "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook4expenditurebyhouseholdcharacteristic",
+        "source_title": "ONS Family Spending workbook 4, Table A56 — households with children, all, 3-year average FYE2023-FYE2025 (avg 3.8 persons)",
+        "last_verified": "2026-10-12",
+        "note": "ONS Education £14.20/week x52 plus one child in full-day private preschool (Numbeo monthly fee x12); second child assumed in free public school from Numbeo London (£2,162.20/month)"
+      }
+    },
+    "healthcare": {
+      "value": 421,
+      "meta": {
+        "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook4expenditurebyhouseholdcharacteristic",
+        "source_title": "ONS Family Spending workbook 4, Table A56 — households with children, all, 3-year average FYE2023-FYE2025 (avg 3.8 persons)",
+        "last_verified": "2026-10-12",
+        "note": "Health, £8.10/week x52 (out-of-pocket; NHS-funded care excluded)"
+      }
+    },
+    "utilities": {
+      "value": 3373,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/London",
+        "source_title": "Numbeo cost of living — London (updated 11 Oct 2026, 2,038 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; basic utilities for 85 m2, monthly x12 (ONS housing/fuel/power line is not split by tenure)"
+      }
+    },
+    "other": {
+      "value": 15012,
+      "meta": {
+        "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook4expenditurebyhouseholdcharacteristic",
+        "source_title": "ONS Family Spending workbook 4, Table A56 — households with children, all, 3-year average FYE2023-FYE2025 (avg 3.8 persons)",
+        "last_verified": "2026-10-12",
+        "note": "Alcohol & tobacco, clothing, household goods & services, communication, recreation & culture, restaurants & hotels, miscellaneous: £288.70/week x52; excludes 'other expenditure items' (mortgage interest, council tax, pensions)"
+      }
+    }
+  },
+  "inflation": {
+    "cpi_assumed": 0.031,
+    "meta": {
+      "source": "https://www.ons.gov.uk/economy/inflationandpriceindices/bulletins/consumerpriceinflation/latest",
+      "source_title": "ONS Consumer price inflation, August 2026",
+      "last_verified": "2026-10-12",
+      "note": "CPI +3.1% 12-month rate (CPIH +3.3%)"
+    }
+  },
+  "meta": {
+    "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook4expenditurebyhouseholdcharacteristic",
+    "source_title": "ONS Family Spending workbook 4, Table A56 — households with children, all, 3-year average FYE2023-FYE2025 (avg 3.8 persons)",
+    "last_verified": "2026-10-12",
+    "note": "Primary source: ONS Living Costs and Food Survey, households with children (mean, not median); rent and utilities swapped for London market figures from Numbeo."
+  }
+}

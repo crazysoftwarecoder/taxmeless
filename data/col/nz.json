@@ -1,0 +1,87 @@
+{
+  "country": "nz",
+  "household": "2 adults + 2 children",
+  "city": "Auckland",
+  "currency": "NZD",
+  "base_year": 2023,
+  "categories": {
+    "housing_rent": {
+      "value": 35640,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Auckland",
+        "source_title": "Numbeo cost of living — Auckland (updated 10 Oct 2026, 1,031 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source for rent only; 3-bedroom apartment outside city centre, monthly x12"
+      }
+    },
+    "food": {
+      "value": 24497,
+      "meta": {
+        "source": "https://www.stats.govt.nz/information-releases/household-expenditure-statistics-year-ended-june-2023/",
+        "source_title": "Stats NZ Household expenditure statistics: year ended June 2023 — couple with two dependent children ($2,208.2/week), Auckland uplift 1,822.5/1,597.5",
+        "last_verified": "2026-10-12",
+        "note": "National food share 18.7% applied to the couple-with-two-children weekly total, uplifted to Auckland, x52"
+      }
+    },
+    "transport": {
+      "value": 20567,
+      "meta": {
+        "source": "https://www.stats.govt.nz/information-releases/household-expenditure-statistics-year-ended-june-2023/",
+        "source_title": "Stats NZ Household expenditure statistics: year ended June 2023 — couple with two dependent children ($2,208.2/week), Auckland uplift 1,822.5/1,597.5",
+        "last_verified": "2026-10-12",
+        "note": "National transport share 15.7% applied as above"
+      }
+    },
+    "childcare_education": {
+      "value": 25656,
+      "meta": {
+        "source": "https://www.stats.govt.nz/information-releases/household-expenditure-statistics-year-ended-june-2023/",
+        "source_title": "Stats NZ Household expenditure statistics: year ended June 2023 — couple with two dependent children ($2,208.2/week), Auckland uplift 1,822.5/1,597.5",
+        "last_verified": "2026-10-12",
+        "note": "National education share ($20 of $1,597.5/week) applied as above, plus one child in full-day private preschool (Numbeo monthly fee x12); second child assumed in free public school from Numbeo Auckland (NZ$2,001.30/month)"
+      }
+    },
+    "healthcare": {
+      "value": 4100,
+      "meta": {
+        "source": "https://www.stats.govt.nz/information-releases/household-expenditure-statistics-year-ended-june-2023/",
+        "source_title": "Stats NZ Household expenditure statistics: year ended June 2023 — couple with two dependent children ($2,208.2/week), Auckland uplift 1,822.5/1,597.5",
+        "last_verified": "2026-10-12",
+        "note": "National health share ($50 of $1,597.5/week) applied as above"
+      }
+    },
+    "utilities": {
+      "value": 3892,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Auckland",
+        "source_title": "Numbeo cost of living — Auckland (updated 10 Oct 2026, 1,031 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; basic utilities for 85 m2, monthly x12 (Stats NZ housing and household utilities group is not split)"
+      }
+    },
+    "other": {
+      "value": 33144,
+      "meta": {
+        "source": "https://www.stats.govt.nz/information-releases/household-expenditure-statistics-year-ended-june-2023/",
+        "source_title": "Stats NZ Household expenditure statistics: year ended June 2023 — couple with two dependent children ($2,208.2/week), Auckland uplift 1,822.5/1,597.5",
+        "last_verified": "2026-10-12",
+        "note": "Residual share (recreation & culture, clothing, household contents, miscellaneous goods & services) after removing housing/utilities 24.9%, food, transport, health, education and the 'other expenditure' group ($176/week: interest payments, contributions, money given) which overlaps with housing costs"
+      }
+    }
+  },
+  "inflation": {
+    "cpi_assumed": 0.041,
+    "meta": {
+      "source": "https://tradingeconomics.com/new-zealand/inflation-cpi",
+      "source_title": "Trading Economics mirror of Stats NZ CPI, June 2026 quarter",
+      "last_verified": "2026-10-12",
+      "note": "secondary source; annual CPI +4.1% (Stats NZ release page could not be fetched)"
+    }
+  },
+  "meta": {
+    "source": "https://www.stats.govt.nz/information-releases/household-expenditure-statistics-year-ended-june-2023/",
+    "source_title": "Stats NZ Household expenditure statistics: year ended June 2023 — couple with two dependent children ($2,208.2/week), Auckland uplift 1,822.5/1,597.5",
+    "last_verified": "2026-10-12",
+    "note": "Primary source: Stats NZ HES 2023 (survey not run in 2022; four-year gap). Category breakdown by household type is not published, so national category shares were applied to the couple-with-two-children total and uplifted by the Auckland/national ratio; rent and utilities from Numbeo."
+  }
+}

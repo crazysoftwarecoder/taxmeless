@@ -1,0 +1,87 @@
+{
+  "country": "au",
+  "household": "2 adults + 2 children",
+  "city": "Sydney",
+  "currency": "AUD",
+  "base_year": 2026,
+  "categories": {
+    "housing_rent": {
+      "value": 52624,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Sydney",
+        "source_title": "Numbeo cost of living — Sydney (updated 7 Oct 2026, 1,484 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; 3-bedroom apartment outside city centre, monthly x12"
+      }
+    },
+    "food": {
+      "value": 18574,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Sydney",
+        "source_title": "Numbeo cost of living — Sydney (updated 7 Oct 2026, 1,484 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset"
+      }
+    },
+    "transport": {
+      "value": 16346,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Sydney",
+        "source_title": "Numbeo cost of living — Sydney (updated 7 Oct 2026, 1,484 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset"
+      }
+    },
+    "childcare_education": {
+      "value": 37844,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Sydney",
+        "source_title": "Numbeo cost of living — Sydney (updated 7 Oct 2026, 1,484 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; one child in full-day private preschool (Numbeo monthly fee x12); second child assumed in free public school; before Child Care Subsidy"
+      }
+    },
+    "healthcare": {
+      "value": 3715,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Sydney",
+        "source_title": "Numbeo cost of living — Sydney (updated 7 Oct 2026, 1,484 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset; out-of-pocket on top of Medicare"
+      }
+    },
+    "utilities": {
+      "value": 3797,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Sydney",
+        "source_title": "Numbeo cost of living — Sydney (updated 7 Oct 2026, 1,484 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; basic electricity/heating/cooling/water/garbage for 85 m2, monthly x12; excludes internet and mobile (left in other)"
+      }
+    },
+    "other": {
+      "value": 35663,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Sydney",
+        "source_title": "Numbeo cost of living — Sydney (updated 7 Oct 2026, 1,484 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset"
+      }
+    }
+  },
+  "inflation": {
+    "cpi_assumed": 0.04,
+    "meta": {
+      "source": "https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/consumer-price-index-australia/latest-release",
+      "source_title": "ABS Monthly CPI indicator, August 2026",
+      "last_verified": "2026-10-12",
+      "note": "All groups CPI +4.0% y/y (Sydney +3.9%, trimmed mean +3.6%)"
+    }
+  },
+  "meta": {
+    "source": "https://www.numbeo.com/cost-of-living/in/Sydney",
+    "source_title": "Numbeo cost of living — Sydney (updated 7 Oct 2026, 1,484 entries)",
+    "last_verified": "2026-10-12",
+    "note": "Secondary source. ABS Household Expenditure Survey (latest 2015-16) is older than 5 years and has no fresh family-of-four cut, so the Numbeo family-of-four estimate (A$6,507.9/month excl. rent) plus separate 3-bedroom rent was used. Lower confidence."
+  }
+}

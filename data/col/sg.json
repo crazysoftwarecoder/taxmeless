@@ -1,0 +1,87 @@
+{
+  "country": "sg",
+  "household": "2 adults + 2 children",
+  "city": "Singapore",
+  "currency": "SGD",
+  "base_year": 2026,
+  "categories": {
+    "housing_rent": {
+      "value": 60950,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Singapore",
+        "source_title": "Numbeo cost of living — Singapore (updated 2 Oct 2026, 1,687 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; 3-bedroom apartment outside city centre (private market, not HDB), monthly x12"
+      }
+    },
+    "food": {
+      "value": 15916,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Singapore",
+        "source_title": "Numbeo cost of living — Singapore (updated 2 Oct 2026, 1,687 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset"
+      }
+    },
+    "transport": {
+      "value": 14006,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Singapore",
+        "source_title": "Numbeo cost of living — Singapore (updated 2 Oct 2026, 1,687 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset; excludes car ownership (COE)"
+      }
+    },
+    "childcare_education": {
+      "value": 22529,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Singapore",
+        "source_title": "Numbeo cost of living — Singapore (updated 2 Oct 2026, 1,687 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; one child in full-day private preschool (Numbeo monthly fee x12); second child assumed in free public school"
+      }
+    },
+    "healthcare": {
+      "value": 3183,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Singapore",
+        "source_title": "Numbeo cost of living — Singapore (updated 2 Oct 2026, 1,687 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset"
+      }
+    },
+    "utilities": {
+      "value": 2674,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Singapore",
+        "source_title": "Numbeo cost of living — Singapore (updated 2 Oct 2026, 1,687 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; basic utilities for 85 m2, monthly x12"
+      }
+    },
+    "other": {
+      "value": 30559,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Singapore",
+        "source_title": "Numbeo cost of living — Singapore (updated 2 Oct 2026, 1,687 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset"
+      }
+    }
+  },
+  "inflation": {
+    "cpi_assumed": 0.023,
+    "meta": {
+      "source": "https://www.mas.gov.sg/-/media/mas-media-library/news/consumer-price-developments/2026/consumer-price-developments-in-august-2026.pdf",
+      "source_title": "MAS/MTI Consumer Price Developments, August 2026",
+      "last_verified": "2026-10-12",
+      "note": "CPI-All Items +2.3% y/y (MAS Core 2.2%); 2026 forecast 1.5-2.5%"
+    }
+  },
+  "meta": {
+    "source": "https://www.numbeo.com/cost-of-living/in/Singapore",
+    "source_title": "Numbeo cost of living — Singapore (updated 2 Oct 2026, 1,687 entries)",
+    "last_verified": "2026-10-12",
+    "note": "Secondary source. SingStat HES 2023 (avg monthly household expenditure S$5,931, all resident households) has no family-of-four category cut reachable, so the Numbeo family-of-four estimate (S$5,528.2/month excl. rent) plus private 3-bedroom rent was used. Lower confidence."
+  }
+}

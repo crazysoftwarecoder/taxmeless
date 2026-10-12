@@ -1,0 +1,87 @@
+{
+  "country": "in",
+  "household": "2 adults + 2 children",
+  "city": "Mumbai",
+  "currency": "INR",
+  "base_year": 2026,
+  "categories": {
+    "housing_rent": {
+      "value": 1008000,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Mumbai",
+        "source_title": "Numbeo cost of living — Mumbai (updated 11 Oct 2026, 1,870 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; 3-bedroom apartment outside city centre, monthly x12"
+      }
+    },
+    "food": {
+      "value": 378186,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Mumbai",
+        "source_title": "Numbeo cost of living — Mumbai (updated 11 Oct 2026, 1,870 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset"
+      }
+    },
+    "transport": {
+      "value": 332804,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Mumbai",
+        "source_title": "Numbeo cost of living — Mumbai (updated 11 Oct 2026, 1,870 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset"
+      }
+    },
+    "childcare_education": {
+      "value": 134187,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Mumbai",
+        "source_title": "Numbeo cost of living — Mumbai (updated 11 Oct 2026, 1,870 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; one child in full-day private preschool (Numbeo monthly fee x12); second child assumed in free public school"
+      }
+    },
+    "healthcare": {
+      "value": 75637,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Mumbai",
+        "source_title": "Numbeo cost of living — Mumbai (updated 11 Oct 2026, 1,870 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset"
+      }
+    },
+    "utilities": {
+      "value": 70484,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Mumbai",
+        "source_title": "Numbeo cost of living — Mumbai (updated 11 Oct 2026, 1,870 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; basic utilities for 85 m2, monthly x12"
+      }
+    },
+    "other": {
+      "value": 726118,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Mumbai",
+        "source_title": "Numbeo cost of living — Mumbai (updated 11 Oct 2026, 1,870 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset"
+      }
+    }
+  },
+  "inflation": {
+    "cpi_assumed": 0.0482,
+    "meta": {
+      "source": "https://www.mospi.gov.in/uploads/latestreleasesfiles/1789382372004-Press%20Release%20of%20CPI%20for%20August%202026.pdf",
+      "source_title": "MoSPI CPI press release, August 2026 (base 2024=100)",
+      "last_verified": "2026-10-12",
+      "note": "All-India CPI +4.82% y/y provisional (urban 4.31%)"
+    }
+  },
+  "meta": {
+    "source": "https://www.numbeo.com/cost-of-living/in/Mumbai",
+    "source_title": "Numbeo cost of living — Mumbai (updated 11 Oct 2026, 1,870 entries)",
+    "last_verified": "2026-10-12",
+    "note": "Secondary source. HCES 2023-24 (MoSPI) gives Maharashtra urban average MPCE Rs 7,363/person/month (Rs ~353k/year for four people) but no Mumbai or family-of-four category cut; the Numbeo middle-class family-of-four basket (Rs 131,935.8/month excl. rent) plus 3-bedroom rent was used instead and is roughly 7x the HCES population average. Lower confidence."
+  }
+}

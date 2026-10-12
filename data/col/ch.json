@@ -1,0 +1,87 @@
+{
+  "country": "ch",
+  "household": "2 adults + 2 children",
+  "city": "Zurich",
+  "currency": "CHF",
+  "base_year": 2026,
+  "categories": {
+    "housing_rent": {
+      "value": 41577,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Zurich",
+        "source_title": "Numbeo cost of living — Zurich (updated 6 Oct 2026, 1,154 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; 3-bedroom apartment outside city centre, monthly x12"
+      }
+    },
+    "food": {
+      "value": 13731,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Zurich",
+        "source_title": "Numbeo cost of living — Zurich (updated 6 Oct 2026, 1,154 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities and mandatory health premiums) using normalised shares food 26.3% / transport 23.2% / other 50.5%"
+      }
+    },
+    "transport": {
+      "value": 12084,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Zurich",
+        "source_title": "Numbeo cost of living — Zurich (updated 6 Oct 2026, 1,154 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities and mandatory health premiums) using normalised shares food 26.3% / transport 23.2% / other 50.5%"
+      }
+    },
+    "childcare_education": {
+      "value": 35589,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Zurich",
+        "source_title": "Numbeo cost of living — Zurich (updated 6 Oct 2026, 1,154 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; one child in full-day private preschool (Numbeo monthly fee x12); second child assumed in free public school (Kita)"
+      }
+    },
+    "healthcare": {
+      "value": 14107,
+      "meta": {
+        "source": "https://www.bag.admin.ch/de/newnsb/d2okh_kUK_OFhmMDfpyiy",
+        "source_title": "BAG media release 23 Sep 2025 — mittlere Krankenkassenprämien 2026",
+        "last_verified": "2026-10-12",
+        "note": "Mandatory basic insurance (KVG) premiums: Swiss mean 2026 adult CHF 465.30 and child CHF 122.50 per month, x2 each x12; Zurich premiums rise 5.2% in 2026 so this is a slight understatement; excludes deductibles and co-pays"
+      }
+    },
+    "utilities": {
+      "value": 2769,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Zurich",
+        "source_title": "Numbeo cost of living — Zurich (updated 6 Oct 2026, 1,154 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; basic utilities for 85 m2, monthly x12"
+      }
+    },
+    "other": {
+      "value": 26364,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Zurich",
+        "source_title": "Numbeo cost of living — Zurich (updated 6 Oct 2026, 1,154 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities and mandatory health premiums) using normalised shares food 26.3% / transport 23.2% / other 50.5%"
+      }
+    }
+  },
+  "inflation": {
+    "cpi_assumed": 0.01,
+    "meta": {
+      "source": "https://qna.org.qa/en/News-Area/News/2026-10/1/swiss-inflation-rises-to-1-in-september-2026",
+      "source_title": "QNA report of BFS consumer price index, September 2026",
+      "last_verified": "2026-10-12",
+      "note": "secondary mirror of BFS; CPI +1.0% y/y (BFS page truncated on fetch)"
+    }
+  },
+  "meta": {
+    "source": "https://www.numbeo.com/cost-of-living/in/Zurich",
+    "source_title": "Numbeo cost of living — Zurich (updated 6 Oct 2026, 1,154 entries)",
+    "last_verified": "2026-10-12",
+    "note": "Secondary source. BFS HABE tables could not be fetched, so the Numbeo family-of-four estimate (CHF 5,754.6/month excl. rent) plus 3-bedroom rent was used, with healthcare taken from BAG 2026 mean premiums. Lower confidence."
+  }
+}

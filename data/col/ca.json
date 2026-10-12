@@ -1,0 +1,87 @@
+{
+  "country": "ca",
+  "household": "2 adults + 2 children",
+  "city": "Toronto",
+  "currency": "CAD",
+  "base_year": 2023,
+  "categories": {
+    "housing_rent": {
+      "value": 36180,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Toronto",
+        "source_title": "Numbeo cost of living — Toronto (updated 6 Oct 2026, 2,003 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source for rent only; 3-bedroom apartment outside city centre, monthly x12"
+      }
+    },
+    "food": {
+      "value": 11716,
+      "meta": {
+        "source": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1110022201",
+        "source_title": "Statistics Canada Table 11-10-0222-01, Survey of Household Spending 2023 — Ontario, average per household (all household types)",
+        "last_verified": "2026-10-12",
+        "note": "Food expenditures (stores $7,974 + restaurants $3,686)"
+      }
+    },
+    "transport": {
+      "value": 11927,
+      "meta": {
+        "source": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1110022201",
+        "source_title": "Statistics Canada Table 11-10-0222-01, Survey of Household Spending 2023 — Ontario, average per household (all household types)",
+        "last_verified": "2026-10-12",
+        "note": "Transportation"
+      }
+    },
+    "childcare_education": {
+      "value": 16506,
+      "meta": {
+        "source": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1110022201",
+        "source_title": "Statistics Canada Table 11-10-0222-01, Survey of Household Spending 2023 — Ontario, average per household (all household types)",
+        "last_verified": "2026-10-12",
+        "note": "Education $2,021 + child care $385 (all-household averages) plus one child in full-day private preschool (Numbeo monthly fee x12); second child assumed in free public school from Numbeo Toronto (C$1,175.04/month)"
+      }
+    },
+    "healthcare": {
+      "value": 3127,
+      "meta": {
+        "source": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1110022201",
+        "source_title": "Statistics Canada Table 11-10-0222-01, Survey of Household Spending 2023 — Ontario, average per household (all household types)",
+        "last_verified": "2026-10-12",
+        "note": "Health care (direct costs + private plan premiums)"
+      }
+    },
+    "utilities": {
+      "value": 3193,
+      "meta": {
+        "source": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1110022201",
+        "source_title": "Statistics Canada Table 11-10-0222-01, Survey of Household Spending 2023 — Ontario, average per household (all household types)",
+        "last_verified": "2026-10-12",
+        "note": "Water, fuel and electricity for principal accommodation"
+      }
+    },
+    "other": {
+      "value": 26469,
+      "meta": {
+        "source": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1110022201",
+        "source_title": "Statistics Canada Table 11-10-0222-01, Survey of Household Spending 2023 — Ontario, average per household (all household types)",
+        "last_verified": "2026-10-12",
+        "note": "Household operations excl. child care, furnishings & equipment, clothing, personal care, recreation, tobacco/alcohol/cannabis, miscellaneous, communications"
+      }
+    }
+  },
+  "inflation": {
+    "cpi_assumed": 0.03,
+    "meta": {
+      "source": "https://www.bankofcanada.ca/rates/price-indexes/cpi/",
+      "source_title": "Bank of Canada — Consumer price index, August 2026",
+      "last_verified": "2026-10-12",
+      "note": "Total CPI +3.0% y/y (CPI-trim 1.9%, CPI-median 2.0%)"
+    }
+  },
+  "meta": {
+    "source": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1110022201",
+    "source_title": "Statistics Canada Table 11-10-0222-01, Survey of Household Spending 2023 — Ontario, average per household (all household types)",
+    "last_verified": "2026-10-12",
+    "note": "Primary source: SHS 2023 Ontario averages (table has no household-type dimension, so figures are all-household means, avg ~2.5 persons, which understates a family of four); rent swapped for a Toronto 3-bedroom market rent from Numbeo."
+  }
+}

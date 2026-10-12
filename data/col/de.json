@@ -1,0 +1,87 @@
+{
+  "country": "de",
+  "household": "2 adults + 2 children",
+  "city": "Berlin",
+  "currency": "EUR",
+  "base_year": 2024,
+  "categories": {
+    "housing_rent": {
+      "value": 22450,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Berlin",
+        "source_title": "Numbeo cost of living — Berlin (updated 8 Oct 2026, 1,970 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source for rent only; 3-bedroom apartment outside city centre, monthly x12 (Destatis 'Wohnen, Energie' EUR 1,582 includes imputed owner rent)"
+      }
+    },
+    "food": {
+      "value": 8352,
+      "meta": {
+        "source": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Einkommen-Konsum-Lebensbedingungen/Konsumausgaben-Lebenshaltungskosten/Tabellen/privater-konsum-haushaltstyp-lwr.html",
+        "source_title": "Destatis Laufende Wirtschaftsrechnungen 2024 — Konsumausgaben privater Haushalte nach Haushaltstyp, Paare mit Kind(ern) (EUR/month)",
+        "last_verified": "2026-10-12",
+        "note": "Nahrungsmittel, Getränke, Tabakwaren EUR 696/month x12"
+      }
+    },
+    "transport": {
+      "value": 8232,
+      "meta": {
+        "source": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Einkommen-Konsum-Lebensbedingungen/Konsumausgaben-Lebenshaltungskosten/Tabellen/privater-konsum-haushaltstyp-lwr.html",
+        "source_title": "Destatis Laufende Wirtschaftsrechnungen 2024 — Konsumausgaben privater Haushalte nach Haushaltstyp, Paare mit Kind(ern) (EUR/month)",
+        "last_verified": "2026-10-12",
+        "note": "Verkehr EUR 686/month x12"
+      }
+    },
+    "childcare_education": {
+      "value": 2460,
+      "meta": {
+        "source": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Einkommen-Konsum-Lebensbedingungen/Konsumausgaben-Lebenshaltungskosten/Tabellen/privater-konsum-haushaltstyp-lwr.html",
+        "source_title": "Destatis Laufende Wirtschaftsrechnungen 2024 — Konsumausgaben privater Haushalte nach Haushaltstyp, Paare mit Kind(ern) (EUR/month)",
+        "last_verified": "2026-10-12",
+        "note": "Bildungsdienstleistungen EUR 76/month x12 plus Numbeo Berlin private full-day preschool EUR 129/month x12 (Berlin Kita is fee-free; only meals/extras are charged)"
+      }
+    },
+    "healthcare": {
+      "value": 1308,
+      "meta": {
+        "source": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Einkommen-Konsum-Lebensbedingungen/Konsumausgaben-Lebenshaltungskosten/Tabellen/privater-konsum-haushaltstyp-lwr.html",
+        "source_title": "Destatis Laufende Wirtschaftsrechnungen 2024 — Konsumausgaben privater Haushalte nach Haushaltstyp, Paare mit Kind(ern) (EUR/month)",
+        "last_verified": "2026-10-12",
+        "note": "Gesundheit EUR 109/month x12 (out-of-pocket; statutory insurance contributions are payroll deductions)"
+      }
+    },
+    "utilities": {
+      "value": 4135,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Berlin",
+        "source_title": "Numbeo cost of living — Berlin (updated 8 Oct 2026, 1,970 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; basic utilities for 85 m2, monthly x12"
+      }
+    },
+    "other": {
+      "value": 18168,
+      "meta": {
+        "source": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Einkommen-Konsum-Lebensbedingungen/Konsumausgaben-Lebenshaltungskosten/Tabellen/privater-konsum-haushaltstyp-lwr.html",
+        "source_title": "Destatis Laufende Wirtschaftsrechnungen 2024 — Konsumausgaben privater Haushalte nach Haushaltstyp, Paare mit Kind(ern) (EUR/month)",
+        "last_verified": "2026-10-12",
+        "note": "Bekleidung 190, Innenausstattung 219, Information/Kommunikation 179, Freizeit/Sport/Kultur 456, Gastronomie/Beherbergung 317, Versicherungs-/Finanzdienstleistungen 7, Andere 146 EUR/month x12"
+      }
+    }
+  },
+  "inflation": {
+    "cpi_assumed": 0.033,
+    "meta": {
+      "source": "https://www.destatis.de/EN/Themes/Economy/Prices/Consumer-Price-Index/_node.html",
+      "source_title": "Destatis Consumer Price Index, September 2026 (provisional)",
+      "last_verified": "2026-10-12",
+      "note": "Inflation rate +3.3% y/y"
+    }
+  },
+  "meta": {
+    "source": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Einkommen-Konsum-Lebensbedingungen/Konsumausgaben-Lebenshaltungskosten/Tabellen/privater-konsum-haushaltstyp-lwr.html",
+    "source_title": "Destatis Laufende Wirtschaftsrechnungen 2024 — Konsumausgaben privater Haushalte nach Haushaltstyp, Paare mit Kind(ern) (EUR/month)",
+    "last_verified": "2026-10-12",
+    "note": "Primary source: Destatis LWR 2024 couples with children (mean); housing replaced by a Berlin 3-bedroom market rent and utilities from Numbeo."
+  }
+}

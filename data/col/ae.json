@@ -1,0 +1,87 @@
+{
+  "country": "ae",
+  "household": "2 adults + 2 children",
+  "city": "Dubai",
+  "currency": "AED",
+  "base_year": 2026,
+  "categories": {
+    "housing_rent": {
+      "value": 130200,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Dubai",
+        "source_title": "Numbeo cost of living — Dubai (updated 9 Oct 2026, 1,636 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; 3-bedroom apartment outside city centre, monthly x12"
+      }
+    },
+    "food": {
+      "value": 41673,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Dubai",
+        "source_title": "Numbeo cost of living — Dubai (updated 9 Oct 2026, 1,636 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset"
+      }
+    },
+    "transport": {
+      "value": 36672,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Dubai",
+        "source_title": "Numbeo cost of living — Dubai (updated 9 Oct 2026, 1,636 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset"
+      }
+    },
+    "childcare_education": {
+      "value": 37867,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Dubai",
+        "source_title": "Numbeo cost of living — Dubai (updated 9 Oct 2026, 1,636 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; one child in full-day private preschool (Numbeo monthly fee x12); second child assumed in free public school; private schooling is the norm for expatriate families so this is a floor"
+      }
+    },
+    "healthcare": {
+      "value": 8335,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Dubai",
+        "source_title": "Numbeo cost of living — Dubai (updated 9 Oct 2026, 1,636 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset; assumes employer-provided mandatory health insurance"
+      }
+    },
+    "utilities": {
+      "value": 10828,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Dubai",
+        "source_title": "Numbeo cost of living — Dubai (updated 9 Oct 2026, 1,636 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; basic utilities (DEWA) for 85 m2, monthly x12"
+      }
+    },
+    "other": {
+      "value": 80012,
+      "meta": {
+        "source": "https://www.numbeo.com/cost-of-living/in/Dubai",
+        "source_title": "Numbeo cost of living — Dubai (updated 9 Oct 2026, 1,636 entries)",
+        "last_verified": "2026-10-12",
+        "note": "secondary source; allocation of the Numbeo family-of-four basket (excl. rent, less basic utilities) using shares food 25% / transport 22% / healthcare 5% / other 48%, the rounded average of the ONS, BLS, Destatis and Stats NZ category shares collected for this dataset"
+      }
+    }
+  },
+  "inflation": {
+    "cpi_assumed": 0.053,
+    "meta": {
+      "source": "https://www.khaleejtimes.com/business/uae-gcc-inflation-stays-subdued-in-july-despite-middle-east-conflict",
+      "source_title": "Khaleej Times citing Kamco Invest GCC Inflation Update — Dubai CPI, July 2026",
+      "last_verified": "2026-10-12",
+      "note": "secondary source; Dubai CPI +5.3% y/y (June peak 5.7%); Dubai Statistics Centre page could not be fetched"
+    }
+  },
+  "meta": {
+    "source": "https://www.numbeo.com/cost-of-living/in/Dubai",
+    "source_title": "Numbeo cost of living — Dubai (updated 9 Oct 2026, 1,636 entries)",
+    "last_verified": "2026-10-12",
+    "note": "Secondary source. Dubai Statistics Centre household income and expenditure survey (2019) is older than 5 years, so the Numbeo family-of-four estimate (AED 14,793.4/month excl. rent) plus 3-bedroom rent was used. Lower confidence."
+  }
+}
