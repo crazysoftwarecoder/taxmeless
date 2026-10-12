@@ -13,6 +13,8 @@ import { assignCountrySlots, countryColor, echarts, isDark, mountChart } from '.
 import { renderDrilldown, type DrillTarget } from './components/drilldown';
 import { freshnessFooter } from './components/freshness';
 import { inputsPanel } from './components/inputs-panel';
+import { renderSummary as renderSummaryTables } from './components/summary';
+import { firstPaintInputs } from './first-paint';
 import { $, clear, h } from './dom';
 import { ASSET_LABEL, pct, usd, usdCompact } from './format';
 import { decodeState, encodeState, type AppState } from './state';
@@ -42,17 +44,7 @@ export function startApp(): void {
 
   $('#footer').append(freshnessFooter(dataset, REPO_URL));
 
-  const inputs = (): Parameters<typeof compareAll>[0] => ({
-    countries: state.countries,
-    asset: state.asset,
-    horizonYears: state.horizon,
-    principalUsd: state.principal,
-    equities: { growth: state.eqGrowth / 100, yield: state.eqYield / 100 },
-    property: { growth: state.prGrowth / 100, yield: state.prYield / 100, costRate: state.prCost / 100 },
-    otherIncomeBand: state.income,
-    startDate: new Date().toISOString().slice(0, 10),
-    inflation: state.infl / 100,
-  });
+  const inputs = (): Parameters<typeof compareAll>[0] => firstPaintInputs(state);
 
   function hideTooltips(): void {
     const hide = () => { for (const c of [taxChart, gdpChart, colChart, ...nwCharts.values()]) if (!c.isDisposed()) c.dispatchAction({ type: 'hideTip' }); };
@@ -119,32 +111,9 @@ export function startApp(): void {
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) closeSheet(); });
 
   function renderSummary(): void {
-    clear(summaryHost);
-    const assets: Asset[] = state.asset === 'both' ? ['equities', 'property'] : [state.asset];
-    for (const asset of assets) {
-      const rows = ledgers.filter((l) => l.asset === asset).sort((a, b) => b.finalNetUsd - a.finalNetUsd);
-      const table = h('table', { class: 'summary' },
-        h('caption', null, `${ASSET_LABEL[asset]} · ${usdCompact(state.principal)} after ${state.horizon} years${state.real ? " · in today's dollars" : ''}`),
-        h('thead', null, h('tr', null,
-          h('th', null, 'Country'), h('th', { class: 'num' }, 'Net value'), h('th', { class: 'num' }, 'Total tax'),
-          h('th', { class: 'num' }, 'Tax / gain'), h('th', { class: 'num' }, 'Ingress'), h('th', { class: 'num' }, 'Growth'), h('th', { class: 'num' }, 'Egress'),
-        )),
-        h('tbody', null, ...rows.map((l) => h('tr', { tabindex: 0, role: 'button', 'aria-label': `Show taxes for ${names[l.country]} ${asset}`,
-          onclick: () => openSheet({ country: l.country, asset, stage: 'egress' }),
-          onkeydown: (e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSheet({ country: l.country, asset, stage: 'egress' }); } },
-        },
-          h('td', null, h('span', { class: 'swatch', style: `background:${countryColor(l.country)}` }), names[l.country]),
-          h('td', { class: 'num' }, usd(l.finalNetUsd)),
-          h('td', { class: 'num' }, usd(l.totalsUsd.taxes.all)),
-          h('td', { class: 'num' }, pct(l.effectiveTaxRate)),
-          h('td', { class: 'num' }, usdCompact(l.totalsUsd.taxes.ingress)),
-          h('td', { class: 'num' }, usdCompact(l.totalsUsd.taxes.growth)),
-          h('td', { class: 'num' }, usdCompact(l.totalsUsd.taxes.egress)),
-        ))),
-      );
-      summaryHost.append(table);
-    }
+    renderSummaryTables(summaryHost, ledgers, state, names, (country, asset) => openSheet({ country, asset, stage: 'egress' }));
   }
+
 
   function renderNetworth(): void {
     const assets: Asset[] = state.asset === 'both' ? ['equities', 'property'] : [state.asset];
@@ -182,6 +151,7 @@ export function startApp(): void {
       if (t) t.textContent = `${ASSET_LABEL[asset]} · net worth after tax${state.real ? " (today's dollars)" : ''}`;
     }
     nwHost.classList.toggle('two-up', assets.length === 2);
+    nwHost.style.minHeight = '';
   }
 
   function render(): void {

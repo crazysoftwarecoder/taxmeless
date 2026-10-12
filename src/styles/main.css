@@ -4,11 +4,11 @@
   --plane: #f9f9f7;
   --ink: #0b0b0b;
   --ink-2: #52514e;
-  --muted: #898781;
+  --muted: #6b6a65;
   --grid: #e1e0d9;
   --axis: #c3c2b7;
   --border: rgba(11, 11, 11, 0.1);
-  --accent: #2a78d6;
+  --accent: #256abf;
   --accent-ink: #fff;
   --good: #006300;
   --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --s6: #008300; --s7: #6250d6; --s8: #e34948;
@@ -19,7 +19,7 @@
   :root:not([data-theme="light"]) {
     color-scheme: dark;
     --surface: #1a1a19; --plane: #0d0d0d; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
-    --border: rgba(255, 255, 255, 0.1); --accent: #3987e5; --good: #0ca30c;
+    --border: rgba(255, 255, 255, 0.1); --accent: #3987e5; --accent-ink: #0b0b0b; --good: #0ca30c;
     --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.4);
   }
@@ -27,7 +27,7 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
   --surface: #1a1a19; --plane: #0d0d0d; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
-  --border: rgba(255, 255, 255, 0.1); --accent: #3987e5; --good: #0ca30c;
+  --border: rgba(255, 255, 255, 0.1); --accent: #3987e5; --accent-ink: #0b0b0b; --good: #0ca30c;
   --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.4);
 }
@@ -189,3 +189,10 @@ body.sheet-open .backdrop { opacity: 1; pointer-events: auto; }
 
 /* Chart tooltips never sit above the drill-down sheet. */
 body.sheet-open .content .chart > div:not(:first-child) { visibility: hidden !important; }
+
+/* Reserve two lines for notes filled in after the chart bundle loads. */
+#gdp-note, #col-note { min-height: 3em; }
+.chart-panel h3 { min-height: 17px; }
+
+/* Hide the layout until the first synchronous render so nothing visibly shifts. */
+.booting .layout { visibility: hidden; }

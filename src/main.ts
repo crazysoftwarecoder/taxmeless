@@ -1,9 +1,15 @@
 import './styles/main.css';
-import { startApp } from './ui/app';
+import { firstPaint } from './ui/first-paint';
 
 try {
   const t = localStorage.getItem('theme');
   if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
 } catch { /* ignore */ }
 
-startApp();
+// Paint inputs and the results table immediately, then load the chart bundle.
+try {
+  firstPaint();
+} finally {
+  document.body.classList.remove('booting');
+}
+void import('./ui/app').then((m) => m.startApp());

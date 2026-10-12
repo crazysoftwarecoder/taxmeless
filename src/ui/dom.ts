@@ -6,6 +6,7 @@ export function h<K extends keyof HTMLElementTagNameMap>(tag: K, props?: Props, 
   const el = document.createElement(tag);
   if (props) {
     for (const [k, v] of Object.entries(props)) {
+      if (k.startsWith('aria-') && typeof v === 'boolean') { el.setAttribute(k, String(v)); continue; }
       if (v === undefined || v === null || v === false) continue;
       if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2).toLowerCase(), v as EventListener);
       else if (k === 'class') el.className = String(v);

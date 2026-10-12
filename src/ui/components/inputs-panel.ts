@@ -1,7 +1,7 @@
 import type { CountryCode } from '../../../schemas';
 import { h } from '../dom';
 import { MAX_COUNTRIES, type AppState } from '../state';
-import { countryColor } from '../charts/theme';
+import { countryColor } from '../charts/palette';
 
 interface CountryOpt { code: CountryCode; name: string }
 
